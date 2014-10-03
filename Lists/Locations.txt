@@ -1,0 +1,33 @@
+// Items used in the Animal Locations drop down list
+// lines starting with double /'s are ignored
+// format of lines important - invalid lines will cause failure of entire list in form
+// each line is one item in the list - and will appear in list in the order defined
+// use existing list items as a template for adding new lines
+//
+<option value=""></option>
+<option value="NA">Not Applicable</option>
+<option value="ArroyoGrande">Arroyo Grande</option>
+<option value="Atascadero">Atascadero</option>
+<option value="AvilaBeach">Avila Beach</option>
+<option value="CarrizoPlain">Carrizo Plain</option>
+<option value="Cambria">Cambria</option>
+<option value="Cayucos">Cayucos</option>
+<option value="SLOCounty">County of SLO</option>
+<option value="Creston">Creston</option>
+<option value="GroverBeach">Grover Beach</option>
+<option value="LosOsos">Los Osos</option>
+<option value="MorroBay">Morro Bay</option>
+<option value="Nipomo">Nipomo</option>
+<option value="Oceano">Oceano</option>
+<option value="OceanoDunesSP">Oceano Dunes SP</option>
+<option value="PasoRobles">Paso Robles</option>
+<option value="PismoBeach">Pismo Beach</option>
+<option value-"SantaMargarita">Santa Margarita</option>
+<option value="SanLuisObispo">San Luis Obispo</option>
+<option value="SanMiguel">San Miguel</option>
+<option value="SanSimeon">San Simeon</option>
+<option value="Shandon">Shandon</option>
+<option value="Shell Beach">Shell Beach</option>
+<option value="Templeton">Templeton</option>
+<option value="OTHER">Other (Please note)</option>
+

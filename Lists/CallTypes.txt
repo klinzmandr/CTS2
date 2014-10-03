@@ -1,0 +1,14 @@
+// Items used in the Call Types drop down list
+// lines starting with double /'s are ignored
+// empty lines are ignored
+// format of lines important - invalid lines will cause failure of entire list in form
+// each line is one item in the list - and will appear in list in the order defined
+// use existing list items as a template for adding new lines
+//
+<option value=""></option>
+<option value="NA">Not Applicable</option>
+<option value="Incident">Incident</option>
+<option value="Info">Informational</option>
+<option value="Emergency">Emergency</option>
+<option value="Other">Other (Please note)</option>
+
