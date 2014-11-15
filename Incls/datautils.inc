@@ -2,9 +2,11 @@
 // connect to the database for all pages
 global $mysqli;
 
+include "../DBParamInfo";
+
 // production database
 $db = "cts2db";
-$mysqli = new mysqli("localhost", "PWCDbUser", "hROdKzvYOtHG", $db);
+$mysqli = new mysqli("localhost", DBUserName, DBPassword, $db);
 
 if ($mysqli->connect_errno) {
 		$errno = $mysqli->connect_errno;
