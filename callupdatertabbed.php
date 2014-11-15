@@ -106,9 +106,15 @@ Date Call Entered:&nbsp;&nbsp;$dtopened
 <br />
 Date Call Closed: $dtclosed<br />
 Caller Name:<input type="text" name="Name" placeholder="Caller Name" value="$name" />
-Phone: <input type="text" name="PrimaryPhone" value="$primaryphone" size="12" maxlength="12" onchange="return ValidatePhone()"  placeholder="Phone Number" /><br />
+Phone: <input type="text" name="PrimaryPhone" value="$primaryphone" size="12" maxlength="12" onchange="return ValidatePhone()"  placeholder="Phone Number" />
+E-mail: <input type="text" id="EM" name="EMail" placeholder="Email Address" value="$email">
+<a href="emailsend.php?emadr=$email&callnbr=$callnbr">
+<span class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
+</span></a>
+<br />
+
 Call Description:<input type="text" name="Description" value="$description" size="60"  description="" /><br />
-New note: (check History for prior note entries)<br />
+<b>New</b> note: (check History for prior note entries)<br />
 <textarea name="notes" rows="5" cols="80"></textarea>
 <br /><br />
 <input type="hidden" name="Status" value="$status">
@@ -165,17 +171,22 @@ State:<input id="ST" type="text" name="State" size="2" maxlength="2" value="$sta
 Zip: <input id="ZI" type="text" name="Zip" size="5" maxlength="10" placeholder="Zip" value="$zip"/>
 <button href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
 
- 
 <br />
-Primary Phone: <input type="text" name="PrimaryPhone" placeholder="Phone Number" value="$primaryphone" />
-E-mail: <input type="text" name="EMail" placeholder="Email Address" value="$email">
-<br /><br />
+<script>
+function checkemail() {
+	var sval = $("#EM").val();
+	var len = sval.length;
+	alert("checking email length " + len);
+	if (len == 0) return false;
+	return true;
+	}
+</script>
+<br>
 
 <script src="js/bootstrap3-typeahead.js"></script>
 <script>
 var citylist = $citieslist
 $('#CI').typeahead({source: citylist})
-
 </script>
 
 <script type="text/javascript" src="nicEdit.js"></script>

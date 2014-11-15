@@ -74,6 +74,8 @@ Organization: CA Men&apos;s Colony
 <p><b>Preset fields can be redefined when call is updated.</b></p>
 </ul>
 </div>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
 pagePart1;
 exit;
 }

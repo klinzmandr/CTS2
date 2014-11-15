@@ -39,10 +39,8 @@ Call Status: <input type="radio" name="status" value="Open" checked="checked">Op
 	<li></li>
 </ol>
 
-</div><script src="jquery.js"></script><script src="js/bootstrap.min.js">
-</ol></ol>
-<ol></ol>
-</script><script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
+</div>
+<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
 </body></html>
 
 pagePart1;

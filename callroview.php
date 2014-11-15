@@ -18,6 +18,8 @@ include 'Incls/mainmenu.inc';
 echo "</div>  <!-- hidden-print -->";
 
 $call = isset($_REQUEST['call']) ? $_REQUEST['call'] : '';
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+
 $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$call';";
 $res = doSQLsubmitted($sql);
 $rows = $res->num_rows;
@@ -28,10 +30,14 @@ $r = $res->fetch_assoc();
 $label = "$r[Name]<br>$r[Address]<br>$r[City], $r[State]  $r[Zip]";
 if (strlen($r[Organization]) > 0) 
 	$label = "$r[Organization]<br>$r[Name]<br>$r[Address]<br>$r[City], $r[State]  $r[Zip]";
+echo '<div class="container">';
+if ($action != '') {
+	echo "<h3>Call $call &nbsp;&nbsp;   <a href=\"javascript:self.close();\" class=\"btn btn-xs btn-primary\"><b>CLOSE</b></a></h3>";
+	}
+else {
+	echo "<h3>Call $call</h3>";
+	}
 print <<<pagePart1
-<div class="container">
-<h3>Call $call</h3>
-<!-- <a class="btn btn-default btn-xs" href="#">RETURN</a> -->
 <span style="font-size: larger; color: #1E90FF; "><b>Call Detail</b></span>
 <table border="0" class="table-condensed">
 <tr><td><b>Call Status:</b> $r[Status]</td></tr>
@@ -44,7 +50,8 @@ print <<<pagePart1
 <td><b>Call Location:</b><br>&nbsp;&nbsp;$r[CallLocation]</td>
 <td><b>Property:</b><br>&nbsp;&nbsp;$r[Property]</td>
 <td><b>Species:</b><br>&nbsp;&nbsp;$r[Species]</td></tr>
-<tr><td><b>Resolution:</b> </td><td colspan="3">$r[Resolution]</td></tr></table>
+<tr><td valign="top"><b>Resolution:</b> </td><td colspan="3">$r[Resolution]<br>
+Time to Resolve: $r[TimeToResolve]</td></tr></table>
 <table border="0" class="table-condensed">
 <span style="font-size: larger; color: #1E90FF; "><b>Caller Detail</b></span>
 <tr><td valign="top"><b>Mailing Label:</b></td>
@@ -70,6 +77,7 @@ if ($rc > 0) {
 		}
 	echo '</table>';
 	}
+echo '=====END OF REPORT=====';
 ?>
 </div>
 <script src="jquery.js"></script>

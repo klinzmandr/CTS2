@@ -72,9 +72,14 @@ menupart2;
 }
 
 print <<<menuPart3
-<!-- ========= define Voice Message System menu item ============ -->
-<li><a onclick="return chkchg()" href="vmsintro.php">Voice Messages</a></li>
-
+<!-- ========= define Message Systems dropdown ============ -->
+<li class="dropdown">
+<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Messages<b class="caret"></b></a>
+<ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
+	<li><a onclick="return chkchg()" href="vmsintro.php" target="_blank">Voice Messages</a></li>
+	<li><a onclick="return chkchg()" href="http://www.pacificwildlifecare.org/webmail" target="_blank" >Email Messages</a></li>
+</ul>
+</li>
 <!-- ========= define Calls dropdown ============= -->
 <!-- <li class="dropdown open">  example: to have open on load -->
 <li class="dropdown">

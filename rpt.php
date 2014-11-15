@@ -21,7 +21,7 @@ $dbinuse = "DB in use: " . $_SESSION['DB_InUse'] . "<br>";
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $sd = isset($_REQUEST['from_date']) ? $_REQUEST['from_date'] : date('Y-m-d', strtotime("today"));
 $ed = isset($_REQUEST['to_date']) ? $_REQUEST['to_date'] : date('Y-m-d', strtotime("tomorrow -1 second"));
-$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '%cts2db/%';
+$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '%mbrdb/%';
 $testdb = isset($_REQUEST['testdb']) ? $_REQUEST['testdb'] : '';
 
 print <<<pagePart1
@@ -50,10 +50,10 @@ $dbinuse<br>
 
 <input type="hidden" name="action" value="continue">
 <select name="type" onchange="this.form.submit()">
-<option value="%cts2db/%">ALL</option >
-<option value="%cts2db/call%">Calls</option>
-<option value="%cts2db/admin%">Admin</option>
-<option value="%cts2db/rpt%">Reports</option>
+<option value="%cts2/%">ALL</option >
+<option value="%cts2/rpt%">Reports</option>
+<option value="%cts2/call%">Reminders</option>
+<option value="%cts2/adm%">Administrative</option>
 </select>
 <input type="hidden" name="testdb" value="$testdb">
 &nbsp;&nbsp;<input type="submit" name= "submit" value="Submit">
@@ -88,7 +88,7 @@ $rc = $res->num_rows;
 echo "Total Pages Used: $rc<br />";
 $whatarray = array(); $whoarray = array(); $whotimemin = array(); $whotimemax = array();
 while ($r = $res->fetch_assoc()) {
-	//echo '<pre> reports '; print_r($r); echo '</pre>';
+//	echo '<pre> reports '; print_r($r); echo '</pre>';
 	$exprpt = explode('/', $r[Page]);
 	$exprpt[0] = $r[User];			// debug
 	if ($r[User] == '') continue;
