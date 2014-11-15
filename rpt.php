@@ -52,7 +52,7 @@ $dbinuse<br>
 <select name="type" onchange="this.form.submit()">
 <option value="%cts2/%">ALL</option >
 <option value="%cts2/rpt%">Reports</option>
-<option value="%cts2/call%">Reminders</option>
+<option value="%cts2/call%">Calls</option>
 <option value="%cts2/adm%">Administrative</option>
 </select>
 <input type="hidden" name="testdb" value="$testdb">
