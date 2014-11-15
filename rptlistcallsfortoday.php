@@ -23,7 +23,7 @@ $today = date("Y-m-d 00:00:01",strtotime(now));
 $sql = "SELECT * FROM `calls` 
 WHERE `DTOpened` >= '$today'
 ORDER BY `CallNbr` DESC;";
-echo "sql: $sql<br>";
+//echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 echo '<table class="table table-condensed">

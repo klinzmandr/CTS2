@@ -85,7 +85,7 @@ print <<<pagePart2
 pagePart2;
 $to = $_REQUEST['to'];
 $subject = $_REQUEST['subject'];
-$body = $_REQUEST['body'];
+$body = stripslashes($_REQUEST['body']);
 // create and log message to call history
 $notes = 'Email message sent to caller as follows:<br>';
 $notes .= 'To: ' . $to . '<br>';
