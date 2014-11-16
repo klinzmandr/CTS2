@@ -2,7 +2,7 @@
 // connect to the database for all pages
 global $mysqli;
 
-include "../DBParamInfo";
+include "../.DBParamInfo";
 
 // production database
 $db = "cts2db";
