@@ -107,7 +107,7 @@ if ($action == 'cmc') {
 	$addarray[Property] = 'State';
 	$addarray[Species] = 'Seabird';
 	$addarray[Reason] = 'AppearInjured';
-	$addarray[Organization] = 'CA Men&apos;s Colony';
+	$addarray[Organization] = 'CA Mens Colony';
 	}
 if ($action == 'na') {
 	$addarray[AnimalLocation] = 'NA';
@@ -117,10 +117,10 @@ if ($action == 'na') {
 	$addarray[Reason] = 'Other';
 	}
 
-echo '<pre> addarray '; print_r($addarray); echo '</pre>';
+//echo '<pre> addarray '; print_r($addarray); echo '</pre>';
 
 if ($rc == 0) {							// nope - add a new record
-	echo 'inserting new record<br>';
+//	echo 'inserting new record<br>';
 	sqlinsert('calls', $addarray);
 	}
 else {											// one exists, update it instead
