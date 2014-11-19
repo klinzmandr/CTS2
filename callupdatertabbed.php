@@ -39,7 +39,8 @@ if ($action == 'update') {
 		sqlinsert("callslog", $notearray);
 		unset($notearray);
 		}
-	unset($vararray[notes]); 
+	unset($vararray[notes]);
+	$vararray[LastUpdater] = $_SESSION['SessionUser']; 
 	$where = "`CallNbr`='" . $callnbr . "'";
 	//echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
 	sqlupdate('calls',$vararray, $where);
@@ -104,11 +105,54 @@ print <<<pagePart1
 Date Call Entered:&nbsp;&nbsp;$dtopened
 <!-- <input type="text" name="DTOpened" value="$dtopened" size="10" maxlength="10"  placeholder="Date" /> -->
 <br />
+<script>
+function checkphone(fld) {
+//alert("validation entered");
+var errmsg = "";
+var stripped = fld.value.replace(/[\(\)\.\-\ \/]/g, '');
+if (stripped.length == 0) {
+	fld.style.background = 'White';
+	return true;
+	}
+if (stripped.length == 7)
+	stripped = "805" + stripped;
+if (stripped.length != 10) { 
+	errmsg += "Invalid phone number.  Please include the Area Code.\\n";
+	}
+if(!stripped.match(/^[0-9]{10}/))  { 
+	errmsg += "Value entered not 7 or 10 digits OR a non-numeric character entered.\\n";
+	}
+if (errmsg.length > 0) {
+	errmsg += "\\nValid formats: 123-456-7890 or 123 456 7890 or 123-456-7890 or 1234567890";
+	fld.style.background = 'Pink';
+	alert(errmsg);
+	return false;
+	}
+var newval = stripped.substr(0,3) + "-" + stripped.substr(3,3) + "-" + stripped.substr(6,4);
+fld.value = newval;
+fld.style.background = 'White';
+return true;
+}
+</script>
+
 Date Call Closed: $dtclosed<br />
-Caller Name:<input type="text" name="Name" placeholder="Caller Name" value="$name" />
-Phone: <input type="text" name="PrimaryPhone" value="$primaryphone" size="12" maxlength="12" onchange="return ValidatePhone()"  placeholder="Phone Number" />
-E-mail: <input type="text" id="EM" name="EMail" placeholder="Email Address" value="$email">
-<a href="emailsend.php?emadr=$email&callnbr=$callnbr">
+Caller Name:<input autofocus type="text" name="Name" placeholder="Caller Name" value="$name" />
+Phone: <input id="PN" onchange="return checkphone(this)" type="text" name="PrimaryPhone" value="$primaryphone" size="12" maxlength="12" placeholder="Phone Number" />
+<script>
+function checkemail() {
+	//var sval = $("#EM").val().length;
+	var sval = "$email";
+	var len = sval.length;
+	if (sval == 0) {
+		alert("ERROR: No email address provided");		
+		return false;
+		}
+	return true;
+	}
+</script>
+
+E-mail: <input type="text" name="EMail" value="$email" id="EM" placeholder="Email Address">
+<a href="emailsend.php?emadr=$email&callnbr=$callnbr" onclick="return checkemail()">
 <span class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
 </span></a>
 <br />
@@ -172,15 +216,6 @@ Zip: <input id="ZI" type="text" name="Zip" size="5" maxlength="10" placeholder="
 <button href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
 
 <br />
-<script>
-function checkemail() {
-	var sval = $("#EM").val();
-	var len = sval.length;
-	alert("checking email length " + len);
-	if (len == 0) return false;
-	return true;
-	}
-</script>
 <br>
 
 <script src="js/bootstrap3-typeahead.js"></script>

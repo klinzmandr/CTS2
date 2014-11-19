@@ -88,6 +88,7 @@ $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 
 $addarray = array();
+$addarray[UserID] = $_SESSION['SessionUser'];
 $addarray[OpenedBy] = $_SESSION['SessionUser'];
 $addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
 $addarray[Status] = 'New';
@@ -126,11 +127,12 @@ if ($rc == 0) {							// nope - add a new record
 else {											// one exists, update it instead
 	$r = $res->fetch_assoc();
 	$where = "CallNbr = '$r[CallNbr]'";
-	echo "where: $where<br>";
+//	echo "where: $where<br>";
 	sqlupdate('calls', $addarray, $where);
 	}
 
 print <<<pagePart1
+
 <h3>New Call Added</h3>
 <p>A new $action call has been added for $currentuser</p>
 

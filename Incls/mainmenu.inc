@@ -55,11 +55,11 @@ print<<<menupart2
   <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><font color="#FF0000">Admin</font><b class="caret"></b></a>
   	<ul class="dropdown-menu" aria-labelledby="drop2" role="menu">
   		<!-- <li><a onclick="return chkchg()" href="adminbboardmaint.php">Maintain BB</a></li> -->
-  		<li><a onclick="return chkchg()" href="adminresourcesmaint.php">Maintain Resources</a></li>
-  		<li><a onclick="return chkchg()" href="adminformsmaint.php">Maintain Forms</a></li>
   		<li><a onclick="return chkchg()" href="adminlistpvcalls.php">List All Calls for a PV</a></li>
   		<li><a onclick="return chkchg()" href="admincloseany.php">Close Any Open Call</a></li>
   		<li><a onclick="return chkchg()" href="adminaddnewuser.php">Maintain Userid &amp; Passwords</a></li>
+  		<li><a onclick="return chkchg()" href="adminresourcesmaint.php">Maintain Resources</a></li>
+  		<li><a onclick="return chkchg()" href="adminformsmaint.php">Maintain Forms</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Locations">Maintain Locations</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Properties">Maintain Properties</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Species">Maintain Species</a></li>
@@ -77,7 +77,7 @@ print <<<menuPart3
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Messages<b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
 	<li><a onclick="return chkchg()" href="vmsintro.php" target="_blank">Voice Messages</a></li>
-	<li><a onclick="return chkchg()" href="http://www.pacificwildlifecare.org/webmail" target="_blank" >Email Messages</a></li>
+	<li><a onclick="return chkchg()" href="emailintro.php" target="_blank" >Email Messages</a></li>
 </ul>
 </li>
 <!-- ========= define Calls dropdown ============= -->

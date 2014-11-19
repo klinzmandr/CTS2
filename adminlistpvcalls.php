@@ -58,7 +58,10 @@ while ($r = $res->fetch_assoc()) {
 	$callnbr = $r[CallNbr]; $status = $r[Status]; 
 	$dtopened = $r[DTOpened]; $openedby = $r[OpenedBy];
 	$lastupdater = $r[LastUpdater]; $desc = $r[Description];
-	echo "<tr onclick=\"window.location='callupdatertabbed.php?action=view&callnbr=$callnbr'\" style='cursor: pointer;'>";
+	if ($status == 'Open') {
+	echo "<tr onclick=\"window.location='callupdatertabbed.php?action=view&callnbr=$callnbr'\" style='cursor: pointer;'>"; }
+	else {
+		echo "<tr onclick=\"window.location='callroview.php?call=$callnbr'\" style='cursor: pointer;'>"; }
 	echo '<td>'.$callnbr.'</td>
 	<td>'.$status.'</td>
 	<td>'.$dtopened.'</td>

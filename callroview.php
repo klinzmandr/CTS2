@@ -37,6 +37,11 @@ if ($action != '') {
 else {
 	echo "<h3>Call $call</h3>";
 	}
+
+if ($r[DTClosed] == '') $end = strtotime('now');
+else $end = strtotime($r[DTClosed]);
+$start = strtotime($r[DTOpened]);
+$duration = number_format(($end - strtotime($r[DTOpened]))/(24*60*60));
 print <<<pagePart1
 <span style="font-size: larger; color: #1E90FF; "><b>Call Detail</b></span>
 <table border="0" class="table-condensed">
@@ -45,13 +50,15 @@ print <<<pagePart1
 <td><b>Last Updated By:</b> $r[LastUpdater]</td></tr>
 <tr><td colspan="4"><b>Description:</b> $r[Description]<td></tr>
 <tr><td><b>Date & Time Entered:</b><br>&nbsp;&nbsp;$r[DTOpened]</td>
-<td><b>Date & Time Closed:</b><br>&nbsp;&nbsp;$r[DTClosed]</td></tr>
+<td><b>Date & Time Closed:</b><br>&nbsp;&nbsp;$r[DTClosed]</td>
+<td><b>Duration:</b><br>&nbsp;&nbsp;$duration day(s)</td></tr>
 <tr><td><b>Animal Location:</b><br>&nbsp;&nbsp;$r[AnimalLocation]</td>
 <td><b>Call Location:</b><br>&nbsp;&nbsp;$r[CallLocation]</td>
 <td><b>Property:</b><br>&nbsp;&nbsp;$r[Property]</td>
 <td><b>Species:</b><br>&nbsp;&nbsp;$r[Species]</td></tr>
-<tr><td valign="top"><b>Resolution:</b> </td><td colspan="3">$r[Resolution]<br>
-Time to Resolve: $r[TimeToResolve]</td></tr></table>
+<tr><td><b>Reason:</b>&nbsp;&nbsp;$r[Reason]</td></tr>
+<tr><td valign="top"><b>Resolution:</b> </td><td colspan="3">$r[Resolution]<br></td></tr>
+<tr><td><b>Time to Resolve:</b></td><td>$r[TimeToResolve] minutes</td></tr></table>
 <table border="0" class="table-condensed">
 <span style="font-size: larger; color: #1E90FF; "><b>Caller Detail</b></span>
 <tr><td valign="top"><b>Mailing Label:</b></td>

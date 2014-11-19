@@ -29,7 +29,7 @@ echo '<table class="table table-condensed">
 while ($r = $res->fetch_assoc()) {
 	//echo '<pre> year '; print_r($r); echo '</pre>';
 	$callnbr = $r[CallNbr];
-	echo "<tr><td><a href=\"callroview.php?action=button&call=$callnbr\">$callnbr</a></td>";
+	echo "<tr><td align=\"center\"><a href=\"callroview.php?action=button&call=$callnbr\">$callnbr</a></td>";
 	//echo "<tr><td>$callnbr</td>";
 	echo "<td>$r[Status]</td><td>$r[DTOpened]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
 	}

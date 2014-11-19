@@ -19,7 +19,10 @@ $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if ($action == 'MyClosed') {
 	$rpthdg = "<tr><th>Call#</th><th>DATE</th><th>OpenedBy</th><th>Description</th></tr>";
 	$hdg = 'My Closed';
-	$sql = "SELECT * from `calls` WHERE `Status` = 'Closed' AND `OpenedBy` = '$userid';";
+	$sql = "SELECT * from `calls` 
+	WHERE `Status` = 'Closed' 
+		AND `OpenedBy` = '$userid'
+	ORDER BY `CallNbr` DESC;";
 	}
 elseif ($action == 'AllOpen') {
 	$rpthdg = "</tr><th>Call#</th><th>DATE</th><th>OpenedBy</th><th>Description</th></tr>";
