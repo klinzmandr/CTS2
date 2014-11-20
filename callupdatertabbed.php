@@ -73,7 +73,7 @@ $email = $r[EMail];
 $description = $r[Description];
 
 if ($action == 'new') {
-	echo 'add initial log history record';
+//	echo 'add initial log history record';
 	$notearray[CallNbr] = $callnbr;
 	$notearray[UserID] = $_SESSION['SessionUser'];
 	$notearray[Notes] = 'Call Opened';
