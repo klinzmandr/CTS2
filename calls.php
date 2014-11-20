@@ -17,7 +17,7 @@ include 'Incls/mainmenu.inc';
 $userid = $_SESSION['SessionUser'];
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if ($action == 'MyClosed') {
-	$rpthdg = "<tr><th>Call#</th><th>DATE</th><th>OpenedBy</th><th>Description</th></tr>";
+	$rpthdg = "<tr><th>Call#</th><th>Date/TimeOpened</th><th>OpenedBy</th><th>Description</th></tr>";
 	$hdg = 'My Closed';
 	$sql = "SELECT * from `calls` 
 	WHERE `Status` = 'Closed' 
@@ -25,14 +25,14 @@ if ($action == 'MyClosed') {
 	ORDER BY `CallNbr` DESC;";
 	}
 elseif ($action == 'AllOpen') {
-	$rpthdg = "</tr><th>Call#</th><th>DATE</th><th>OpenedBy</th><th>Description</th></tr>";
+	$rpthdg = "</tr><th>Call#</th><th>Date/TimeOpened</th><th>OpenedBy</th><th>Description</th></tr>";
 	$hdg = 'All Open';
 	$sql = "SELECT * from `calls` WHERE `Status` = 'Open';";
 	}
 	
 else {		// gotta be MyCalls then
 	$hdg = 'My Open';
-	$rpthdg = "<tr><th>Call#</th><th>DATE</th><th>OpenedBy</th><th>Description</th></tr>";
+	$rpthdg = "<tr><th>Call#</th><th>Date/TimeOpened</th><th>OpenedBy</th><th>Description</th></tr>";
 	$sql = "SELECT * from `calls` 
 		WHERE ( `Status` = 'Open' OR `Status` = 'New'	)
 		AND `OpenedBy` = '$userid';";

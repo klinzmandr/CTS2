@@ -26,10 +26,13 @@ print <<<pagePart1
 <a class="btn btn-success" href="callsaddnew.php?action=new">BLANK</a>&nbsp;
 <a class="btn btn-success" href="callsaddnew.php?action=odsrva">ODSRVA</a>&nbsp;
 <a class="btn btn-success" href="callsaddnew.php?action=cmc">CMC</a>&nbsp;
+<a class="btn btn-success" href="callsaddnew.php?action=ed">Ed. Req.</a>&nbsp;
+<a class="btn btn-success" href="callsaddnew.php?action=info">Info</a>&nbsp;
 <a class="btn btn-success" href="callsaddnew.php?action=na">NA</a><br>
 <br>
 <h4>Preset Fields for:</h4>
 <table border="1">
+<!-- row 1 -->
 <tr>
 <td valign="top"><b>BLANK</b></td>
 <td>
@@ -50,16 +53,8 @@ Reason: ApprearsSick<br>
 Organization: ODSRVA Ranger Station
 </td>
 </tr>
+<!-- row two -->
 <tr>
-<td valign="top"><b>NA</b></td>
-<td>
-Animal Location: NA<br>
-Call Location: NA<br>
-Property: NA<br>
-Species: NA<br>
-Reason: Other
-</td>
-<td>&nbsp;</td>
 <td valign="top"><b>CMC</b></td>
 <td>
 Animal Location: SanLuisObispo<br>
@@ -67,7 +62,36 @@ Call Location: SanLuisObispo<br>
 Property: State<br>
 Species: Seabird<br>
 Reason: ApprearsInjured<br>
-Organization: CA Men&apos;s Colony
+Organization: CA Mens Colony
+</td>
+<td>&nbsp;</td>
+<td valign="top"><b>Ed. Request</b></td>
+<td>
+Animal Location: NA<br>
+Call Location: NA<br>
+Property: NA<br>
+Species: NA<br>
+Reason: Education Request
+</td>
+</tr>
+<!-- row three -->
+<tr>
+<td valign="top"><b>Info</b></td>
+<td>
+Animal Location: NA<br>
+Call Location: NA<br>
+Property: NA<br>
+Species: NA<br>
+Reason: Info Request<br>
+</td>
+<td>&nbsp;</td>
+<td valign="top"><b>NA</b></td>
+<td>
+Animal Location: NA<br>
+Call Location: NA<br>
+Property: NA<br>
+Species: NA<br>
+Reason: Other
 </td>
 </tr>
 </table><br>
@@ -79,20 +103,9 @@ Organization: CA Men&apos;s Colony
 pagePart1;
 exit;
 }
-
-// action contains the type of new record to be added
-// first we check to determine if a new records has been added but not used
-$currentuser = $_SESSION['SessionUser'];
-$sql = "SELECT * FROM `calls` WHERE `Status` = 'New' AND `OpenedBy` = '$currentuser';";
-$res = doSQLsubmitted($sql);
-$rc = $res->num_rows;
-
 $addarray = array();
-$addarray[OpenedBy] = $_SESSION['SessionUser'];
-$addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
-$addarray[Status] = 'New';
-	
-	// add in here the logic for the various call type presets
+// action contains the type of new record to be added
+// add in here the logic for the various call type presets
 if ($action == 'odsrva') {
 	$addarray[AnimalLocation] = 'Oceano';
 	$addarray[CallLocation] = 'Oceano';
@@ -109,6 +122,20 @@ if ($action == 'cmc') {
 	$addarray[Reason] = 'AppearInjured';
 	$addarray[Organization] = 'CA Mens Colony';
 	}
+if ($action == 'ed') {
+	$addarray[AnimalLocation] = 'NA';
+	$addarray[CallLocation] = 'NA';
+	$addarray[Property] = 'NA';
+	$addarray[Species] = 'NA';
+	$addarray[Reason] = 'EdRequest';
+	}
+if ($action == 'info') {
+	$addarray[AnimalLocation] = 'NA';
+	$addarray[CallLocation] = 'NA';
+	$addarray[Property] = 'NA';
+	$addarray[Species] = 'NA';
+	$addarray[Reason] = 'Info';
+	}
 if ($action == 'na') {
 	$addarray[AnimalLocation] = 'NA';
 	$addarray[CallLocation] = 'NA';
@@ -117,8 +144,18 @@ if ($action == 'na') {
 	$addarray[Reason] = 'Other';
 	}
 
-//echo '<pre> addarray '; print_r($addarray); echo '</pre>';
+// check to determine if a new records has been added but not used
+$currentuser = $_SESSION['SessionUser'];
+$sql = "SELECT * FROM `calls` 
+	WHERE `Status` = 'New' 
+	AND `OpenedBy` = '$currentuser';";
+$res = doSQLsubmitted($sql);
+$rc = $res->num_rows;
 
+$addarray[OpenedBy] = $_SESSION['SessionUser'];
+$addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
+$addarray[Status] = 'New';
+echo '<pre> addarray '; print_r($addarray); echo '</pre>';
 if ($rc == 0) {							// nope - add a new record
 //	echo 'inserting new record<br>';
 	sqlinsert('calls', $addarray);

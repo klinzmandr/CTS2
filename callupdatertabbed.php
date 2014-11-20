@@ -71,6 +71,16 @@ $city = $r[City]; $state = $r[State]; $zip = $r[Zip];
 $primaryphone = $r[PrimaryPhone]; 
 $email = $r[EMail];
 $description = $r[Description];
+
+if ($action == 'new') {
+	echo 'add initial log history record';
+	$notearray[CallNbr] = $callnbr;
+	$notearray[UserID] = $_SESSION['SessionUser'];
+	$notearray[Notes] = 'Call Opened';
+//	echo '<pre> note '; print_r($notearray); echo '</pre>';
+	sqlinsert("callslog", $notearray);
+}
+
 print<<<scriptPart
 <script type="text/javascript">
 // Runs two functions - on inline defined, the second a stand alone

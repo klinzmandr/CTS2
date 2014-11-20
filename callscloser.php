@@ -37,7 +37,7 @@ if ($action == 'close') {
 	if (strlen($closingnote) > 0) {
 		$notearray[CallNbr] = $call;
 		$notearray[UserID] = $user;
-		$notearray[Notes] = 'Closing Note: ' . $closingnote;
+		$notearray[Notes] = 'Call Closed.<br>Note: ' . $closingnote;
 //		echo '<pre> note '; print_r($notearray); echo '</pre>';
 		sqlinsert("callslog", $notearray);
 		unset($notearray);
@@ -161,7 +161,7 @@ pagePart2;
 	<option value=""></option>';
 	loaddbselect("Actions");
 	echo "</select><br />
-	Closing Note:<br /><textarea name=\"closingnote\" rows=\"5\" cols=\"80\">$closingnote</textarea><br /><br />
+	Closing Note:<br><textarea name=\"closingnote\" rows=\"5\" cols=\"80\">$closingnote</textarea><br /><br />
 	<input type=\"hidden\" name=\"call\" value=\"$call\">
 	<input type=\"hidden\" name=\"action\" value=\"close\">
 	<input type=\"submit\" name=\"submit\" value=\"Close Call\">
