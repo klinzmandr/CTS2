@@ -88,7 +88,6 @@ $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 
 $addarray = array();
-$addarray[UserID] = $_SESSION['SessionUser'];
 $addarray[OpenedBy] = $_SESSION['SessionUser'];
 $addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
 $addarray[Status] = 'New';
