@@ -9,7 +9,7 @@
 <body>
 <?php
 session_start();
-//include 'Incls/vardump.inc';
+//include 'Incls/vardump.inc'; 
 
 if ((($_REQUEST['action']) == 'logout')) {
 	include 'Incls//datautils.inc';
