@@ -31,14 +31,14 @@ if ($action == 'update') {
 	//echo '<pre> var '; print_r($vararray); echo '</pre>';
 	unset($vararray[action]);
 	unset($vararray[submit]);
-	if (strlen($vararray[notes]) > 4) {
-		$notearray[CallNbr] = $callnbr;
-		$notearray[UserID] = $_SESSION['SessionUser'];
-		$notearray[Notes] = $vararray[notes];
-		//echo '<pre> note '; print_r($notearray); echo '</pre>';
-		sqlinsert("callslog", $notearray);
-		unset($notearray);
-		}
+	if (strlen($vararray[notes]) <= 4) { $vararray[notes] = 'Call updated'; }
+	$notearray[CallNbr] = $callnbr;
+	$notearray[UserID] = $_SESSION['SessionUser'];
+	$notearray[Notes] = $vararray[notes];
+//	echo '<pre> note '; print_r($notearray); echo '</pre>';
+	sqlinsert("callslog", $notearray);
+	unset($notearray);
+	
 	unset($vararray[notes]);
 	$vararray[LastUpdater] = $_SESSION['SessionUser']; 
 	$where = "`CallNbr`='" . $callnbr . "'";

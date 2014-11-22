@@ -55,13 +55,21 @@ if (isset($_SESSION['SessionUser'])) {
 else {
 	echo "<form class=\"form-inline\" action=\"calls.php\" method=\"post\"  id=\"yform\">";
 	echo "<h2>Call Tracking System II (CTS2)</h2>";
-  echo "<h3>Home Page&nbsp  <button class=\"btn btn-large btn-primary\" name=\"action\" value=\"login\" type=\"submit\" form=\"yform\" class=\"btn\">Login</button></form></h3>";
+	echo "
+	<table class=\"table table condensed\" border=\"0\">
+	<tr><td valign=\"top\">
+	<h3>Home Page&nbsp  <button class=\"btn btn-large btn-primary\" name=\"action\" value=\"login\" type=\"submit\" form=\"yform\" class=\"btn\">Login</button></form></h3></td>
+	<td><b>Instructional Videos</b><br><ul>
+	<a href=\"http://youtu.be/VfYXGxNpEJw\" target=\"_blank\">Overview and Main Menu</a><br>
+	<a href=\"http://youtu.be/a-wcRHG4WaA\" target=\"_blank\">Messages Menu Item</a><br>
+	<a href=\"http://youtu.be/IOBq-r477OI\" target=\"_blank\">Calls Menu Item</a>
+	</ul></td></tr></table>";
 	}
 //echo "</h3>";
 
 ?>
 <!-- START OF PAGE -->
-<p>Welcome!</p>
+<p><h4>Welcome!</h4></p>
 <p><b>The Call Tracking System is for the exclusive use of Pacific Wildelife Care.  Unauthorized use is prohibitted.</b></p>
 <p>Access to all the facilities of the system are provided on the main menu located at the top of each page.</p>
 </div>
