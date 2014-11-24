@@ -47,8 +47,9 @@ pagePart1;
 exit;
 }
 
+// $action == search
 $sql = "SELECT * FROM `calls` 
-	WHERE `AnimalLocation` LIKE '%$search%' 
+	WHERE (`AnimalLocation` LIKE '%$search%' 
 		OR  `CallLocation` LIKE '%$search%'
 		OR  `Property` LIKE '%$search%'
 		OR  `Species` LIKE '%$search%'		
@@ -60,16 +61,16 @@ $sql = "SELECT * FROM `calls`
 		OR  `City` LIKE '%$search%'
 		OR  `EMail` LIKE '%$search%'
 		OR  `Description` LIKE '%$search%'
-		OR  `OpenedBy` LIKE '%$search%'
+		OR  `OpenedBy` LIKE '%$search%')
 	AND 	`Status` = '$status';";
 		
-//echo "sql: $sql<br>";
+// echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 echo "<div class=\"container\"><h4>Rows matched: $rc</h4>";
 echo '<table border="0" class="table table-condensed table-hover">'.$rpthdg;
 while ($r = $res->fetch_assoc()) {
-	// echo '<pre>'; print_r($r); echo '</pre>';
+//	echo '<pre>'; print_r($r); echo '</pre>';
 	$callnbr = $r[CallNbr]; $dtopened = $r[DTOpened]; $openedby = $r[OpenedBy];
 	$lastupdater = $r[LastUpdater]; $desc = $r[Description];
 	if ($status == 'Closed') 
