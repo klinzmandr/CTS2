@@ -60,7 +60,8 @@ if ($action == '') {
 <tr><th>CallNbr</th><th>Date</th><th>OpenedBy</th><th>Description</th></tr>';
 	while ($r = $res->fetch_assoc()) {
 		$cn = $r[CallNbr];
-		echo "<tr onclick=\"window.location='admincloseany.php?action=form&call=$cn';\" style='cursor: pointer;'><td>$cn</td><td>$r[DTOpened]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
+		
+		echo "<tr onclick=\"window.location='callscloser.php?action=form&call=$cn';\" style='cursor: pointer;'><td>$cn</td><td>$r[DTOpened]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
 		}
 	echo '</table></div><script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
 </body></html>';
@@ -103,8 +104,8 @@ The following errors are being reported:<br>
 <ul>$errs</ul>
 <br>
 <br>
-<a class="btn btn-warning" href="admincloseany.php">CANCEL</a>&nbsp;&nbsp;
-<a class="btn btn-danger" href="admincloseany.php?action=force&call=$call" onclick="return confirmContinue()">CONTINUE ANYWAY</a>&nbsp;&nbsp;
+<a class="btn btn-warning" href="callscloser.php">CANCEL</a>&nbsp;&nbsp;
+<a class="btn btn-danger" href="callscloser.php?action=force&call=$call" onclick="return confirmContinue()">CONTINUE ANYWAY</a>&nbsp;&nbsp;
 <a class="btn btn-success" href="callupdatertabbed.php?callnbr=$call">Correct Errors</a><br>
 <script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
 </body></html>
@@ -121,7 +122,7 @@ errMsg;
 		bkLib.onDomLoaded(function() { nicEditors.allTextAreas(); initSelects(this) });
 	</script>
 
-	<form action="admincloseany.php" method="post" class="form">
+	<form action="callscloser.php" method="post" class="form">
 	Approx. Time to Resolution:
 	<input type="radio" name="ttaken" value="<15"><15&nbsp;&nbsp;&nbsp;
 	<input type="radio" name="ttaken" value="<30"><30&nbsp;&nbsp;&nbsp;
@@ -167,7 +168,7 @@ pagePart2;
 	<input type=\"submit\" name=\"submit\" value=\"Close Call\">
 	<form>
 	<br><br>
-	<a class=\"btn btn-danger\" href=\"admincloseany.php\">CANCEL</a><br>
+	<a class=\"btn btn-danger\" href=\"callscloser.php\">CANCEL</a><br>
 	</div>";
 	}
 ?>
