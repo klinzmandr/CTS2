@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
 <!--<body onload="initSelects(this)" onchange="flagChange()">-->
 <body onchange="flagChange()">
 
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
+<script src="./js/bootstrap-datetimepicker.min.js"></script>
 <?php
 session_start();
 //include 'Incls/vardump.inc';
@@ -40,7 +41,11 @@ if ($action == 'update') {
 	unset($notearray);
 	
 	unset($vararray[notes]);
-	$vararray[LastUpdater] = $_SESSION['SessionUser']; 
+	$vararray[LastUpdater] = $_SESSION['SessionUser'];
+	$cszarray = explode(',',$r[City]);
+	if (count($cszarray) == 3) {
+		$r[City] = $cszarray[0]; $r[State] = $cszarray[1]; $r[Zip] = $cszarray[2];
+	}
 	$where = "`CallNbr`='" . $callnbr . "'";
 	//echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
 	sqlupdate('calls',$vararray, $where);
@@ -61,8 +66,9 @@ $r = $res->fetch_assoc();
 $callnbr = $r[CallNbr];
 $status = $r[Status]; 
 if ($status == 'New') $status = 'Open';
-$dtopened = $r[DTOpened]; $dtclosed = $r[DTClosed]; $animallocation = $r[AnimalLocation];
-$calllocation = $r[CallLocation]; $property = $r[Property]; $species = $r[Species]; 
+$dtplaced = $r[DTPlaced]; $dtopened = $r[DTOpened]; $dtclosed = $r[DTClosed]; 
+$animallocation = $r[AnimalLocation]; $calllocation = $r[CallLocation]; 
+$property = $r[Property]; $species = $r[Species]; 
 $reason = $r[Reason]; $resolution = $r[Resolution];
 $timetoresolve = $r[TimeToResolve]; $postcard  = $r[Postcard]; $openedby = $r[OpenedBy];
 $reason = $r[Reason]; $lastlupdater = $r[LastUpdater]; 
@@ -71,6 +77,7 @@ $city = $r[City]; $state = $r[State]; $zip = $r[Zip];
 $primaryphone = $r[PrimaryPhone]; 
 $email = $r[EMail];
 $description = $r[Description];
+$pcsent = $r[PostcardSent]; $emsent = $r[EmailSent];
 
 if ($action == 'new') {
 //	echo 'add initial log history record';
@@ -96,6 +103,7 @@ $(document).ready(function () {
 
 scriptPart;
 
+// call tab
 print <<<pagePart1
 <div class="container">
 <h3>Call $callnbr</h3>
@@ -109,12 +117,24 @@ print <<<pagePart1
   <li class=""><a href="#history" data-toggle="tab">History</a></li>
   <li class=""><a href="callroview.php?call=$callnbr"><span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></li></a></li>
 </ul>
-
 <div id="myTabContent" class="tab-content">
 <div class="tab-pane fade active in" id="info">
-Date Call Entered:&nbsp;&nbsp;$dtopened
-<!-- <input type="text" name="DTOpened" value="$dtopened" size="10" maxlength="10"  placeholder="Date" /> -->
-<br />
+Date/Time Call Entered:&nbsp;&nbsp;$dtopened<br>
+<div class="row">
+<div class="col-sm-3">Date/Time Call Placed:</div>
+<div class="col-sm-3">
+ <input type="text" class="form-control" id="DP1" name="DTPlaced" value="$dtplaced" style="width: 150px; height: 25px;">
+</div>  <!-- col-sm-6 -->
+</div>  <!-- row -->
+<script type="text/javascript">
+$('#DP1').datetimepicker({
+    format: 'yyyy-mm-dd hh:ii',
+    todayHighlight: true,
+    todayBtn: true,
+    showMeridian: true,
+    autoclose: true
+});
+</script>
 <script>
 function checkphone(fld) {
 //alert("validation entered");
@@ -168,7 +188,7 @@ E-mail: <input type="text" name="EMail" value="$email" id="EM" placeholder="Emai
 <br />
 
 Call Description:<input type="text" name="Description" value="$description" size="60"  description="" /><br />
-<b>New</b> note: (check History for prior note entries)<br />
+Additional Notes: (check History for prior note entries)<br />
 <textarea name="notes" rows="5" cols="80"></textarea>
 <br /><br />
 <input type="hidden" name="Status" value="$status">
@@ -176,6 +196,8 @@ Call Description:<input type="text" name="Description" value="$description" size
 pagePart1;
 echo '<input type="submit" name="submit" value="Update Info" />';
 echo '</div>  <!-- tab-pane -->';
+
+// call details tab
 echo '<div class="tab-pane fade" id="details">
 <table class="table-condnensed">';
 echo '<tr><td>Animal Location:</td><td>
@@ -204,12 +226,13 @@ echo '</table>
 <br /><br />';
 echo '<input type="submit" name="submit" value="Update Details" />';
 $citieslist = createddown();
-if ($state == '') $state = 'CA';
+
+// caller extended details tab
 print <<<pagePart3
 </div>  <!-- tab-pane -->
 <script>
 function loadcity() {
-	//alert("loadcity");
+//	alert("loadcity");
 	var cv = $("#CI").val();
 	var cva = cv.split(",");
 	$("#CI").val(cva[0]);
@@ -219,15 +242,34 @@ function loadcity() {
 </script>
 <div class="tab-pane fade" id="callerext">
 Organization: <input type="text" name="Organization" size="50" placeholder="Organization" value="$org"><br>
-Address:<input type="text" name="Address" size="50" placeholder="Address Line" value="$address"><br />
+Address:<input id="PC" type="text" name="Address" size="50" placeholder="Address Line" value="$address"><br />
 City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="City" placeholder="City" value="$city" autocomplete="off" onblur="loadcity()" />, 
 State:<input id="ST" type="text" name="State" size="2" maxlength="2" value="$state"/>  
-Zip: <input id="ZI" type="text" name="Zip" size="5" maxlength="10" placeholder="Zip" value="$zip"/>
+Zip: <input id="ZI" type="text" name="Zip" size="5" maxlength="10" value="$zip"/>
 <button href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
-
-<br />
 <br>
+<script>
+function checkaddr() {
+	var sval = $("#PC").val();
+if ( sval.length == 0) {
+		alert("ERROR: No address provided to send postcard.")
+		$('#PCChk').prop('checked', false);
+		return false;
+		}
+	return true;
+	}
+</script>
+pagePart3;
+if ($pcsent == '') {
+	echo 'Postcard Sent? <input id="PCChk" onchange="return checkaddr()" type="checkbox" name="PostcardSent" Value="Yes">'; }
+else {
+	echo "Postcard Sent? $pcsent "; }
+if ($emsent == '') {
+	echo "&nbsp;&nbsp;&nbsp;Email Sent? No<br><br>"; }
+else {
+	echo "&nbsp;&nbsp;&nbsp;Email Sent? $emsent<br><br>"; }
 
+print <<<pagePart4
 <script src="js/bootstrap3-typeahead.js"></script>
 <script>
 var citylist = $citieslist
@@ -239,13 +281,13 @@ $('#CI').typeahead({source: citylist})
 	bkLib.onDomLoaded(function() { nicEditors.allTextAreas(); initSelects(this) });
 </script>
 
-pagePart3;
+pagePart4;
 echo '<input type="submit" name="submit" value="Update Extended" />';
 echo '</form>';
-createddown();
+
+// output the history log
 echo '
 </div>  <!-- tab-pane -->
-
 <div class="tab-pane fade" id="history">
 <h4>Call Notes History (latest first)</h4>';
 $sql = "SELECT * FROM `callslog` 
@@ -300,6 +342,7 @@ print <<<theZipModal
 
 theZipModal;
 
+// php function to read db locations table and return it
 function createddown() {
 	$locs = readdblist('Locations');
 	$locsarray = formatdbrec($locs);

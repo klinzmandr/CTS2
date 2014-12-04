@@ -68,6 +68,7 @@ print <<<pagePart1
 <tr><td><b>Address:</b> </td><td>$r[Address]</td></tr>
 <tr><td><b>City, State Zip:</b> </td><td>$r[City], $r[State]  $r[Zip]</td></tr>
 <tr><td><b>Email Address:</b> $r[EMail]</td><td><b>Phone Number:</b> $r[PrimaryPhone]</td></tr>
+<tr><td><b>Postcard Sent?</b> $r[PostcardSent]</td><td><b>Email Sent?</b> $r[EmailSent]</td></tr>
 </table>
 
 pagePart1;

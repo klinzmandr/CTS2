@@ -97,6 +97,10 @@ $notearray[UserID] = $_SESSION['SessionUser'];
 $notearray[Notes] = $notes;
 // echo '<pre> note '; print_r($notearray); echo '</pre>';
 sqlinsert("callslog", $notearray);
+// update email sent flag in call record
+$where = "`CallNbr`='" . $callnbr . "'";
+$updarray[EmailSent] = 'Yes';
+sqlupdate("calls", $updarray, $where);
 // send email message to caller
 $from = 'hotline@pacificwildlifecare.org';
 $headers  = 'MIME-Version: 1.0' . "\r\n";
@@ -106,7 +110,7 @@ $headers .= "Reply-To: " . $from . "\r\n";
 $headers .= "Return-Path: " . $from . "\r\n";   // these two to set reply address
 $foption = "-f" . $from;												// notify of undeliverable mail to sender
 
-$mresp = mail($to, $subject, $body, $headers, $foption);
+//$mresp = mail($to, $subject, $body, $headers, $foption);
 if ($mresp == FALSE) {
 	echo "<h4 style=\"color: red;\">ERROR: an error was returned when sending the email message</h4><br />";
 	}
