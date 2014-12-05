@@ -33,14 +33,15 @@ if ($action == 'close') {
 	if (isset($_REQUEST['Name'])) $updarray[Name] = $_REQUEST['Name'];
 	if (isset($_REQUEST['Reason'])) $updarray[Reason] = $_REQUEST['Reason'];
 	if (isset($_REQUEST['Description'])) $updarray[Description] = $_REQUEST['Description'];
-	if (strlen($closingnote) > 0) {
-		$notearray[CallNbr] = $call;
-		$notearray[UserID] = $user;
-		$notearray[Notes] = 'Closing Note: ' . $closingnote;
+
+// write closing note(s)
+	$notearray[CallNbr] = $call;
+	$notearray[UserID] = $user;
+	$notearray[Notes] = 'Closing Note: ' . $closingnote;
 //		echo '<pre> note '; print_r($notearray); echo '</pre>';
-		sqlinsert("callslog", $notearray);
-		unset($notearray);
-		}
+	sqlinsert("callslog", $notearray);
+	unset($notearray);
+
 //	echo '<pre> upd '; print_r($updarray); echo '</pre>';
 	sqlupdate('calls', $updarray, "`CallNbr` = '$call'");
 	$action = '';
