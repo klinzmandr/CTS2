@@ -60,9 +60,9 @@ else {
 	<tr><td valign=\"top\">
 	<h3>Home Page&nbsp  <button class=\"btn btn-large btn-primary\" name=\"action\" value=\"login\" type=\"submit\" form=\"yform\" class=\"btn\">Login</button></form></h3></td>
 	<td><b>Instructional Videos</b><br><ul>
-	<a href=\"http://youtu.be/VfYXGxNpEJw\" target=\"_blank\">Overview and Main Menu(9:42)</a><br>
-	<a href=\"http://youtu.be/a-wcRHG4WaA\" target=\"_blank\">Messages Menu Item(11:30)</a><br>
-	<a href=\"http://youtu.be/kwTZgbJjBGM\" target=\"_blank\">Calls Menu Item(14:54)</a>
+	<a href=\"http://youtu.be/MCX1wAn5lbc\" target=\"_blank\">Overview and Main Menu(8:13)</a><br>
+	<a href=\"http://youtu.be/ByaI0rxRlLs\" target=\"_blank\">Messages Menu Item(10:41)</a><br>
+	<a href=\"http://youtu.be/EI3XwZVAwYg\" target=\"_blank\">Calls Menu Item(14:28)</a>
 	</ul></td></tr></table>";
 	}
 //echo "</h3>";
