@@ -110,7 +110,7 @@ $headers .= "Reply-To: " . $from . "\r\n";
 $headers .= "Return-Path: " . $from . "\r\n";   // these two to set reply address
 $foption = "-f" . $from;												// notify of undeliverable mail to sender
 
-//$mresp = mail($to, $subject, $body, $headers, $foption);
+$mresp = mail($to, $subject, $body, $headers, $foption);
 if ($mresp == FALSE) {
 	echo "<h4 style=\"color: red;\">ERROR: an error was returned when sending the email message</h4><br />";
 	}
