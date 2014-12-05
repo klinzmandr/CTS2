@@ -168,7 +168,7 @@ else {											// one exists, update it instead
 	}
 
 print <<<pagePart1
-
+<div class="container">
 <h3>New Call Added</h3>
 <p>A new $action call has been added for $currentuser</p>
 
@@ -176,6 +176,7 @@ print <<<pagePart1
 
 <a class="btn btn-success" href="callupdatertabbed.php?action=new">CONTINUE</a>&nbsp;
 <br><br>
+<div>
 pagePart1;
 
 ?>
