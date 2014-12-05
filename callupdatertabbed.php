@@ -194,7 +194,7 @@ Additional Notes: (check History for prior note entries)<br />
 <input type="hidden" name="Status" value="$status">
 <input type="hidden" name="OpenedBy" value="$openedby">
 pagePart1;
-echo '<input type="submit" name="submit" value="Update Info" />';
+echo '<input type="submit" name="submit" value="Update Call" />';
 echo '</div>  <!-- tab-pane -->';
 
 // call details tab
@@ -224,7 +224,7 @@ echo '</select></td></tr>';
 
 echo '</table>
 <br /><br />';
-echo '<input type="submit" name="submit" value="Update Details" />';
+echo '<input type="submit" name="submit" value="Update Call" />';
 $citieslist = createddown();
 
 // caller extended details tab
@@ -282,7 +282,7 @@ $('#CI').typeahead({source: citylist})
 </script>
 
 pagePart4;
-echo '<input type="submit" name="submit" value="Update Extended" />';
+echo '<input type="submit" name="submit" value="Update Call" />';
 echo '</form>';
 
 // output the history log
