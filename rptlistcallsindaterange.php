@@ -54,13 +54,13 @@ $cc .= $countarray[Closed] . '/';
 $cc .= $countarray[Center] . '<br>';
 echo $cc; 
 echo '<table class="table table-condensed">
-<tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Description</th></tr>';
+<tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>';
 foreach ($resarray as $r) {
 	//echo '<pre> year '; print_r($r); echo '</pre>';
 	$callnbr = $r[CallNbr];
 	echo "<tr><td align=\"center\">$callnbr</td>";
 	//echo "<tr><td>$callnbr</td>";
-	echo "<td>$r[Status]</td><td>$r[DTOpened]</td><td>$r[Description]</td></tr>";
+	echo "<td>$r[Status]</td><td>$r[DTOpened]</td><td>$r[DTPlaced]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
 	}
 echo '</table>';
 echo "=== END OF REPORT===<br>";
