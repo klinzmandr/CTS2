@@ -14,7 +14,7 @@ session_start();
 
 print <<<pagePart1
 <div class="container">
-<h3>Report Heading    <a href=\"javascript:self.close();\" class=\"btn btn-primary\"><b>CLOSE</b></a></h3>
+<h3>Report Heading    <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>
 <p>Explaination of report.</p>
 
 </div>  <!-- container -->
