@@ -28,7 +28,7 @@
 PWC Facebook Page</a>
 </td></tr>
 <tr><td valign="top"><a target="_blank" title="" href="http://pacificwildlifecare.wordpress.com">PWC Blog</a><br></td></tr><tr><td valign="top"><a target="_blank" title="" href="http://www.projectwildlife.org/wildlife.php#coexist">Animal Care Pages (from Project Wildlife)</a><br></td></tr>
-<tr><td valign="top"><a target="_blank" title="" href="http://www.wildcarebayarea.org/site/PageServerpagename=Wildlife_Solutions">Wild Care Bay Area</a><br></td></tr>
+<tr><td valign="top"><a target="_blank" title="" href="http://www.wildcarebayarea.org/site/PageServer?pagename=Wildlife_Solutions">Wild Care Bay Area</a><br></td></tr>
 <tr><td valign="top"><a target="_blank" title="" href="http://www.hungryowl.org">Hungry Owl Project</a><br></td></tr>
 <tr><td valign="top"><a target="_blank" title="" href="http://www.dfg.ca.gov/LivingWithWildlife/">Legal Questions about Nuisance Animals (from Dept of Fish and Wildlife)</a><br></td></tr>
 <tr><td valign="top"><a target="_blank" title="" href="http://www.ipm.ucdavis.edu/PMG/PESTNOTES/index.html#VERTEBRATE/">Detailed Information About Pest Animals (from UC Davis)</a><br></td></tr>
