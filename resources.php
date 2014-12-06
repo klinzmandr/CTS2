@@ -9,7 +9,7 @@
 <body>
 <?php
 session_start();
-//include 'Incls/seccheck.inc';
+include 'Incls/seccheck.inc';
 include 'Incls/mainmenu.inc';
 
 echo '<div class="container">
