@@ -43,6 +43,7 @@ function flagChange() {
     <ul class="nav navbar-nav">
       <li><a onclick="return chkchg()" href="index.php"><b>Home</b></a></li>
 			<!-- <li><a onclick="return chkchg()" href="">????</a></li> -->
+			
 menupart1;
 
 // include Admin menu options for special users
@@ -92,12 +93,15 @@ if ($_SESSION['SecLevel'] != 'guest') {
 	<li><a onclick="return chkchg()" href="calls.php?action=MyOpen">My Open</a></li>
 	<li><a onclick="return chkchg()" href="calls.php?action=MyClosed">My Closed</a></li>';
 	}
-echo	'<li><a onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>';
+echo	'
+  <li><a onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>';
 if ($_SESSION['SecLevel'] != 'guest') {
 	echo '
 	<li><a onclick="return chkchg()" href="callsaddnew.php">Add New Call</a></li>
-	<li><a onclick="return chkchg()" href="callscloser.php">Close A Call</a></li>';
+	<li><a onclick="return chkchg()" href="callscloser.php">Close A Call</a></li>
+	';
 	}
+
 print <<<menuPart3b
 	<li><a onclick="return chkchg()" href="callssearch.php">Search All</a></li>
 	<!-- <li><a onclick="return chkchg()" href="#">????</a></li> -->

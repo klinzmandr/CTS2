@@ -7,12 +7,6 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
-<div class="container">
-<h1>Forms Directory Maintenance</h1>
-<hr>
-<table cellpadding="0" cellspacing="0" border="0" align="center" width="95%">
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 <?php
 session_start();
 // include 'Incls/vardump.inc';
@@ -25,10 +19,7 @@ $form =isset($_REQUEST['form'])? $_REQUEST['form'] : "";
 if ($action == 'rename') {
 	$old = 'Forms/' . $_REQUEST['oldname'];
 	$new = 'Forms/' . $_REQUEST['newname'];
-//	echo 'Rename request received<br>';
-//	echo "oldname: $old, newname: $new<br>";
 	if (rename($old, $new)) { 
-//		echo "Renamed '$old' to '$new'<br>";
 		}
 	else { 
 		echo "Rename request FAILED!<br>
@@ -67,31 +58,40 @@ else {
   echo "ERROR: File size exceeds maximum of 1MB.";
   }
 }
+print <<<headPart
+<div class="container">
+<h1>Forms Directory Maintenance</h1>
+<hr>
+
+headPart;
 
 $forms = scandir('Forms');
 
 // list contents of forms dir
+echo '<table cellpadding="0" cellspacing="0" border="0" align="center" width="95%">';
 foreach ($forms as $formname) {
 if (($formname == '.') || ($formname == '..')) { continue; }
 print <<<listPart1
-<tr><td width="15%" align="center">
-<a id="DF" href="adminformsmaint.php?action=delete&form=$formname">Delete</a>
+<tr><td width="20%" align="center">
+<a onclick="return chkdel()" href="adminformsmaint.php?action=delete&form=$formname">Delete</a>
 &nbsp;/&nbsp;
 <a href="#" onclick="return getfld('$formname')">Rename</a>
 </td>
 <td>
 <a target=_blank href="Forms/$formname">$formname</a></td></tr>
+
 listPart1;
 }
 ?>
 </table>
 <script>
-$( "#DF" ).click(function() {
-	var r = confirm("This action permanently deletes the file.\nThis action CANNOT be reversed.\n\nClick OK to continue.");
+function chkdel() {
+	var r = confirm("This action permanently deletes the file.  \nThis action CANNOT be reversed. \n\nClick OK to continue.");
 	if (r == true) { return true; } 
-	else { return false; }
-});
+	else { return false; }	
+	}
 </script>
+
 <form action="adminformsmaint.php" method="post" enctype="multipart/form-data">
 <!-- <label for="file">or add a new one:&nbsp;</label> -->
 <br>OR ADD A NEW ONE
@@ -99,8 +99,7 @@ $( "#DF" ).click(function() {
 <input type="hidden" name="action" value="addnew">
 <input type="submit" name="submit" value="Submit" />
 </form>
-
-</div>
+</div>  <!-- container -->
 // rename function and scripts
 <script>
 function getfld(OName) {
@@ -122,7 +121,7 @@ return false;
 }
 </script>
 
-<!-- define form to submit WITHOUT a submit field defined -->
+<!-- define form to submit rename info WITHOUT a submit field defined -->
 <form method="post" name="NameForm">
 <input type="hidden" id="HF1" name="oldname" value="">
 <input type="hidden" id="HF2" name="newname" value="">
