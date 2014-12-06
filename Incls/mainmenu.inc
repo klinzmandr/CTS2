@@ -65,6 +65,7 @@ print<<<menupart2
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Species">Maintain Species</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Reasons">Maintain Reasons</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Actions">Maintain Actions</a></li>
+  		<li><a onclick="return chkchg()" href="admdeletejdoerecs.php">Delete jdoe records</a></li>
   	</ul>   <!-- ul dropdown-menu -->
   </li>  <!-- li dropdown -->
 
