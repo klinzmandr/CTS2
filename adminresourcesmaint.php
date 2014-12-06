@@ -19,7 +19,7 @@ $msg =isset($_REQUEST['msg'])? $_REQUEST['msg'] : "";
 if ($action == 'update') {
 	echo 'Update request seen<br>';
 	//echo '<pre> update '; print_r($_REQUEST['msg']); echo '</pre>';
-	
+	$msg = stripslashes($msg);
 	file_put_contents('Incls/links.inc', $msg);
 	}
 
