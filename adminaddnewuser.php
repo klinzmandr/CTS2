@@ -19,8 +19,9 @@ $recno = isset($_REQUEST['recno']) ? $_REQUEST['recno'] : "";
 $userid = isset($_REQUEST['userid']) ? $_REQUEST['userid'] : "";
 $password = isset($_REQUEST['password']) ? $_REQUEST['password'] : "";
 $role = isset($_REQUEST['role']) ? $_REQUEST['role'] : "";
+$fullname = isset($_REQUEST['fullname']) ? $_REQUEST['fullname'] : "";
+$datejoined = isset($_REQUEST['datejoined']) ? $_REQUEST['datejoined'] : "";
 $notes = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : "";
-
 
 if ($action == "delete") {
 	//echo "Delete record number $recno<br>";
@@ -33,6 +34,8 @@ if ($action == "addnew") {
 	$flds[UserID] = $userid;
 	$flds[Password] = $password;
 	$flds[Role] = $role;
+	$flds[FullName] = $fullname;
+	$flds[DateJoined] = $datejoined;
 	$flds[Notes] = $notes;
 	$res = sqlinsert('cts2users', $flds);
 	}
@@ -70,9 +73,12 @@ New User ID: <input type="text" name="userid" placeholder="User Id">
 Password: <input type="text" name="password" value="raptor">
 Role: <select name="role">
 <option value="">Select a role for the User</option>
-<option value="admin">CTS2 Admin</option>
-<option value="user">CTS2 User</option>
+<option value="admin">Admin</option>
+<option value="user">User</option>
+<option value="guest">Guest</option>
 </select><br />
+Full Name: <input type="text" name="fullname" placeholder="First/Last Name">
+Date Joined: <input type="text" name="datejoined" placeholder="MM/DD/YYYY"><br>
 Notes:<br /><textarea name="notes" rows="3" cols="50"></textarea><br />
 <input type="hidden" name="action" value="addnew">
 <input type="submit" name="submit" value="Add New">
@@ -84,15 +90,15 @@ pagePart1;
 
 // list exising entries to allow delete of individual rows from DB
 
-$sql = "select * from cts2users";
+$sql = "select * from cts2users ORDER BY `Role` ASC, `UserID` ASC";
 $res = doSQLsubmitted($sql);
 echo "<table class=\"table-condensed\">";
-echo "<tr><td>Delete</td><td>User ID</td><td>Password</td><td>Role</td><td>Notes</td></tr>";
+echo "<tr><th>Delete</th><th>Role</th><th>User ID</th><th>Password</th><th><-----FullName----></th><th>Date Joined</th><th>Notes</th></tr>";
 while ($r = $res->fetch_assoc()) {
 	//echo "<pre>user: "; print_r($r); echo "</pre>";
-	echo "<tr><td align=\"center\"><a href=\"adminaddnewuser.php?action=delete&recno=$r[SeqNo]\"><img src=\"img/b_drop.png\" alt=\"DELETE\" /></a></td><td>$r[UserID]</td><td>$r[Password]</td><td>$r[Role]</td><td>$r[Notes]</td></tr>";
+	echo "<tr><td align=\"center\"><a href=\"adminaddnewuser.php?action=delete&recno=$r[SeqNo]\"><img src=\"img/b_drop.png\" alt=\"DELETE\" /></a></td><td>$r[Role]</td><td>$r[UserID]</td><td>$r[Password]</td><td>$r[FullName]</td><td>$r[DateJoined]</td><td>$r[Notes]</td></tr>";
 	}
-echo "</table></div>";
+echo "</table><br>==== END OF LIST ===<br></div>";
 
 ?>
 <script src="jquery.js"></script>

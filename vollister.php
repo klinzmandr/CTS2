@@ -51,14 +51,15 @@ if (strlen($action) > 0) {
 		<td>$r[LName]</td><td>$r[FName]</td><td>$r[City]</td><td>$r[EmailAddress]</td><td>$r[PrimaryPhone]</td><td>$r[Notes]</td></tr>";	
 		}
 	echo '</table>';
-	
-echo '<h3>Comma seperated list of email addresses</h3>';
-$emlist = implode($emarray, ', ');
-echo $emlist;
-echo '<br /><br />';
-echo '</div>';
+if ($_SESSION['SecLevel'] == 'admin') {
+	echo '<h3>Comma seperated list of email addresses</h3>';
+	$emlist = implode($emarray, ', ');
+	echo $emlist;
+	}
 }
-
+echo '<br>==== END OF LIST ===<br>';
+echo '</div>';
+	
 ?>
 
 <script src="jquery.js"></script>

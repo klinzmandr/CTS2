@@ -291,8 +291,7 @@ echo '
 <div class="tab-pane fade" id="history">
 <h4>Call Notes History (latest first)</h4>';
 $sql = "SELECT * FROM `callslog` 
-WHERE `UserID` = '$openedby' 
-	AND `CallNbr` =  '$callnbr' 
+WHERE `CallNbr` =  '$callnbr' 
 ORDER BY `SeqNbr` DESC;";
 $res = doSQLsubmitted($sql);
 echo "<table class=\"table-condensed\">";

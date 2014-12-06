@@ -72,7 +72,7 @@ print<<<menupart2
 menupart2;
 }
 
-print <<<menuPart3
+print <<<menuPart3a
 <!-- ========= define Message Systems dropdown ============ -->
 <li class="dropdown">
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Messages<b class="caret"></b></a>
@@ -86,11 +86,19 @@ print <<<menuPart3
 <li class="dropdown">
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Calls<b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
+menuPart3a;
+if ($_SESSION['SecLevel'] != 'guest') {
+	echo '
 	<li><a onclick="return chkchg()" href="calls.php?action=MyOpen">My Open</a></li>
-	<li><a onclick="return chkchg()" href="calls.php?action=MyClosed">My Closed</a></li>
-	<li><a onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>
+	<li><a onclick="return chkchg()" href="calls.php?action=MyClosed">My Closed</a></li>';
+	}
+echo	'<li><a onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>';
+if ($_SESSION['SecLevel'] != 'guest') {
+	echo '
 	<li><a onclick="return chkchg()" href="callsaddnew.php">Add New Call</a></li>
-	<li><a onclick="return chkchg()" href="callscloser.php">Close A Call</a></li>
+	<li><a onclick="return chkchg()" href="callscloser.php">Close A Call</a></li>';
+	}
+print <<<menuPart3b
 	<li><a onclick="return chkchg()" href="callssearch.php">Search All</a></li>
 	<!-- <li><a onclick="return chkchg()" href="#">????</a></li> -->
 	<!-- <li><a href="#">?</a></li> -->
@@ -126,7 +134,7 @@ print <<<menuPart3
 </nav>  <!-- class = "navbar" -->
 <!-- End mainmenu.inc -->
 
-menuPart3;
+menuPart3b;
 
 print <<<theModal
 <!-- =========== ABOUT Modal  ==================== -->  
