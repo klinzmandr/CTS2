@@ -25,9 +25,10 @@ print <<<pagePart1
 <p>General search of all calls for given search string.</p>
 <h4>Enter search string:</h4>
 <form action="callssearch.php" method="post">
-<input type="text" name="search" size="50" value="" autofocus placeholder="Search string"><br>
 Call Status: <input type="radio" name="status" value="Open" checked="checked">Open
 &nbsp;&nbsp;&nbsp;<input type="radio" name="status" value="Closed">Closed<br>
+<input type="text" name="search" size="50" value="" autofocus placeholder="Search string">
+<br><br>
 <input type="hidden" name="action" value="search">
 <input type="submit" name="submit" value="Submit">
 </form><br><br>
@@ -36,7 +37,6 @@ Call Status: <input type="radio" name="status" value="Open" checked="checked">Op
 <ol>
 	<li>Enter a 3-5 character search string.  The longer the string, usually the fewer the results listed.</li>
 	<li>Avoid special characters like &lt;, &gt;, :, !, $, %, &apos; and so on.</li>
-	<li></li>
 </ol>
 
 </div>

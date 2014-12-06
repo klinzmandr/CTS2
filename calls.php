@@ -39,7 +39,7 @@ else {		// gotta be MyCalls then
 	}
 $res = doSQLsubmitted($sql);
 $rows = $res->num_rows;
-if ($rows == 0) { echo "no rows found<br>"; };
+// if ($rows == 0) { echo "no rows found<br>"; };
 echo '<div class="container">
 <h3>'.$hdg.' Calls<img id="chgflg" hidden src="img/Cancel__Red.png" width="16" height="16" /></h3>
 ';
@@ -59,7 +59,7 @@ while ($r = $res->fetch_assoc()) {
 	<td>'.$desc.'</td>
 	</tr>';
 	}
-echo '</table>
+echo '</table><br>==== END OF LIST ====<br>
 </div>  <!-- container -->';
 
 ?>
