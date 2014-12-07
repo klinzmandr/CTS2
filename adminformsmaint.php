@@ -127,6 +127,7 @@ return false;
 <input type="hidden" id="HF2" name="newname" value="">
 <input type="hidden" name="action" value="rename">
 </form>
-
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
