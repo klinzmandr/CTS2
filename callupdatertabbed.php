@@ -100,14 +100,23 @@ $(document).ready(function () {
 	$("#RE").val("$reason");
 	});
 </script>
-
+<script>
+function chkdtp() {
+	var dtp = $("#DP1").val();
+	if (dtp.length == 0) {
+		alert("Entry for Date/Time Placed is required.");
+		return false;
+		}
+	return true;
+	}
+</script>
 scriptPart;
 
 // call tab
 print <<<pagePart1
 <div class="container">
 <h3>Call $callnbr</h3>
-<form class="form" name="tf" action="callupdatertabbed.php">
+<form class="form" name="tf" action="callupdatertabbed.php" onsubmit="return chkdtp()">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="callnbr" value="$callnbr">
 <ul id="myTab" class="nav nav-tabs">
@@ -130,7 +139,7 @@ Date/Time Call Entered:&nbsp;&nbsp;$dtopened<br>
 $('#DP1').datetimepicker({
     format: 'yyyy-mm-dd hh:ii',
     todayHighlight: true,
-    todayBtn: true,
+    // todayBtn: true,
     showMeridian: true,
     autoclose: true
 });
