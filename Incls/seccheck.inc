@@ -85,8 +85,8 @@ function trim(s)
 	<h1>Call Tracking System</h1>
 	<form action="index.php" method='POST' name="form" class="form-signin" onsubmit="return checkform(this)">
 	<h2 class="form-signin-heading">Please sign in</h2>
-	<input type="text" class="input-block-level" placeholder="User ID" autofocus name="userid" value="">
-	<input type="text" class="input-block-level" placeholder="Password" name="password" value = "">
+	<input type="text" class="input-block-level" placeholder="User ID" autofocus name="userid" value="" autocomplete="off">
+	<input type="text" class="input-block-level" placeholder="Password" name="password" value = "" autocomplete="off">
 	<button class="btn btn-default btn-small" name='action' value='login' type="submit">Sign in</button>
 	</form>
 	<a href="admpasswordupd.php"><p>(Change Password)</p></a>
