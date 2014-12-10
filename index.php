@@ -56,27 +56,24 @@ else {
 	echo "<form class=\"form-inline\" action=\"calls.php\" method=\"post\"  id=\"yform\">";
 	echo "<h2>Call Tracking System II (CTS2)</h2>";
 	echo "
-	<table class=\"table table condensed\" border=\"0\">
-	<tr><td valign=\"top\">
-	<h3>Home Page&nbsp  <button class=\"btn btn-large btn-primary\" name=\"action\" value=\"login\" type=\"submit\" form=\"yform\" class=\"btn\">Login</button></form></h3></td>
-	<td><b>Instructional Videos</b><br><ul>
-	<a href=\"http://youtu.be/MCX1wAn5lbc\" target=\"_blank\">Overview and Main Menu(8:13)</a><br>
-	<a href=\"http://youtu.be/ByaI0rxRlLs\" target=\"_blank\">Messages Menu Item(10:41)</a><br>
-	<a href=\"http://youtu.be/EI3XwZVAwYg\" target=\"_blank\">Calls Menu Item(14:28)</a>
-	</ul></td></tr></table>";
+	<h3>Home Page&nbsp  <button class=\"btn btn-large btn-primary\" name=\"action\" value=\"login\" type=\"submit\" form=\"yform\" class=\"btn\">Login</button></form></h3>
+	</h3>";
 	}
-//echo "</h3>";
-
 ?>
 <!-- START OF PAGE -->
 <p><h4>Welcome!</h4></p>
 <p><b>The Call Tracking System is for the exclusive use of Pacific Wildelife Care.  Unauthorized use is prohibitted.</b></p>
 <p>Access to all the facilities of the system are provided on the main menu located at the top of each page.</p>
-</div>
-<br><br><br>
+
+<br>
+<b>Instructional Videos</b><br><ul>
+	<a href="http://youtu.be/MCX1wAn5lbc" target="_blank">Overview and Main Menu(8:13)</a><br>
+	<a href="http://youtu.be/ByaI0rxRlLs" target="_blank">Messages Menu Item(10:41)</a><br>
+	<a href="http://youtu.be/EI3XwZVAwYg" target="_blank">Calls Menu Item(14:28)</a>
+	</ul><br><br>
 <div align="center"><img src="img/PWC1080logo.jpg" width="600" height="96" alt=""></div>
 <br />
-
+</div>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
