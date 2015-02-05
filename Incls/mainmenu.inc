@@ -80,6 +80,7 @@ print <<<menuPart3a
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
 	<li><a onclick="return chkchg()" href="vmsintro.php" target="_blank">Voice Messages</a></li>
 	<li><a onclick="return chkchg()" href="emailintro.php" target="_blank" >Email Messages</a></li>
+	<li><a onclick="return chkchg()" href="wrmdintro.php" target="_blank" >WRMD</a></li>
 </ul>
 </li>
 <!-- ========= define Calls dropdown ============= -->
