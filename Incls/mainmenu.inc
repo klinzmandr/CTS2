@@ -47,8 +47,8 @@ function flagChange() {
 menupart1;
 
 // include Admin menu options for special users
-
-if ($_SESSION['SecLevel'] == 'admin') {
+$seclevel = isset($_SESSION['SecLevel']) ? $_SESSION['SecLevel'] : '';
+if ($seclevel == 'admin') {
 print<<<menupart2
 <!-- ======== define Admin dropdown ===================== -->
 <!-- Menu dropdown for Extended Donor Info pages -->	
@@ -89,14 +89,14 @@ print <<<menuPart3a
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Calls<b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
 menuPart3a;
-if ($_SESSION['SecLevel'] != 'guest') {
+if ($seclevel != 'guest') {
 	echo '
 	<li><a onclick="return chkchg()" href="calls.php?action=MyOpen">My Open</a></li>
 	<li><a onclick="return chkchg()" href="calls.php?action=MyClosed">My Closed</a></li>';
 	}
 echo	'
   <li><a onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>';
-if ($_SESSION['SecLevel'] != 'guest') {
+if ($seclevel != 'guest') {
 	echo '
 	<li><a onclick="return chkchg()" href="callsaddnew.php">Add New Call</a></li>
 	<li><a onclick="return chkchg()" href="callscloser.php">Close A Call</a></li>

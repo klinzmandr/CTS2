@@ -1,13 +1,16 @@
 <?php
+// turn off error reporting
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 // connect to the database for all pages
 global $mysqli;
 
-include "../.DBParamInfo";
+include "../.CTS2DBParamInfo";
 
 // production database
-$db = "cts2db";
+$db = "pacwilic_cts2db";
 $mysqli = new mysqli("localhost", DBUserName, DBPassword, $db);
-
+//echo '<pre> on include load: '; print_r($mysqli); echo '</pre>';
 if ($mysqli->connect_errno) {
 		$errno = $mysqli->connect_errno;
     echo "Failed to connect to MySQL: (" . $errno . ") " . $mysqli->connect_error."<br>";
@@ -15,16 +18,18 @@ if ($mysqli->connect_errno) {
     }
 $_SESSION['DB_InUse'] = $db;
 // auto returns to code following the 'include' statement
-//echo "Initial Connection Info: ".$mysqli->host_info . "<br><br>";
+// echo "Initial Connection Info: ".$mysqli->host_info . "<br><br>";
 
 // ------------------ submit sql statement provided by calling script ----------
 // submit sql statement provided in call
 function doSQLsubmitted($sql) { 
 global $mysqli;
 
-if (isset($_SESSION['DB_ERROR'])) return(FALSE);
-//echo "sql: ".$sql."<br>";
+if (isset($_SESSION['DB_ERROR'])) { unset($_SESSION['DB_ERROR']); return(FALSE); }
+//echo "sql submitted: ".$sql."<br>";
 $res = $mysqli->query($sql);
+//echo '<pre> on sql submitted: '; print_r($mysqli); echo '</pre>';
+
 if (substr_compare($sql,"DELETE",0,6,TRUE) == 0) {
 	//echo "<br>Delete command seen - return affected_rows<br>";
 	$rowsdeleted = $mysqli->affected_rows;
@@ -238,8 +243,10 @@ function calcexpirationdate() {
 
 // ------------------ check login credentials --------------------------
 function checkcredentials($userid, $password) {
-	$sql = "SELECT * FROM `cts2users` WHERE `UserID` = '$userid'";
+	$sql = "SELECT * FROM `cts2users` WHERE `UserID` = '$userid';";
+	// echo "sql: $sql<br>";
 	$res = doSQLsubmitted($sql);
+	// echo '<pre>'; print_r($res); echo '</pre>';
 	$nbrofrows = $res->num_rows;
 	if ($nbrofrows == 0) {
 		echo "ERROR: userid not valid<br>";
@@ -250,6 +257,7 @@ function checkcredentials($userid, $password) {
 		$res->data_seek(0);
 		$r = $res->fetch_assoc();
 		}
+	
 	if (($r[UserID] == $userid) && ($r[Password] == $password)) {
 		//echo "found match - user: $uid, pw: $pw<br>";
 		$_SESSION['SessionTimer'] = time() + $_SESSION['SessionLength'];

@@ -10,8 +10,8 @@
 <?php
 session_start();
 //include 'Incls/vardump.inc'; 
-
-if ((($_REQUEST['action']) == 'logout')) {
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+if (($action == 'logout')) {
 	include 'Incls//datautils.inc';
 //	addlogentry("Logging Out");
 	unset($_SESSION['SessionTimer']);
@@ -20,7 +20,7 @@ if ((($_REQUEST['action']) == 'logout')) {
 	unset($_SESSION['TEST_MODE']);
 	include 'Incls/seccheck.inc';
 	}
-if ((($_REQUEST['action']) == 'login')) {
+if ((($action) == 'login')) {
 	unset($_SESSION['TEST_MODE']);
 	//echo "login request received<br>";
 	$userid = $_REQUEST['userid'];
