@@ -115,18 +115,19 @@ scriptPart;
 // call tab
 print <<<pagePart1
 <div class="container">
-<h3>Call $callnbr&nbsp;&nbsp;&nbsp;<a href="callroview.php?call=$callnbr"><span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>
+<h3>Call $callnbr</h3>
 <form class="form" name="tf" action="callupdatertabbed.php" onsubmit="return chkdtp()">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="callnbr" value="$callnbr">
-<!-- <ul id="myTab" class="nav nav-tabs">
+<ul id="myTab" class="nav nav-tabs">
   <li class="active"><a href="#info" data-toggle="tab">Call</a></li>
   <li class=""><a href="#details" data-toggle="tab">Details</a></li>
   <li class=""><a href="#callerext" data-toggle="tab">Caller Extended</a></li>
   <li class=""><a href="#history" data-toggle="tab">History</a></li>
   <li class=""><a href="callroview.php?call=$callnbr"><span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></li></a></li>
-</ul> -->
-
+</ul>
+<div id="myTabContent" class="tab-content">
+<div class="tab-pane fade active in" id="info">
 Date/Time Call Entered:&nbsp;&nbsp;$dtopened&nbsp;&nbsp;&nbsp;
 Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="DTPlaced" value="$dtplaced" style="width: 150px; height: 25px;"><br>
 
@@ -193,13 +194,15 @@ E-mail: <input type="text" name="EMail" value="$email" id="EM" placeholder="Emai
 Call Description:<input type="text" name="Description" value="$description" size="60"  description="" /><br />
 Additional Notes: (check History for prior note entries)<br />
 <textarea name="notes" rows="5" cols="80"></textarea>
+<br /><br />
 <input type="hidden" name="Status" value="$status">
 <input type="hidden" name="OpenedBy" value="$openedby">
-
 pagePart1;
+echo '<input type="submit" name="submit" value="Update Call" />';
+echo '</div>  <!-- tab-pane -->';
 
 // call details tab
-echo '<table><tr><td width="40%">
+echo '<div class="tab-pane fade" id="details">
 <table class="table-condnensed">';
 echo '<tr><td>Animal Location:</td><td>
 <select id="AL" name="AnimalLocation" size="1">
@@ -224,14 +227,13 @@ loaddbselect("Reasons");
 echo '</select></td></tr>';
 
 echo '</table>
-</td>
-';
-echo '<input type="submit" name="submit" value="Update Call" /><hr>';
+<br /><br />';
+echo '<input type="submit" name="submit" value="Update Call" />';
 $citieslist = createddown();
 
 // caller extended details tab
 print <<<pagePart3
-
+</div>  <!-- tab-pane -->
 <script>
 function loadcity() {
 //	alert("loadcity");
@@ -242,7 +244,7 @@ function loadcity() {
 	$("#ZI").val(cva[2]);
 	}
 </script>
-<td valign="top">
+<div class="tab-pane fade" id="callerext">
 Organization: <input type="text" name="Organization" size="50" placeholder="Organization" value="$org"><br>
 Address:<input id="PC" type="text" name="Address" size="50" placeholder="Address Line" value="$address"><br />
 City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="City" placeholder="City" value="$city" autocomplete="off" onblur="loadcity()" />, 
@@ -269,10 +271,9 @@ else {
 if ($emsent == '') {
 	echo "&nbsp;&nbsp;&nbsp;Email Sent? No<br><br>"; }
 else {
-	echo "&nbsp;&nbsp;&nbsp;Email Sent? $emsent<br>"; }
+	echo "&nbsp;&nbsp;&nbsp;Email Sent? $emsent<br><br>"; }
 
 print <<<pagePart4
-
 <script src="js/bootstrap3-typeahead.js"></script>
 <script>
 var citylist = $citieslist
@@ -283,15 +284,15 @@ $('#CI').typeahead({source: citylist})
 <script type="text/javascript">
 	bkLib.onDomLoaded(function() { nicEditors.allTextAreas(); initSelects(this) });
 </script>
-</td></tr></table>
 
 pagePart4;
-echo '<input type="submit" name="submit" value="Update Call" /><hr>';
+echo '<input type="submit" name="submit" value="Update Call" />';
 echo '</form>';
 
 // output the history log
 echo '
-
+</div>  <!-- tab-pane -->
+<div class="tab-pane fade" id="history">
 <h4>Call Notes History (latest first)</h4>';
 $sql = "SELECT * FROM `callslog` 
 WHERE `CallNbr` =  '$callnbr' 
@@ -303,8 +304,8 @@ while ($r = $res->fetch_assoc()) {
 	$dt = date('Y-m-d \a\t H:i',strtotime($r[DateTime]));
 	echo "<tr><td>DateTime: $dt&nbsp;&nbsp;By: $r[UserID]<br><ul>$r[Notes]</ul></td></tr>";
 	}
-echo '</table>
-
+echo '</table></div>  <!-- tab-pane -->
+</div>  <!-- tab-content -->
 </div>  <!-- container -->';
 
 print <<<theZipModal
