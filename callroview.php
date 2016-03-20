@@ -32,10 +32,10 @@ if (strlen($r[Organization]) > 0)
 	$label = "$r[Organization]<br>$r[Name]<br>$r[Address]<br>$r[City], $r[State]  $r[Zip]";
 echo '<div class="container">';
 if ($action != '') {
-	echo "<h3>Call $call &nbsp;&nbsp;   <a href=\"javascript:self.close();\" class=\"btn btn-xs btn-primary\"><b>CLOSE</b></a></h3>";
+	echo "Call $call &nbsp;&nbsp;   <a href=\"javascript:self.close();\" class=\"btn btn-xs btn-primary\"><b>CLOSE</b></a>";
 	}
 else {
-	echo "<h3>Call $call</h3>";
+	echo "<h3><a href=\"callupdatertabbed.php?action=view&callnbr=$call\">Call $call</a></h3>";
 	}
 
 if ($r[DTClosed] == '') $end = strtotime('now');
