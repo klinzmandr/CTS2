@@ -61,7 +61,16 @@ else {
 print <<<headPart
 <div class="container">
 <h1>Forms Directory Maintenance</h1>
-<hr>
+<form action="adminformsmaint.php" method="post" enctype="multipart/form-data">
+<!-- <label for="file">or add a new one:&nbsp;</label> -->
+<table border=0><tr><td>
+ADD A NEW FORM: </td><td>
+<input size=50 type="file" name="file" id="file" /></td><td>
+<input type="hidden" name="action" value="addnew"></td><td>
+<input type="submit" name="submit" value="Submit" />
+</form>
+</td></tr></table>
+
 
 headPart;
 
@@ -92,13 +101,6 @@ function chkdel() {
 	}
 </script>
 
-<form action="adminformsmaint.php" method="post" enctype="multipart/form-data">
-<!-- <label for="file">or add a new one:&nbsp;</label> -->
-<br>OR ADD A NEW ONE
-<input size=50 type="file" name="file" id="file" />
-<input type="hidden" name="action" value="addnew">
-<input type="submit" name="submit" value="Submit" />
-</form>
 </div>  <!-- container -->
 // rename function and scripts
 <script>
