@@ -11,9 +11,9 @@
 <body>
 <?php
 session_start();
-include 'Incls/seccheck.inc';
-//include 'Incls/mainmenu.inc';
-include 'Incls/datautils.inc';
+include 'Incls/seccheck.inc.php';
+//include 'Incls/mainmenu.inc.php';
+include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
 <h3>List Calls In Date Range&nbsp;&nbsp; <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>
@@ -69,7 +69,7 @@ echo "=== END OF REPORT===<br>";
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
-<script src="Incls/bootstrap-datepicker-range.inc"></script>
+<script src="Incls/bootstrap-datepicker-range.inc.php"></script>
 
 </body>
 </html>

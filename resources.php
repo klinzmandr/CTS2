@@ -9,15 +9,16 @@
 <body>
 <?php
 session_start();
-include 'Incls/seccheck.inc';
-include 'Incls/mainmenu.inc';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
 
 echo '<div class="container">
 <h3>Hotline Volunteer Resources</h3>
-<h4>Links will open in a new window.</h4>';
-include 'Incls/links.inc';					// read file with links
+<h4>Links will open in a new window.</h4>
+<ul>';
+include 'Incls/links.inc.php';					// read file with links
 
-echo '</div>';
+echo '</ul></div>';
 ?>
 
 <script src="jquery.js"></script>

@@ -9,11 +9,11 @@
 <body onchange="flagChange()">
 <?php
 session_start();
-//include 'Incls/vardump.inc';
-include 'Incls/datautils.inc';
-include 'Incls/seccheck.inc';
+//include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
+include 'Incls/seccheck.inc.php';
 echo '<div class="hidden-print">';
-include 'Incls/mainmenu.inc';
+include 'Incls/mainmenu.inc.php';
 echo '</div>';
 
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
@@ -48,7 +48,7 @@ $seqnbr = $r[SeqNbr];
 $userid = $_SESSION['SessionUser'];
 //echo '<pre> db '; print_r($r); echo '</pre>';
 print <<<pagePart1
-<script type="text/javascript" src="nicEdit.js"></script>
+<script type="text/javascript" src="js/nicEdit.js"></script>
 <script type="text/javascript">
 bkLib.onDomLoaded(function() {
 	new nicEditor({fullPanel:true}).panelInstance('area1');

@@ -9,9 +9,9 @@
 <body>
 <?php
 session_start();
-// include 'Incls/vardump.inc';
-include 'Incls/seccheck.inc';
-include 'Incls/mainmenu.inc';
+// include 'Incls/vardump.inc.php';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
 
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $form =isset($_REQUEST['form'])? $_REQUEST['form'] : ""; 

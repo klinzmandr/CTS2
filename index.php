@@ -9,16 +9,16 @@
 <body>
 <?php
 session_start();
-//include 'Incls/vardump.inc'; 
+//include 'Incls/vardump.inc.php'; 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if (($action == 'logout')) {
-	include 'Incls//datautils.inc';
+	include 'Incls//datautils.inc.php';
 //	addlogentry("Logging Out");
 	unset($_SESSION['SessionTimer']);
 	unset($_SESSION['SessionUser']);
 	unset($_SESSION['SecLevel']);
 	unset($_SESSION['TEST_MODE']);
-	include 'Incls/seccheck.inc';
+	include 'Incls/seccheck.inc.php';
 	}
 if ((($action) == 'login')) {
 	unset($_SESSION['TEST_MODE']);
@@ -26,7 +26,7 @@ if ((($action) == 'login')) {
 	$userid = $_REQUEST['userid'];
 	$password = $_REQUEST['password'];
 	if ($userid != "") {
-		include 'Incls/datautils.inc';	
+		include 'Incls/datautils.inc.php';	
 		$ok = checkcredentials($userid, $password);
 		if ($ok) {
 			//echo "check of user id and password passed<br>";
@@ -40,7 +40,7 @@ if ((($action) == 'login')) {
 		}
 	}
 
-include 'Incls/mainmenu.inc';
+include 'Incls/mainmenu.inc.php';
 echo "<div class=\"container\">";
 
 if (isset($_SESSION['SessionUser'])) {

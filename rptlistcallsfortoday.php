@@ -9,9 +9,9 @@
 <body>
 <?php
 session_start();
-include 'Incls/seccheck.inc';
-//include 'Incls/mainmenu.inc';
-include 'Incls/datautils.inc';
+include 'Incls/seccheck.inc.php';
+//include 'Incls/mainmenu.inc.php';
+include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
 <h3>Report Calls For Today &nbsp;&nbsp;   <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>

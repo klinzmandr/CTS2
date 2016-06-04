@@ -15,10 +15,10 @@
 <script src="./js/bootstrap-datetimepicker.min.js"></script>
 <?php
 session_start();
-//include 'Incls/vardump.inc';
-include 'Incls/seccheck.inc';
-include 'Incls/mainmenu.inc';
-include 'Incls/datautils.inc';
+//include 'Incls/vardump.inc.php';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
+include 'Incls/datautils.inc.php';
 
 $callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
@@ -183,16 +183,23 @@ function checkemail() {
 	return true;
 	}
 </script>
+<script type="text/javascript" src="js/nicEdit.js"></script>
+<script type="text/javascript">
+//	bkLib.onDomLoaded(function() { nicEditors.allTextAreas(); initSelects(this) });
+bkLib.onDomLoaded(function() {
+  new nicEditor({fullPanel:true}).panelInstance("area1");
+  });    
+</script>
 
 E-mail: <input type="text" name="EMail" value="$email" id="EM" placeholder="Email Address">
-<a href="emailsend.php?emadr=$email&callnbr=$callnbr" onclick="return checkemail()">
+<a href="emailsend.php?emadr=$email&callnbr=$callnbr&name=$name" onclick="return checkemail()">
 <span class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
 </span></a>
 <br />
 
 Call Description:<input type="text" name="Description" value="$description" size="60"  description="" /><br />
 Additional Notes: (check History for prior note entries)<br />
-<textarea name="notes" rows="5" cols="80"></textarea>
+<textarea id="area1" name="notes" rows="5" cols="90"></textarea>
 <input type="hidden" name="Status" value="$status">
 <input type="hidden" name="OpenedBy" value="$openedby">
 
@@ -279,10 +286,6 @@ var citylist = $citieslist
 $('#CI').typeahead({source: citylist})
 </script>
 
-<script type="text/javascript" src="nicEdit.js"></script>
-<script type="text/javascript">
-	bkLib.onDomLoaded(function() { nicEditors.allTextAreas(); initSelects(this) });
-</script>
 </td></tr></table>
 
 pagePart4;

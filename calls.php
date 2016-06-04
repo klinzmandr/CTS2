@@ -9,10 +9,10 @@
 <body onchange="flagChange()">
 <?php
 session_start();
-//include 'Incls/vardump.inc';
-include 'Incls/datautils.inc';
-include 'Incls/seccheck.inc';
-include 'Incls/mainmenu.inc';
+//include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
 
 $userid = $_SESSION['SessionUser'];
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';

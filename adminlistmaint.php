@@ -27,9 +27,9 @@ function flagChange() {
 
 <?php
 session_start();
-include 'Incls/seccheck.inc';
-//include 'Incls/adminmenu.inc';
-include 'Incls/datautils.inc';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
+include 'Incls/datautils.inc.php';
 
 $file = isset($_REQUEST['file'])? $_REQUEST['file'] : "";
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
@@ -48,7 +48,7 @@ if ($action == "update") {
 	}
 
 echo "<h2>Admin: List Maintenance Utility</h2>";
-echo "<a onclick=\"return chkchg()\" class=\"btn btn-success\" href=\"index.php\">RETURN</a>";
+//echo "<a onclick=\"return chkchg()\" class=\"btn btn-success\" href=\"index.php\">RETURN</a>";
 if ($file == "") {
 	echo '<p>Choose a menu option to update a specific list.</p>
 	<p>All list (except the Admin Users list, use a free form text file to define the list items used.  Lines that begin with a double slash (//) are provided for comments (which are encouraged.)  The comment lines as well as blank lines are ignored </p>

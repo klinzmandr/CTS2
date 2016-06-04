@@ -9,9 +9,9 @@
 <body>
 <?php
 session_start();
-//include 'Incls/vardump.inc';
-include 'Incls/seccheck.inc';
-include 'Incls/mainmenu.inc';
+//include 'Incls/vardump.inc.php';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
 
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $msg =isset($_REQUEST['msg'])? $_REQUEST['msg'] : ""; 
@@ -20,13 +20,13 @@ if ($action == 'update') {
 	echo 'Update request seen<br>';
 	//echo '<pre> update '; print_r($_REQUEST['msg']); echo '</pre>';
 	$msg = stripslashes($msg);
-	file_put_contents('Incls/links.inc', $msg);
+	file_put_contents('Incls/links.inc.php', $msg);
 	}
 
-$lists = file_get_contents('Incls/links.inc');
+$lists = file_get_contents('Incls/links.inc.php');
 
 print <<<pagePart1
-<script type="text/javascript" src="nicEdit.js"></script>
+<script type="text/javascript" src="js/nicEdit.js"></script>
 <script type="text/javascript">
 bkLib.onDomLoaded(function() {
 	new nicEditor({fullPanel:true}).panelInstance('area1');

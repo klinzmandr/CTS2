@@ -10,8 +10,8 @@
 <?php
 session_start();
 
-include 'Incls/seccheck.inc';
-include 'Incls/mainmenu.inc';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
 
 $forms = scandir('Forms');
 
@@ -20,7 +20,7 @@ echo '<div class="container">
 <h3>Forms & Documentation</h3>
 <h4>Documents will open in a new window.</h4>';
 
-//include 'Incls/links.inc';					// read file with links
+//include 'Incls/links.inc.php';					// read file with links
 
 echo "<table>
 <tr><th>Document Title</th><th>Date and time last updated</th></tr>";
@@ -28,7 +28,7 @@ foreach ($forms as $formname) {
 if (($formname == '.') || ($formname == '..')) { continue; }
 $moddt = filectime("Forms/$formname");
 $cd  = date("F d, Y \a\\t H:i:s.", $moddt) . "<br>";
-echo "<tr><td>
+echo "<tr><td width=\"50%\">
 <a target=_blank href=\"Forms/$formname\">$formname</a></td><td align=\"center\">$cd</td></tr>";
 }
 ?>
