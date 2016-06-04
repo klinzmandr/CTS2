@@ -128,6 +128,7 @@ print <<<menuPart3b
 	<li><a href="rptlast50calls.php" target="_blank">Last 50 Calls Report</a></li>
 	<li><a href="rptlistcallsfortoday.php" target="_blank">Today&apos;s Calls</a></li>
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
+	<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
 	<li class="divider"></li>
 	<li><a href="#">Other report(s) added as needed</a></li>
 	<li class="divider"></li>
