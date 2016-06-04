@@ -17,6 +17,8 @@ include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 include 'Incls/datautils.inc.php';
 
+// echo "MCID: " . $_SESSION['ActiveCTSMCID'] . '<br>';
+$mcid = $_SESSION['ActiveCTSMCID'];
 $email = isset($_REQUEST['emadr']) ? $_REQUEST['emadr'] : '';
 
 $callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
@@ -126,10 +128,10 @@ exit;
 //include 'Incls/vardump.inc.php';
 
 print <<<pagePart2
-<h3>Email Send Confirmation&nbsp;&nbsp; <a href="callupdatertabbed.php?callnbr=$callnbr" class="btn btn-xs btn-primary">RETURN</a></h3>
+<h3>Email Sending Completed&nbsp;&nbsp; <a href="callupdatertabbed.php?callnbr=$callnbr" class="btn btn-xs btn-primary">RETURN</a></h3>
 pagePart2;
 
-$subject = $_REQUEST['subject'] . ' (HL)';
+$subject = $_REQUEST['subject'] . " ($mcid)";
 $body = stripslashes($_REQUEST['body']);
 // create and log message to call history
 $notes = 'Email message sent to caller as follows:<br>';
@@ -169,8 +171,8 @@ file_put_contents($listname, implode("\n", $list));
 file_put_contents($msgname, implode("\n", $msg));
 
 // send email message to caller
-echo 'server: ' . $_SERVER['SERVER_NAME'] .'<br>';
-echo 'Message written to the send queue.<br>';
+//echo 'server: ' . $_SERVER['SERVER_NAME'] .'<br>';
+//echo 'Message written to the send queue.<br>';
 if ($_SERVER['SERVER_NAME'] != 'localhost') {
   echo '<br>Starting sender program at ' . date('r') . '<br>';
   // kick the mailsender routine on its way 
@@ -183,8 +185,10 @@ else {
   echo '<h4>Email files written to the test system MailQ directory.</h4>';  
   }
 
-echo "<h4>An email message was successfully sent to $specto</h4>";
-echo "Click the RETURN button to return to Call $callnbr<br><br>";
+echo "<h4>An email message was successfully queued to be sent to $specto</h4>";
+
+echo "The message may be reviewed by using the <a href="rptmaillogviewer.php" target=_blank>Mail Log Viewer</a> hich is also available in the Reports menu<br>
+Click the RETURN button to return to Call $callnbr<br><br>";
 
 ?>
 

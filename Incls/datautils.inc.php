@@ -263,6 +263,7 @@ function checkcredentials($userid, $password) {
 		$_SESSION['SessionTimer'] = time() + $_SESSION['SessionLength'];
 		$_SESSION['SecLevel'] = $r[Role];
 		$_SESSION['SessionUser'] = $userid;
+		$_SESSION['ActiveCTSMCID'] = $r[MCID];
 		return(true);
 		}
 	echo "ERROR: userid and/or password provided not valid.<br>";

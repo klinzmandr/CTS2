@@ -15,6 +15,7 @@ include 'Incls/seccheck.inc.php';
 include 'Incls/datautils.inc.php';
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
+$mcid = isset($_REQUEST['mcid']) ? $_REQUEST['mcid'] : "";
 $recno = isset($_REQUEST['recno']) ? $_REQUEST['recno'] : "";
 $userid = isset($_REQUEST['userid']) ? $_REQUEST['userid'] : "";
 $password = isset($_REQUEST['password']) ? $_REQUEST['password'] : "";
@@ -32,6 +33,7 @@ if ($action == "delete") {
 if ($action == "addnew") {
 	//echo "Add new record number for user: $userid, password: $password, role: $role<br>";
 	$flds[UserID] = $userid;
+	$flds[MCID] = $mcid;
 	$flds[Password] = $password;
 	$flds[Role] = $role;
 	$flds[FullName] = $fullname;
@@ -52,6 +54,7 @@ function checkflds(form) {
 	var errcnt = 0;
 	if (form.userid.value == "") errcnt +=1;
 	if (form.password.value == "") errcnt += 1;
+	if (form.mcid.value == "") errcnt += 1;
 	if (form.role.value == "") errcnt += 1;
 	if (errcnt > 0) {
 		alert ("A required field is missing.");
@@ -67,7 +70,12 @@ function trim(s)
 	}
 
 </script>
-
+<script>
+function chkconf() {  
+  if (confirm("Confirm deletion by clicking OK.")) { return true;  }
+  return false;
+}
+</script>
 <form class="form" name="addform" action="adminaddnewuser.php" onsubmit="return checkflds(this)">
 New User ID: <input type="text" name="userid" placeholder="User Id">
 Password: <input type="text" name="password" value="raptor">
@@ -77,6 +85,7 @@ Role: <select name="role">
 <option value="user">User</option>
 <option value="guest">Guest</option>
 </select><br />
+MCID: <input type="text" name="mcid" placeholder="MCID">
 Full Name: <input type="text" name="fullname" placeholder="First/Last Name">
 Date Joined: <input type="text" name="datejoined" placeholder="MM/DD/YYYY"><br>
 Notes:<br /><textarea name="notes" rows="3" cols="50"></textarea><br />
@@ -93,10 +102,10 @@ pagePart1;
 $sql = "select * from cts2users ORDER BY `Role` ASC, `UserID` ASC";
 $res = doSQLsubmitted($sql);
 echo "<table class=\"table-condensed\">";
-echo "<tr><th>Delete</th><th>Role</th><th>User ID</th><th>Password</th><th><-----FullName----></th><th>Date Joined</th><th>Notes</th></tr>";
+echo "<tr><th>Delete</th><th>Role</th><th>User ID</th><th>MCID</th><th>Password</th><th><-----FullName----></th><th>Date Joined</th><th>Notes</th></tr>";
 while ($r = $res->fetch_assoc()) {
 	//echo "<pre>user: "; print_r($r); echo "</pre>";
-	echo "<tr><td align=\"center\"><a href=\"adminaddnewuser.php?action=delete&recno=$r[SeqNo]\"><img src=\"img/b_drop.png\" alt=\"DELETE\" /></a></td><td>$r[Role]</td><td>$r[UserID]</td><td>$r[Password]</td><td>$r[FullName]</td><td>$r[DateJoined]</td><td>$r[Notes]</td></tr>";
+	echo "<tr><td align=\"center\"><a href=\"adminaddnewuser.php?action=delete&recno=$r[SeqNo]\"><img onclick=\"return chkconf()\"src=\"img/b_drop.png\" alt=\"DELETE\" /></a></td><td>$r[Role]</td><td>$r[UserID]</td><td>$r[MCID]</td><td>$r[Password]</td><td>$r[FullName]</td><td>$r[DateJoined]</td><td>$r[Notes]</td></tr>";
 	}
 echo "</table><br>==== END OF LIST ===<br></div>";
 
