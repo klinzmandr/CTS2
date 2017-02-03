@@ -24,12 +24,13 @@ $sql = "SELECT * FROM `calls` ORDER BY `CallNbr` DESC LIMIT 0,50;";
 // echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
-echo '<table class="table table-condensed">
+echo '<table class="table table-condensed table-hover">
 <tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>';
 while ($r = $res->fetch_assoc()) {
 	//echo '<pre> year '; print_r($r); echo '</pre>';
 	$callnbr = $r[CallNbr];
-	echo "<tr><td align=\"center\"><a href=\"callroview.php?action=button&call=$callnbr\">$callnbr</a></td>";
+	echo "<tr onclick=\"window.location='callroview.php?action=button&call=$callnbr'\" style='cursor: pointer;'>
+	<td align=\"center\">$callnbr</td>";
 	//echo "<tr><td>$callnbr</td>";
 	echo "<td>$r[Status]</td><td>$r[DTOpened]</td><td>$r[DTPlaced]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
 	}

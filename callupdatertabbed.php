@@ -8,7 +8,8 @@
 <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
 <!--<body onload="initSelects(this)" onchange="flagChange()">-->
-<body onchange="flagChange()">
+<!-- <body onchange="flagChange()"> -->
+<body>
 
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -25,35 +26,53 @@ $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
 // apply any fields updated to call record
 if ($action == 'update') {
+// read call record
+  $sessionuser = $_SESSION['SessionUser'];
+  $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
+  //echo "sql: $sql<br>";
+  $res = doSQLsubmitted($sql);
+  $r = $res->fetch_assoc();
+//  echo '<pre>DB record '; print_r($r); echo'</pre>';
+  
 	$notearray = array();  $vararray = array();
 	//echo 'Update action requested.';
 	$uri = $_SERVER['QUERY_STRING'];
 	parse_str($uri, $vararray);
-	//echo '<pre> var '; print_r($vararray); echo '</pre>';
+//	echo '<pre> input var '; print_r($vararray); echo '</pre>';
 	unset($vararray[action]);
 	unset($vararray[submit]);
 	if (strlen($vararray[notes]) <= 4) { $vararray[notes] = 'Call updated'; }
 	$notearray[CallNbr] = $callnbr;
 	$notearray[UserID] = $_SESSION['SessionUser'];
-	$notearray[Notes] = $vararray[notes];
-//	echo '<pre> note '; print_r($notearray); echo '</pre>';
+	$notearray[Notes] = '';
+// add any changes to name, phone number of email address to call log record 
+  if ($r[Name] != $vararray[Name]) $notearray[Notes] .= '<br>Name: '.$vararray[Name];
+  if ($r[EMail] != $vararray[EMail]) $notearray[Notes] .= '<br>Email: '.$vararray[EMail];
+  if ($r[PrimaryPhone] != $vararray[PrimaryPhone])
+      $notearray[Notes] .= '<br>Phone: '.$vararray[PrimaryPhone].'<br>';
+  if ($r['CaseRefNbr'] != $vararray['CaseRefNbr']) 
+      $notearray[Notes] .= '<br>WRMD Ref. Nbr: '.$vararray['CaseRefNbr'].'<br>';
+  $notearray[Notes] .= '<br>'.$vararray[notes].'<br>';
+//	echo '<pre> new note '; print_r($notearray); echo '</pre>';
+// add new call log records
 	sqlinsert("callslog", $notearray);
 	unset($notearray);
+  unset($vararray[notes]);
 	
-	unset($vararray[notes]);
+// now write updates to the call itself	
 	$vararray[LastUpdater] = $_SESSION['SessionUser'];
 	$cszarray = explode(',',$r[City]);
 	if (count($cszarray) == 3) {
-		$r[City] = $cszarray[0]; $r[State] = $cszarray[1]; $r[Zip] = $cszarray[2];
-	}
+    $r[City] = $cszarray[0]; $r[State] = $cszarray[1]; $r[Zip] = $cszarray[2];
+    }
 	$where = "`CallNbr`='" . $callnbr . "'";
-	//echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
+//echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
 	sqlupdate('calls',$vararray, $where);
 	$action = 'view';
 	}
 //echo '<pre>Notes  '; print_r($notearray); echo'</pre>';
 
-// read call and display
+// read call record with updates if there were any
 $sessionuser = $_SESSION['SessionUser'];
 $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
 if ($action == 'new') {
@@ -62,6 +81,8 @@ if ($action == 'new') {
 //echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
 $r = $res->fetch_assoc();
+
+// parse record fields into page
 //echo '<pre>DB record '; print_r($r); echo'</pre>';
 $callnbr = $r[CallNbr];
 $status = $r[Status]; 
@@ -75,7 +96,7 @@ $reason = $r[Reason]; $lastlupdater = $r[LastUpdater];
 $org = $r[Organization]; $name = $r[Name]; $address=$r[Address];
 $city = $r[City]; $state = $r[State]; $zip = $r[Zip]; 
 $primaryphone = $r[PrimaryPhone]; 
-$email = $r[EMail];
+$email = $r[EMail]; $crn = $r['CaseRefNbr'];
 $description = $r[Description];
 $pcsent = $r[PostcardSent]; $emsent = $r[EmailSent];
 
@@ -90,7 +111,7 @@ if ($action == 'new') {
 
 print<<<scriptPart
 <script type="text/javascript">
-// Runs two functions - on inline defined, the second a stand alone
+// set up select lists
 $(document).ready(function () { 
 	//alert("first the inline function");
 	$("#AL").val("$animallocation");
@@ -107,6 +128,12 @@ function chkdtp() {
 		alert("Entry for Date/Time Placed is required.");
 		return false;
 		}
+	if (chkEMAddr() == false) {
+    return false;
+    }
+  if (checkPhone() == false) {
+    return false;
+    } 
 	return true;
 	}
 </script>
@@ -115,20 +142,27 @@ scriptPart;
 // call tab
 print <<<pagePart1
 <div class="container">
-<h3>Call $callnbr&nbsp;&nbsp;&nbsp;<a href="callroview.php?call=$callnbr"><span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>
-<form class="form" name="tf" action="callupdatertabbed.php" onsubmit="return chkdtp()">
+<h3>Call $callnbr&nbsp;&nbsp;&nbsp;<a href="callroview.php?call=$callnbr">
+<span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>
+
+<script>
+$(document).ready(function() {
+  $("#X").fadeOut(2000);
+});
+</script>
+<h3 style="color: red; " id="X">Update Completed.</h3>
+
+
+<form class="form" id="tf" name="tf" action="callupdatertabbed.php" onsubmit="return chkdtp()">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="callnbr" value="$callnbr">
-<!-- <ul id="myTab" class="nav nav-tabs">
-  <li class="active"><a href="#info" data-toggle="tab">Call</a></li>
-  <li class=""><a href="#details" data-toggle="tab">Details</a></li>
-  <li class=""><a href="#callerext" data-toggle="tab">Caller Extended</a></li>
-  <li class=""><a href="#history" data-toggle="tab">History</a></li>
-  <li class=""><a href="callroview.php?call=$callnbr"><span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></li></a></li>
-</ul> -->
 
 Date/Time Call Entered:&nbsp;&nbsp;$dtopened&nbsp;&nbsp;&nbsp;
 Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="DTPlaced" value="$dtplaced" style="width: 150px; height: 25px;"><br>
+
+Caller Name:<input autofocus type="text" name="Name" placeholder="Caller Name" value="$name" />
+Phone: <input id="PN" onblur="return checkPhone()" type="text" name="PrimaryPhone" value="$primaryphone" size="12" maxlength="12" placeholder="Phone Number" />
+
 
 <script type="text/javascript">
 $('#DP1').datetimepicker({
@@ -140,14 +174,15 @@ $('#DP1').datetimepicker({
 });
 </script>
 <script>
-function checkphone(fld) {
+function checkPhone() {
 //alert("validation entered");
+if ($("#PN").val().length == 0) {
+  $("#PN").attr("style","background-color:white;");
+  return true;
+  }
+var fld = $("#PN").val();
 var errmsg = "";
-var stripped = fld.value.replace(/[\(\)\.\-\ \/]/g, '');
-if (stripped.length == 0) {
-	fld.style.background = 'White';
-	return true;
-	}
+var stripped = fld.replace(/[a-zA-z\(\)\.\-\ \/]/g, '');
 if (stripped.length == 7)
 	stripped = "805" + stripped;
 if (stripped.length != 10) { 
@@ -158,31 +193,42 @@ if(!stripped.match(/^[0-9]{10}/))  {
 	}
 if (errmsg.length > 0) {
 	errmsg += "\\nValid formats: 123-456-7890 or 123 456 7890 or 123-456-7890 or 1234567890";
-	fld.style.background = 'Pink';
+	//fld.attr().background = 'Pink';
+	$("#PN").attr("style","background-color:pink;");
 	alert(errmsg);
 	return false;
 	}
 var newval = stripped.substr(0,3) + "-" + stripped.substr(3,3) + "-" + stripped.substr(6,4);
-fld.value = newval;
-fld.style.background = 'White';
+//fld.value = newval;
+$("#PN").val(newval);
+$("#PN").attr("style","background-color:white;");
 return true;
 }
 </script>
 
-Caller Name:<input autofocus type="text" name="Name" placeholder="Caller Name" value="$name" />
-Phone: <input id="PN" onchange="return checkphone(this)" type="text" name="PrimaryPhone" value="$primaryphone" size="12" maxlength="12" placeholder="Phone Number" />
 <script>
 function checkemail() {
-	//var sval = $("#EM").val().length;
-	var sval = "$email";
-	var len = sval.length;
-	if (sval == 0) {
+	var sval = $("#EM").val();
+	if (sval == "") {
 		alert("ERROR: No email address provided");		
 		return false;
 		}
 	return true;
 	}
 </script>
+<script type="text/javascript">
+function chkEMAddr() {
+  $("#EM").attr("style","background-color:white;");
+  var em = $("#EM").val();
+  if (em.length == 0) return true;
+  var pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  var tst = pattern.test(em);
+  if (tst == true) return true;
+  $("#EM").attr("style","background-color:pink;");
+  alert("Invalid email address has been entered.");
+  return false;
+  }
+</script>    
 <script type="text/javascript" src="js/nicEdit.js"></script>
 <script type="text/javascript">
 //	bkLib.onDomLoaded(function() { nicEditors.allTextAreas(); initSelects(this) });
@@ -191,13 +237,14 @@ bkLib.onDomLoaded(function() {
   });    
 </script>
 
-E-mail: <input type="text" name="EMail" value="$email" id="EM" placeholder="Email Address">
-<a href="emailsend.php?emadr=$email&callnbr=$callnbr&name=$name" onclick="return checkemail()">
+E-mail: <input type="text" name="EMail" value="$email" id="EM" onblur="return chkEMAddr()" placeholder="Email Address">
+<a href="emailsend.php?emadr=$email&callnbr=$callnbr&name=$name&crn=$crn" onclick="return checkemail()">
 <span class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
 </span></a>
 <br />
 
-Call Description:<input type="text" name="Description" value="$description" size="60"  description="" /><br />
+Call Description:<input type="text" name="Description" value="$description" size="60"  description="" />
+<br />
 Additional Notes: (check History for prior note entries)<br />
 <textarea id="area1" name="notes" rows="5" cols="90"></textarea>
 <input type="hidden" name="Status" value="$status">
@@ -206,7 +253,7 @@ Additional Notes: (check History for prior note entries)<br />
 pagePart1;
 
 // call details tab
-echo '<table><tr><td width="40%">
+echo '<table class="table table-condensed" border=1><tr><td>
 <table class="table-condnensed">';
 echo '<tr><td>Animal Location:</td><td>
 <select id="AL" name="AnimalLocation" size="1">
@@ -228,12 +275,13 @@ echo '</select></td></tr><tr><td>Call Reason:</td><td>
 <select id="RE" name="Reason" size="1">
 <option value=""></option>';
 loaddbselect("Reasons");
-echo '</select></td></tr>';
-
-echo '</table>
+echo '</select>';
+echo '</td>
+</table>
 </td>
 ';
-echo '<input type="submit" name="submit" value="Update Call" /><hr>';
+//echo '<input class="btn btn-success" type="submit" name="submit" value="Update Call" /><hr>';
+echo '<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><hr>';
 $citieslist = createddown();
 
 // caller extended details tab
@@ -250,6 +298,7 @@ function loadcity() {
 	}
 </script>
 <td valign="top">
+WRMD Number: <input type="text" name="CaseRefNbr" value="$crn" maxlength="8" id="CRN"><br>
 Organization: <input type="text" name="Organization" size="50" placeholder="Organization" value="$org"><br>
 Address:<input id="PC" type="text" name="Address" size="50" placeholder="Address Line" value="$address"><br />
 City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="City" placeholder="City" value="$city" autocomplete="off" onblur="loadcity()" />, 
@@ -285,11 +334,11 @@ print <<<pagePart4
 var citylist = $citieslist
 $('#CI').typeahead({source: citylist})
 </script>
-
 </td></tr></table>
 
 pagePart4;
-echo '<input type="submit" name="submit" value="Update Call" /><hr>';
+//echo '<input type="submit" name="submit" value="Update Call" /><hr>';
+echo '<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><hr>';
 echo '</form>';
 
 // output the history log

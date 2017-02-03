@@ -9,20 +9,29 @@ body { padding-top: 50px; }      <!-- add padding to top of each page for fixed 
 <!-- Form change variable must be global -->
 var chgFlag = 0;
 
+$(document).ready(function(){
+  $("input").change(function(){
+    chgFlag += 1; });
+  $("textarea").change(function(){
+    chgFlag += 1; });
+  $("select").change(function(){
+    chgFlag += 1; });
+}); 
+
 function chkchg() {
 	if (chgFlag <= 0) { return true; }
-	var r=confirm("All changes made will be lost.\\n\\nConfirm by clicking OK. (" + chgFlag + ")");	
+	var r=confirm("All changes made will be lost.\\n\\nConfirm leaving page by clicking OK.");	
 	if (r == true) { chgFlag = 0; return true; }
 		return false;
-	}
+  }
 
 // add '<body onchange="flagChange()"> to all pages needed
-function flagChange() {
+//function flagChange() {
 	//alert("change flagged");
 	//document.getElementById("chgflg").hidden=false;
-	chgFlag += 1;
-	return true;
-	}
+//	chgFlag += 1;
+//	return true;
+//	}
 
 </script>
 
@@ -60,7 +69,7 @@ print<<<menupart2
   		<li><a onclick="return chkchg()" href="admincloseany.php">Close Any Open Call</a></li>
   		<li><a onclick="return chkchg()" href="adminaddnewuser.php">Maintain Userid &amp; Passwords</a></li>
   		<li><a onclick="return chkchg()" href="adminresourcesmaint.php">Maintain Resource Links</a></li>
-  		<li><a onclick="return chkchg()" href="adminformsmaint.php">Maintain Forms</a></li>
+  		<li><a onclick="return chkchg()" href="adminformsmaint.php">Maintain Docs and Forms</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Locations">Maintain Locations</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Properties">Maintain Properties</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Species">Maintain Species</a></li>
@@ -128,6 +137,7 @@ print <<<menuPart3b
 	<li><a href="rptlast50calls.php" target="_blank">Last 50 Calls Report</a></li>
 	<li><a href="rptlistcallsfortoday.php" target="_blank">Today&apos;s Calls</a></li>
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
+	<li><a href="rpthistoricalcalls.php" target="_blank">Historical Call Report</a></li>
 	<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
 	<li class="divider"></li>
 	<li><a href="#">Other report(s) added as needed</a></li>

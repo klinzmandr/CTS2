@@ -73,7 +73,7 @@ function moveContent(){
 <a class="btn btn-info" onclick=setup("Reply3")>Edit Reply 3</a>&nbsp;&nbsp;
 <a class="btn btn-info" onclick=setup("Reply4")>Edit Reply 4</a>&nbsp;&nbsp;
 <a class="btn btn-info" onclick=setup("Reply5")>Edit Reply 5</a>&nbsp;&nbsp;
-<a class="btn btn-info" onclick=setup("clear")>Clear</a><br><br>
+<a class="btn btn-info" onclick=setup("Reply6")>Edit Reply 6</a><br><br>
 
 
 <div style="visibility: hidden; " id="Reply1">
@@ -90,6 +90,9 @@ function moveContent(){
 </div>
 <div style="visibility: hidden; " id="Reply5">
 <?php include 'Incls/emailReply5.inc.php'; ?>
+</div>
+<div style="visibility: hidden; " id="Reply6">
+<?php include 'Incls/emailReply6.inc.php'; ?>
 </div>
 
 </body>

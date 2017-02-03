@@ -46,6 +46,7 @@ $res = doSQLsubmitted($sql);
 $r = $res->fetch_assoc();
 $seqnbr = $r[SeqNbr];
 $userid = $_SESSION['SessionUser'];
+
 //echo '<pre> db '; print_r($r); echo '</pre>';
 print <<<pagePart1
 <script type="text/javascript" src="js/nicEdit.js"></script>
@@ -70,6 +71,7 @@ function movemsg() {
 <div class="container">
 <h3>Update Bulletin Board Note $seqnbr&nbsp;&nbsp;
 <a class="btn btn-success" href="bboard.php">CANCEL & RETURN</a></h3>
+
 <form action="bboardupdate.php"  class="form">
 <input type="text" name="Subject" value="$r[Subject]" size="80"  placeholder="Note Subject">
 <!-- <div style="font-size: 16px; padding: 3px; border: 5px solid #000; width: 800px; height: 400px; " id="area1"> -->

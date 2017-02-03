@@ -1,7 +1,6 @@
 
 
-
-<p>Thank you, [name], for your recent call to the Pacific Wildlife Care hotline.</p>
+<p><img alt="PWC Logo" src="https://apps.pacwilica.org/PWC_logo_only.jpg" align="right" width="200">Thank you, [name], for your recent call to the Pacific Wildlife Care hotline.</p>
 <p>Your call has been noted in our database with a reference number of <b>CR[callnbr]</b>.  
 Please use this call reference number if you have a question regarding 
 this incident.  For more information about this incident you may respond

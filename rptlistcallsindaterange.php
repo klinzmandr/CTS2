@@ -40,6 +40,7 @@ ORDER BY `CallNbr` DESC;";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 $resarray = array(); $countarray = array();
+$countarray[Total] = 0;$countarray[Open] = 0; $countarray[Closed] = 0; $countarray[Center] = 0;  
 while ($r = $res->fetch_assoc()) {
 	$resarray[$r[CallNbr]] = $r;
 	$countarray[Total] += 1;
@@ -53,6 +54,7 @@ $cc .= $countarray[Open] . '/';
 $cc .= $countarray[Closed] . '/';
 $cc .= $countarray[Center] . '<br>';
 echo $cc; 
+//echo '<pre> year '; print_r($countarray); echo '</pre>';
 echo '<table class="table table-condensed">
 <tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>';
 foreach ($resarray as $r) {

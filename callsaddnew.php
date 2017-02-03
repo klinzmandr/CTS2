@@ -154,6 +154,7 @@ $rc = $res->num_rows;
 
 $addarray[OpenedBy] = $_SESSION['SessionUser'];
 $addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
+$addarray[DTPlaced] = date('Y-m-d H:00', strtotime(now));
 $addarray[Status] = 'New';
 //echo '<pre> addarray '; print_r($addarray); echo '</pre>';
 if ($rc == 0) {							// nope - add a new record

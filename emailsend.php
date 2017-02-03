@@ -21,8 +21,9 @@ include 'Incls/datautils.inc.php';
 $mcid = $_SESSION['ActiveCTSMCID'];
 $email = isset($_REQUEST['emadr']) ? $_REQUEST['emadr'] : '';
 
-$callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
-$name = isset($_REQUEST['name']) ? $_REQUEST['name'] : '';
+$crn = isset($_REQUEST['crn']) ? $_REQUEST['crn'] : '';             // WRMD case number
+$callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : ''; // CTS CR number
+$name = isset($_REQUEST['name']) ? $_REQUEST['name'] : '';          // caller name
 if ($name == '') $name = 'PWC Caller';
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
@@ -39,25 +40,26 @@ print <<<pagePart1
 <script>
 function setup(rep) {
   var val = rep;
-  if (val == "clear") { 
-    $("#area1").html('<br>'); 
-  return; }
   var tar = '#'+rep;
   $("#area1").html($(tar).html());
   var strNewString =  $('#area1').html().replace(/\[callnbr\]/g, "$callnbr");
   strNewString = strNewString.replace(/\[name\]/g, "$name");
+  strNewString = strNewString.replace(/\[crn\]/g, "$crn");
 	$('#area1').html(strNewString);
-  return;
+	if (strNewString.length < 10) {
+	  alert("Reply has not been created.")
+	  return false;
+    }
+  return true;
   }
 </script>
-
 <b>Choose and edit a predefined reply or enter your own.</b><br>
 <a class="btn btn-info" onclick=setup("Reply1")>Reply 1</a>&nbsp;&nbsp;
 <a class="btn btn-info" onclick=setup("Reply2")>Reply 2</a>&nbsp;&nbsp;
 <a class="btn btn-info" onclick=setup("Reply3")>Reply 3</a>&nbsp;&nbsp;
 <a class="btn btn-info" onclick=setup("Reply4")>Reply 4</a>&nbsp;&nbsp;
 <a class="btn btn-info" onclick=setup("Reply5")>Reply 5</a>&nbsp;&nbsp;
-<a class="btn btn-info" onclick=setup("clear")>Clear</a><br><br>
+<a class="btn btn-info" onclick=setup("Reply6")>Reply 6</a><br><br>
 
 <script type="text/javascript" src="js/nicEdit.js"></script>
 <script type="text/javascript">
@@ -79,7 +81,14 @@ function chkemail(form) {
     alert("Nothing entered in the email message.");
     return false;
     }
+  var pattern = /{.*}/i;
+  var tst = pattern.test(div_val);
+  if (tst) {
+    alert("Replace BOLDED sentence with appropriate verbiage.");
+    return false;
+    }
   document.getElementById("ta").value =div_val;
+  //alert("OK to send");
   return true;
 	}
 </script>
@@ -120,6 +129,9 @@ include 'Incls/emailReply4.inc.php';
 echo '</div>
 <div style="visibility: hidden; " id="Reply5">';
 include 'Incls/emailReply5.inc.php';
+echo '</div>
+<div style="visibility: hidden; " id="Reply6">';
+include 'Incls/emailReply6.inc.php';
 echo '</div>';
 
 exit;
@@ -155,7 +167,7 @@ $message  = strtr($body, $trans);
 
 $list = array(); $msg = array();
 $list[] = 'HOTLINE:'.$to;
-$msg[] = 'hotline@pacwilica.org';
+$msg[] = 'hotline@pacificwildlifecare.org';
 
 $msg[] = $subject;
 $msg[] = $message;
@@ -187,7 +199,7 @@ else {
 
 echo "<h4>An email message was successfully queued to be sent to $specto</h4>";
 
-echo "The message may be reviewed by using the <a href="rptmaillogviewer.php" target=_blank>Mail Log Viewer</a> hich is also available in the Reports menu<br>
+echo "The message may be reviewed by using the <a href=\"rptmaillogviewer.php\" target=_blank>Mail Log Viewer</a> hich is also available in the Reports menu<br>
 Click the RETURN button to return to Call $callnbr<br><br>";
 
 ?>

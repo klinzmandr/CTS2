@@ -30,22 +30,24 @@ $r = $res->fetch_assoc();
 $label = "$r[Name]<br>$r[Address]<br>$r[City], $r[State]  $r[Zip]";
 if (strlen($r[Organization]) > 0) 
 	$label = "$r[Organization]<br>$r[Name]<br>$r[Address]<br>$r[City], $r[State]  $r[Zip]";
-echo '<div class="container">';
+echo '<div class="container">
+<table class="table"><tr><td>';
+
 if ($action != '') {
-	echo "Call $call &nbsp;&nbsp;   <a href=\"javascript:self.close();\" class=\"btn btn-xs btn-primary\"><b>CLOSE</b></a>";
+	echo "<br><h2>Call $call&nbsp;&nbsp;<a href=\"javascript:self.close();\" class=\"btn btn-primary\"><b>CLOSE</b></a></h2> ";
 	}
 else {
-	echo "<h3><a href=\"callupdatertabbed.php?action=view&callnbr=$call\">Call $call</a></h3>";
+	echo "<h2><a href=\"callupdatertabbed.php?action=view&callnbr=$call\">Call $call</a></h2>";
 	}
-
+echo '</td><td><img src="https://apps.pacwilica.org/PWC_logo_only.jpg" width="250" alt="PWC logo" style="float: right; "></td></tr></table>';
 if ($r[DTClosed] == '') $end = strtotime('now');
 else $end = strtotime($r[DTClosed]);
 $start = strtotime($r[DTOpened]);
 $duration = number_format(($end - strtotime($r[DTOpened]))/(24*60*60));
 print <<<pagePart1
-<span style="font-size: larger; color: #1E90FF; "><b>Call Detail</b></span>
-<table border="0" class="table-condensed">
-<tr><td><b>Call Status:</b> $r[Status]</td></tr>
+<span style="font-size: larger; color: #FF0000; "><b><font size="+1">Call Detail</font></b></span>
+<table class="table table-condensed" border=0 class="table-condensed">
+<tr><td width="35%"><b>Call Status:</b> $r[Status]</td></tr>
 <tr><td><b>Call Opened By:</b> $r[OpenedBy]</td>
 <td><b>Last Updated By:</b> $r[LastUpdater]</td></tr>
 <tr><td colspan="4"><b>Description:</b> $r[Description]<td></tr>
@@ -57,12 +59,14 @@ print <<<pagePart1
 <td><b>Property:</b><br>&nbsp;&nbsp;$r[Property]</td>
 <td><b>Species:</b><br>&nbsp;&nbsp;$r[Species]</td></tr>
 <tr><td><b>Reason:</b>&nbsp;&nbsp;$r[Reason]</td></tr>
+<tr><td><b>WRMD Ref. Number:</b>&nbsp;&nbsp;$r[CaseRefNbr]</td></tr>
 <tr><td valign="top"><b>Resolution:</b> </td><td colspan="3">$r[Resolution]<br></td></tr>
 <tr><td><b>Time to Resolve:</b></td><td>$r[TimeToResolve] minutes</td></tr></table>
-<table border="0" class="table-condensed">
-<span style="font-size: larger; color: #1E90FF; "><b>Caller Detail</b></span>
-<tr><td valign="top"><b>Mailing Label:</b></td>
-<td bgcolor="#E6E6FA">$label</td</tr>
+
+<span style="font-size: larger; color: #FF0000; "><b><font size="+1">Caller Detail</font></b></span>
+<table border=0 class="table table-condensed">
+<tr><td width="35%" valign="top"><b>Mailing Label:</b></td>
+<td bgcolor="#E5E5E5">$label</td</tr>
 <tr><td><b>Organization:</b> </td><td  colspan="3">$r[Organization]</td></tr>
 <tr><td><b>Caller Name:</b> </td><td>$r[Name]</td></tr>
 <tr><td><b>Address:</b> </td><td>$r[Address]</td></tr>
@@ -76,8 +80,8 @@ $sql = "SELECT * FROM `callslog` WHERE `CallNbr` = '$call' ORDER BY `DateTime` D
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 if ($rc > 0) {
-	echo '<br><span style="font-size: larger; color: #1E90FF; "><b>Call History (latest first)</b></span>';
-	echo "<table class=\"table-condensed\">";
+	echo '<br><span style="font-size: larger; color: #FF0000; "><b><font size="+1">Call History (latest first)</font></b></span>';
+	echo '<table class="table table-condensed">';
 	while ($r = $res->fetch_assoc()) {
 		//echo '<pre> notes '; print_r($r); echo '</pre>';
 		$dt = date('Y-m-d \a\t H:i',strtotime($r[DateTime]));

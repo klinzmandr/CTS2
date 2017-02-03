@@ -60,7 +60,7 @@ else {
 }
 print <<<headPart
 <div class="container">
-<h1>Forms Directory Maintenance</h1>
+<h1>Documentation &amp; Forms Directory Maintenance</h1>
 <form action="adminformsmaint.php" method="post" enctype="multipart/form-data">
 <!-- <label for="file">or add a new one:&nbsp;</label> -->
 <table border=0><tr><td>
@@ -110,13 +110,10 @@ var inval = OName;
 var val = prompt("Please enter a NEW name (including the file extension if needed):",inval);
 if (val.length > 0) {
 // if confirm dialog is canceled it returns false
-	var r = confirm("Confirm rename of "+inval+" to "+val);
-	if (r == true) {
-		document.getElementById("HF1").value = inval;
-		document.getElementById("HF2").value = val;
-		document.forms["NameForm"].submit();
-  	return true;
-		}
+	document.getElementById("HF1").value = inval;
+	document.getElementById("HF2").value = val;
+	document.forms["NameForm"].submit();
+	return true;
 	}
 alert("Rename action cancelled");
 return false;

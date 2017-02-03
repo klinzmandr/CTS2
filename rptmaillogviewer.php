@@ -72,8 +72,7 @@ echo '<input type="hidden" name="action" value="viewdb">
 if ($action == 'del') {
 	if ($_SESSION['SecLevel'] != 'admin') {
 		echo '<h2>Invalid Security Level</h2>
-		<h4>You do not have the correct authorization to maintain these lists.</h4>
-		<p>Your user id is registered with the security level of &apos;user&apos;.  It must be upgraded to &apos;admin&apos; in order to modify any lists.</p>
+		<h4>You do not have the correct authorization to delete log file records.</h4>
 		<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
 		</body></html>';
 		exit;

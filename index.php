@@ -31,7 +31,7 @@ if ((($action) == 'login')) {
 		$ok = checkcredentials($userid, $password);
 		if ($ok) {
 			//echo "check of user id and password passed<br>";
-//			addlogentry("Logged In");
+			addlogentry("Logged In");
 			}
 		else {
 //			addlogentry("Failed login attempt with password: $password");
