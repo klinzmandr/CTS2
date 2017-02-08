@@ -93,6 +93,7 @@ listPart1;
 }
 ?>
 </table>
+=== End of List ===
 <script>
 function chkdel() {
 	var r = confirm("This action permanently deletes the file.  \nThis action CANNOT be reversed. \n\nClick OK to continue.");
@@ -102,7 +103,7 @@ function chkdel() {
 </script>
 
 </div>  <!-- container -->
-// rename function and scripts
+
 <script>
 function getfld(OName) {
 var inval = OName;
