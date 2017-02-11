@@ -4,7 +4,7 @@
 <title>List Calls in Date Range</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 <link href="css/datepicker3.css" rel="stylesheet">
 
 </head>
@@ -21,18 +21,19 @@ include 'Incls/seccheck.inc.php';
 include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
-<h3>List Calls In Date Range&nbsp;&nbsp; <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>
+<div class="container">
+<h3>List Calls In Date Range&nbsp;&nbsp; <a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
 
 pagePart1;
 $sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-01', strtotime("previous month"));
 $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("previous month"));
 print <<<inputForm
 
-<form action="rptlistcallsindaterange.php" method="post"  class="form">
+<form action="rptcallsbyhlvindaterange.php" method="post"  class="form">
 Start Date: 
 <input type="text" name="sd" id="sd" value="$sd"> and End Date:  
 <input type="text" name="ed" id="ed" value="$ed">
-<input type="submit" name="submit" value="Submit">
+<input class="hidden-print" type="submit" name="submit" value="Submit">
 </form>
 
 inputForm;
@@ -59,20 +60,32 @@ $cc .= $countarray[Open] . '/';
 $cc .= $countarray[Closed] . '/';
 $cc .= $countarray[Center] . '<br>';
 echo $cc; 
-//echo '<pre> year '; print_r($countarray); echo '</pre>';
-echo '<table class="table table-condensed">
-<tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>';
+
+$hlvarray = array();
 foreach ($resarray as $r) {
-	//echo '<pre> year '; print_r($r); echo '</pre>';
-	$callnbr = $r[CallNbr];
-	echo "<tr><td align=\"center\">$callnbr</td>";
-	//echo "<tr><td>$callnbr</td>";
-	echo "<td>$r[Status]</td><td>$r[DTOpened]</td><td>$r[DTPlaced]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
+  $hlvarray[$r[OpenedBy]][count] += 1;
+  $datems = strtotime($r[DTOpened]);
+  if ((!isset($hlvarray[$r[OpenedBy]][first])) OR ($hlvarray[$r[OpenedBy]][first] < $datems)) {
+    list($hlvarray[$r[OpenedBy]][first], $x) = explode(' ', $r[DTOpened]); 
+    //echo 'first DTOpened: '. $r[DTOpened] . " datems: $datems<br>"; 
+    }
+  if ((!isset($hlvarray[$r[OpenedBy]][last])) OR ($hlvarray[$r[OpenedBy]][last] > $datems)) {
+    list($hlvarray[$r[OpenedBy]][last], $x) = explode(' ', $r[DTOpened]);
+    //echo 'hlv: ' . $r[OpenedBy] . ' last DTOpened: '. $r[DTOpened] . " datems: $datems<br>"; 
+    }
+    
+  }
+// echo '<pre> hlv '; print_r($hlvarray); echo '</pre>';
+
+echo '<table class="table table-condensed">
+<tr><th>HLV Id</th><th>Call Count</th><th>Earliest Opened</th><th>Last Opened</th></tr>';
+foreach ($hlvarray as $k => $r) {
+	echo '<td>'.$k.'</td><td>'.$r[count].'</td><td>'.$r[first].'</td><td>'.$r[last].'</td></tr>';
 	}
 echo '</table>';
 echo "=== END OF REPORT===<br>";
 
 ?>
-
+</div>
 </body>
 </html>
