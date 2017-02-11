@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body onchange="flagChange()">
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -31,6 +34,15 @@ if ($action == 'upd') {
 	$where = "`SeqNbr`='" . $seqnbr . "'";
 	//echo '<pre> sql '; print_r($where); echo '<br> notearray ';print_r($notearray); echo '</pre>';
 	sqlupdate('bboard',$notearray, $where);	
+	
+	echo '<script>
+$(document).ready(function() {
+  $("#X").fadeOut(2000);
+});
+</script>
+<div class="container">
+<h3 style="color: red; " id="X">Update Completed.</h3>
+</div>';
 	}
 
 if ($action == 'addnew') {
@@ -69,8 +81,9 @@ function movemsg() {
 </script>
 
 <div class="container">
+
 <h3>Update Bulletin Board Note $seqnbr&nbsp;&nbsp;
-<a class="btn btn-success" href="bboard.php">CANCEL & RETURN</a></h3>
+<a class="btn btn-success" href="bboard.php">RETURN</a></h3>
 
 <form action="bboardupdate.php"  class="form">
 <input type="text" name="Subject" value="$r[Subject]" size="80"  placeholder="Note Subject">
@@ -91,7 +104,5 @@ pagePart1;
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
