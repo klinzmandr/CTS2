@@ -19,7 +19,7 @@ if (($action == 'logout')) {
 	unset($_SESSION['SessionUser']);
 	unset($_SESSION['SecLevel']);
 	unset($_SESSION['TEST_MODE']);
-	include 'Incls/seccheck.inc.php';
+	include 'Incls/seccheck.inc.php';      // present login fields
 	}
 if ((($action) == 'login')) {
 	unset($_SESSION['TEST_MODE']);
@@ -44,21 +44,23 @@ if ((($action) == 'login')) {
 include 'Incls/mainmenu.inc.php';
 echo "<div class=\"container\">";
 
-if (isset($_SESSION['SessionUser'])) {
-	echo '<h4>Session user logged in: ' . $_SESSION['SessionUser'] . '</h4>';
-	echo '<h5>Security level: ' . $_SESSION['SecLevel'] . '</h5>';
-	echo "<form class=\"form-inline\" action=\"index.php\" method=\"post\"  id=\"xform\">";
 //	if (isset($_SESSION['TEST_MODE']))
 //		echo '<h4 style="color: #FF0000; ">TEST MODE ENABLED - using test database for session</h3>';
 
-  echo '<h3>Home Page&nbsp  <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button></h3></form>';
+if (isset($_SESSION['SessionUser'])) {
+	echo '<h4>Session user logged in: ' . $_SESSION['SessionUser'] . '</h4>
+	<h5>Security level: ' . $_SESSION['SecLevel'] . '</h5>
+	<form class="form-inline" action="index.php" method="post"  id="xform">
+  <h3>Home Page&nbsp  
+  <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>
+  </h3></form>';
 	}
 else {
-	echo "<form class=\"form-inline\" action=\"calls.php\" method=\"post\"  id=\"yform\">";
-	echo "<h2>Call Tracking System II (CTS2)</h2>";
-	echo "
-	<h3>Home Page&nbsp  <button class=\"btn btn-large btn-primary\" name=\"action\" value=\"login\" type=\"submit\" form=\"yform\" class=\"btn\">Login</button></form></h3>
-	</h3>";
+	echo '<form class="form-inline" action="calls.php" method="post\"  id="yform">
+	<h2>Call Tracking System II (CTS2)</h2>
+	<h3>Home Page&nbsp  
+	<button class="btn btn-large btn-primary" name="action" value="login" type="submit" form="yform" class="btn">Login</button></form></h3>
+	</h3>';
 	}
 ?>
 <!-- START OF PAGE -->
