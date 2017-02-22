@@ -17,7 +17,7 @@ include 'Incls/datautils.inc.php';
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $call = isset($_REQUEST['call']) ? $_REQUEST['call'] : ''; 
 $closingnote = isset($_REQUEST['closingnote']) ? $_REQUEST['closingnote'] : '';
-$user = $_SESSION['SessionUser'];
+$user = $_SESSION['CTS_SessionUser'];
 
 // update the database with the info and close the call
 if ($action == 'close') {

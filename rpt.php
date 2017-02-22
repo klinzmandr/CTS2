@@ -10,14 +10,14 @@
 <body onload="initSelect()">
 <?php
 session_start();
-//unset($_SESSION['TEST_MODE']);
-//if (isset($_REQUEST['testdb'])) $_SESSION['TEST_MODE'] = 'ON'; 
+//unset($_SESSION['CTS_TEST_MODE']);
+//if (isset($_REQUEST['testdb'])) $_SESSION['CTS_TEST_MODE'] = 'ON'; 
 //include 'Incls/vardump.inc.php';
 //include 'Incls/seccheck.inc.php';
 // include 'Incls/mainmenu.inc.php';
 include 'Incls/datautils.inc.php';
 
-$dbinuse = "DB in use: " . $_SESSION['DB_InUse'] . "<br>";
+$dbinuse = "DB in use: " . $_SESSION['CTS_DB_InUse'] . "<br>";
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $sd = isset($_REQUEST['from_date']) ? $_REQUEST['from_date'] : date('Y-m-d', strtotime("today"));
 $ed = isset($_REQUEST['to_date']) ? $_REQUEST['to_date'] : date('Y-m-d', strtotime("tomorrow -1 second"));

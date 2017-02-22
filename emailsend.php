@@ -17,8 +17,8 @@ include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 include 'Incls/datautils.inc.php';
 
-// echo "MCID: " . $_SESSION['ActiveCTSMCID'] . '<br>';
-$mcid = $_SESSION['ActiveCTSMCID'];
+// echo "MCID: " . $_SESSION['CTS_ActiveCTSMCID'] . '<br>';
+$mcid = $_SESSION['CTS_ActiveCTSMCID'];
 $email = isset($_REQUEST['emadr']) ? $_REQUEST['emadr'] : '';
 
 $crn = isset($_REQUEST['crn']) ? $_REQUEST['crn'] : '';             // WRMD case number
@@ -152,7 +152,7 @@ $notes .= 'Subject: ' . $subject . '<br>';
 $notes .= 'Message: ' . $body . '<br>';
 $notearray = array();
 $notearray[CallNbr] = $callnbr;
-$notearray[UserID] = $_SESSION['SessionUser'];
+$notearray[UserID] = $_SESSION['CTS_SessionUser'];
 $notearray[Notes] = $notes;
 // echo '<pre> note '; print_r($notearray); echo '</pre>';
 sqlinsert("callslog", $notearray);

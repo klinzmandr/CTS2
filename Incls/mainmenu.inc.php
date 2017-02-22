@@ -56,7 +56,7 @@ function chkchg() {
 menupart1;
 
 // include Admin menu options for special users
-$seclevel = isset($_SESSION['SecLevel']) ? $_SESSION['SecLevel'] : '';
+$seclevel = isset($_SESSION['CTS_SecLevel']) ? $_SESSION['CTS_SecLevel'] : '';
 if ($seclevel == 'admin') {
 print<<<menupart2
 <!-- ======== define Admin dropdown ===================== -->

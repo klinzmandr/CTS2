@@ -51,7 +51,7 @@ if (strlen($action) > 0) {
 		<td>$r[LName]</td><td>$r[FName]</td><td>$r[City]</td><td>$r[EmailAddress]</td><td>$r[PrimaryPhone]</td><td>$r[Notes]</td></tr>";	
 		}
 	echo '</table>';
-if ($_SESSION['SecLevel'] == 'admin') {
+if ($_SESSION['CTS_SecLevel'] == 'admin') {
 	echo '<h3>Comma seperated list of email addresses</h3>';
 	$emlist = implode($emarray, ', ');
 	echo $emlist;

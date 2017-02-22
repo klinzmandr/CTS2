@@ -70,7 +70,7 @@ echo '<input type="hidden" name="action" value="viewdb">
 </td><td>';
 
 if ($action == 'del') {
-	if ($_SESSION['SecLevel'] != 'admin') {
+	if ($_SESSION['CTS_SecLevel'] != 'admin') {
 		echo '<h2>Invalid Security Level</h2>
 		<h4>You do not have the correct authorization to delete log file records.</h4>
 		<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>

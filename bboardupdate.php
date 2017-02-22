@@ -57,7 +57,7 @@ $sql = "SELECT * FROM `bboard` WHERE `SeqNbr` = '$seqnbr' OR `UserID`	= '**NewRe
 $res = doSQLsubmitted($sql);
 $r = $res->fetch_assoc();
 $seqnbr = $r[SeqNbr];
-$userid = $_SESSION['SessionUser'];
+$userid = $_SESSION['CTS_SessionUser'];
 
 //echo '<pre> db '; print_r($r); echo '</pre>';
 print <<<pagePart1

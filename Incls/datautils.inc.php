@@ -14,9 +14,9 @@ $mysqli = new mysqli("localhost", CTSDBUserName, CTSDBPassword, $db);
 if ($mysqli->connect_errno) {
 		$errno = $mysqli->connect_errno;
     echo "Failed to connect to MySQL: (" . $errno . ") " . $mysqli->connect_error."<br>";
-    $_SESSION['DB_ERROR'] = $db;
+    $_SESSION['CTS_DB_ERROR'] = $db;
     }
-$_SESSION['DB_InUse'] = $db;
+$_SESSION['CTS_DB_InUse'] = $db;
 // auto returns to code following the 'include' statement
 // echo "Initial Connection Info: ".$mysqli->host_info . "<br><br>";
 
@@ -25,7 +25,7 @@ $_SESSION['DB_InUse'] = $db;
 function doSQLsubmitted($sql) { 
 global $mysqli;
 
-if (isset($_SESSION['DB_ERROR'])) { unset($_SESSION['DB_ERROR']); return(FALSE); }
+if (isset($_SESSION['CTS_DB_ERROR'])) { unset($_SESSION['CTS_DB_ERROR']); return(FALSE); }
 //echo "sql submitted: ".$sql."<br>";
 $res = $mysqli->query($sql);
 //echo '<pre> on sql submitted: '; print_r($mysqli); echo '</pre>';
@@ -116,7 +116,7 @@ global $mysqli;
 	$errno = $mysqli->errno;
 	$errmsg = $mysqli->error;
 	if ($errno == 1049) {
-		$db = $_SESSION['DB_ERROR'];
+		$db = $_SESSION['CTS_DB_ERROR'];
 		print <<<errNoDB
 <div class="alert">
 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -140,9 +140,9 @@ errMsg;
 // ------------------------- add new log entry ----------------------------
 function addlogentry($text) {
 	global $mysqli;
-	if (isset($_SESSION['DB_ERROR'])) return(FALSE);
-	$user = $_SESSION['SessionUser'];
-	$seclevel = $_SESSION['SecLevel'];
+	if (isset($_SESSION['CTS_DB_ERROR'])) return(FALSE);
+	$user = $_SESSION['CTS_SessionUser'];
+	$seclevel = $_SESSION['CTS_SecLevel'];
 	$page = $_SERVER['PHP_SELF'];
 	$txt = addslashes($text);
 	$sql = "INSERT INTO `log` (`User`, `SecLevel`, `Page`, `Text`) VALUES ('$user', '$seclevel', '$page', '$txt');";
@@ -260,10 +260,10 @@ function checkcredentials($userid, $password) {
 	
 	if (($r[UserID] == $userid) && ($r[Password] == $password)) {
 		//echo "found match - user: $uid, pw: $pw<br>";
-		$_SESSION['SessionTimer'] = time() + $_SESSION['SessionLength'];
-		$_SESSION['SecLevel'] = $r[Role];
-		$_SESSION['SessionUser'] = $userid;
-		$_SESSION['ActiveCTSMCID'] = $r[MCID];
+		$_SESSION['CTS_SessionTimer'] = time() + $_SESSION['CTS_SessionLength'];
+		$_SESSION['CTS_SecLevel'] = $r[Role];
+		$_SESSION['CTS_SessionUser'] = $userid;
+		$_SESSION['CTS_ActiveCTSMCID'] = $r[MCID];
 		return(true);
 		}
 	echo "ERROR: userid and/or password provided not valid.<br>";

@@ -14,7 +14,7 @@ include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 
-$userid = $_SESSION['SessionUser'];
+$userid = $_SESSION['CTS_SessionUser'];
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if ($action == 'MyClosed') {
 	$rpthdg = "<tr><th>Call#</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>";

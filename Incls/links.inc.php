@@ -4,6 +4,7 @@
 
 
 
+
 <b><u>PWC Online Links:</u></b>
 <br>
 <a title="PWC Org Calendar" href="https://www.pacificwildlifecare.org/events/" target="_blank">PWC Organization Calendar</a>
@@ -18,7 +19,7 @@
 <br>
 <a href="vollister.php" target="_blank">PWC Volunteer Lists</a>
 <br>
-<br><br>
+<br>
 <u><b>Other Online Resources</b></u><br>
 <a target="_blank" title="" href="http://www.pacificwildlifecare.org">PWC HOME PAGE</a>
 <br>
@@ -35,6 +36,7 @@ PWC Facebook Page</a>
 <br>
 <a target="_blank" title="" href="http://www.ipm.ucdavis.edu/PMG/PESTNOTES/index.html#VERTEBRATE/">Detailed Information About Pest Animals (from UC Davis)</a>
 <br>
+
 
 
 

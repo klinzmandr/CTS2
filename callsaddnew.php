@@ -20,7 +20,7 @@ if ($action == '') {
 print <<<pagePart1
 <div class="container">
 <h3>Add New Call</h3>
-<p>A new call will be added for $_SESSION[SessionUser]</p>
+<p>A new call will be added for $_SESSION[CTS_SessionUser]</p>
 <p>Choose one of the following:</p>
 <ul>
 <a class="btn btn-success" href="callsaddnew.php?action=new">BLANK</a>&nbsp;
@@ -145,14 +145,14 @@ if ($action == 'na') {
 	}
 
 // check to determine if a new records has been added but not used
-$currentuser = $_SESSION['SessionUser'];
+$currentuser = $_SESSION['CTS_SessionUser'];
 $sql = "SELECT * FROM `calls` 
 	WHERE `Status` = 'New' 
 	AND `OpenedBy` = '$currentuser';";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 
-$addarray[OpenedBy] = $_SESSION['SessionUser'];
+$addarray[OpenedBy] = $_SESSION['CTS_SessionUser'];
 $addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
 $addarray[DTPlaced] = date('Y-m-d H:00', strtotime(now));
 $addarray[Status] = 'New';

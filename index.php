@@ -15,14 +15,14 @@ $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if (($action == 'logout')) {
 	include 'Incls//datautils.inc.php';
 //	addlogentry("Logging Out");
-	unset($_SESSION['SessionTimer']);
-	unset($_SESSION['SessionUser']);
-	unset($_SESSION['SecLevel']);
-	unset($_SESSION['TEST_MODE']);
+	unset($_SESSION['CTS_SessionTimer']);
+	unset($_SESSION['CTS_SessionUser']);
+	unset($_SESSION['CTS_SecLevel']);
+	unset($_SESSION['CTS_TEST_MODE']);
 	include 'Incls/seccheck.inc.php';      // present login fields
 	}
 if ((($action) == 'login')) {
-	unset($_SESSION['TEST_MODE']);
+	unset($_SESSION['CTS_TEST_MODE']);
 	//echo "login request received<br>";
 	$userid = $_REQUEST['userid'];
 	$password = $_REQUEST['password'];
@@ -35,7 +35,7 @@ if ((($action) == 'login')) {
 			}
 		else {
 //			addlogentry("Failed login attempt with password: $password");
-			unset($_SESSION['TEST_MODE']);
+			unset($_SESSION['CTS_TEST_MODE']);
 			echo "Failed login attempt<br>";
 			}
 		}
@@ -44,12 +44,12 @@ if ((($action) == 'login')) {
 include 'Incls/mainmenu.inc.php';
 echo "<div class=\"container\">";
 
-//	if (isset($_SESSION['TEST_MODE']))
+//	if (isset($_SESSION['CTS_TEST_MODE']))
 //		echo '<h4 style="color: #FF0000; ">TEST MODE ENABLED - using test database for session</h3>';
 
-if (isset($_SESSION['SessionUser'])) {
-	echo '<h4>Session user logged in: ' . $_SESSION['SessionUser'] . '</h4>
-	<h5>Security level: ' . $_SESSION['SecLevel'] . '</h5>
+if (isset($_SESSION['CTS_SessionUser'])) {
+	echo '<h4>Session user logged in: ' . $_SESSION['CTS_SessionUser'] . '</h4>
+	<h5>Security level: ' . $_SESSION['CTS_SecLevel'] . '</h5>
 	<form class="form-inline" action="index.php" method="post"  id="xform">
   <h3>Home Page&nbsp  
   <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>

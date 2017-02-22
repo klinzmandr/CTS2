@@ -34,14 +34,14 @@ if ($action == 'update') {
 	unset($vararray[submit]);
 	if (strlen($vararray[notes]) <= 4) { $vararray[notes] = 'Call updated'; }
 	$notearray[CallNbr] = $callnbr;
-	$notearray[UserID] = $_SESSION['SessionUser'];
+	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
 	$notearray[Notes] = $vararray[notes];
 //	echo '<pre> note '; print_r($notearray); echo '</pre>';
 	sqlinsert("callslog", $notearray);
 	unset($notearray);
 	
 	unset($vararray[notes]);
-	$vararray[LastUpdater] = $_SESSION['SessionUser'];
+	$vararray[LastUpdater] = $_SESSION['CTS_SessionUser'];
 	$cszarray = explode(',',$r[City]);
 	if (count($cszarray) == 3) {
 		$r[City] = $cszarray[0]; $r[State] = $cszarray[1]; $r[Zip] = $cszarray[2];
@@ -54,7 +54,7 @@ if ($action == 'update') {
 //echo '<pre>Notes  '; print_r($notearray); echo'</pre>';
 
 // read call and display
-$sessionuser = $_SESSION['SessionUser'];
+$sessionuser = $_SESSION['CTS_SessionUser'];
 $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
 if ($action == 'new') {
 	$sql = "SELECT * FROM `calls` WHERE `Status` = 'New' AND `OpenedBy` = '$sessionuser';";
@@ -82,7 +82,7 @@ $pcsent = $r[PostcardSent]; $emsent = $r[EmailSent];
 if ($action == 'new') {
 //	echo 'add initial log history record';
 	$notearray[CallNbr] = $callnbr;
-	$notearray[UserID] = $_SESSION['SessionUser'];
+	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
 	$notearray[Notes] = 'Call Opened';
 //	echo '<pre> note '; print_r($notearray); echo '</pre>';
 	sqlinsert("callslog", $notearray);
