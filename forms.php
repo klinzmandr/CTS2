@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <script src="jquery.js"></script>
-<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <?php
