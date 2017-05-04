@@ -21,7 +21,7 @@ include 'Incls/datautils.inc.php';
 $ta = $_REQUEST['ta'];
 $rfn = isset($_REQUEST['RFN']) ? $_REQUEST['RFN'] : '';
 if ($rfn != '') {
-  $rfn = 'Incls/email'.$_REQUEST['RFN'].'.inc.php';
+  $rfn = 'emreplys/email'.$_REQUEST['RFN'].'.inc.php';
   file_put_contents($rfn, $ta);
   }
 
@@ -43,7 +43,8 @@ function setup(txt) {
   if (val == "clear") { 
     $("#target").html('<br>'); 
     $("#RFN").val('');
-  return; }
+    return; 
+    }
   $("#RFN").val(val);
   var tar = '#'+val;
   $("#target").html($(tar).html());
@@ -75,24 +76,32 @@ function moveContent(){
 <a class="btn btn-info" onclick=setup("Reply5")>Edit Reply 5</a>&nbsp;&nbsp;
 <a class="btn btn-info" onclick=setup("Reply6")>Edit Reply 6</a><br><br>
 
+<h3>Customization Codes</h3>
+<p>Use these codes in a message to customize it with data from the database.</p>
+
+<ul>
+	<li>[callbnr] - replaced with the call number of the current call being updated.</li>
+	<li>[name] - replaced with the caller name field of the current call being updated.</li>
+	<li>[crn] - replaced with the contents of the WRMD field of the current call.</li>
+</ul>
 
 <div style="visibility: hidden; " id="Reply1">
-<?php include 'Incls/emailReply1.inc.php'; ?>
+<?php include 'emreplys/emailReply1.inc.php'; ?>
 </div>
 <div style="visibility: hidden; " id="Reply2">
-<?php include 'Incls/emailReply2.inc.php'; ?>
+<?php include 'emreplys/emailReply2.inc.php'; ?>
 </div>
 <div style="visibility: hidden; " id="Reply3">
-<?php include 'Incls/emailReply3.inc.php'; ?>
+<?php include 'emreplys/emailReply3.inc.php'; ?>
 </div>
 <div style="visibility: hidden; " id="Reply4">
-<?php include 'Incls/emailReply4.inc.php'; ?>
+<?php include 'emreplys/emailReply4.inc.php'; ?>
 </div>
 <div style="visibility: hidden; " id="Reply5">
-<?php include 'Incls/emailReply5.inc.php'; ?>
+<?php include 'emreplys/emailReply5.inc.php'; ?>
 </div>
 <div style="visibility: hidden; " id="Reply6">
-<?php include 'Incls/emailReply6.inc.php'; ?>
+<?php include 'emreplys/emailReply6.inc.php'; ?>
 </div>
 
 </body>

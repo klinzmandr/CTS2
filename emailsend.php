@@ -116,22 +116,22 @@ Message:<br />
 
 pagePart1;
 echo '<div style="visibility: hidden; " id="Reply1">';
-include 'Incls/emailReply1.inc.php';
+include 'emreplys/emailReply1.inc.php';
 echo '</div>
 <div style="visibility: hidden; " id="Reply2">';
-include 'Incls/emailReply2.inc.php';
+include 'emreplys/emailReply2.inc.php';
 echo '</div>
 <div style="visibility: hidden; " id="Reply3">';
-include 'Incls/emailReply3.inc.php';
+include 'emreplys/emailReply3.inc.php';
 echo '</div>
 <div style="visibility: hidden; " id="Reply4">';
-include 'Incls/emailReply4.inc.php';
+include 'emreplys/emailReply4.inc.php';
 echo '</div>
 <div style="visibility: hidden; " id="Reply5">';
-include 'Incls/emailReply5.inc.php';
+include 'emreplys/emailReply5.inc.php';
 echo '</div>
 <div style="visibility: hidden; " id="Reply6">';
-include 'Incls/emailReply6.inc.php';
+include 'emreplys/emailReply6.inc.php';
 echo '</div>';
 
 exit;
