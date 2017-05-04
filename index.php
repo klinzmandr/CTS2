@@ -4,7 +4,7 @@
 <title>CTS2 Home Page</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
 <?php
@@ -13,7 +13,7 @@ session_start();
 //include 'Incls/vardump.inc.php'; 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if (($action == 'logout')) {
-	include 'Incls//datautils.inc.php';
+	include_once 'Incls/datautils.inc.php';
 //	addlogentry("Logging Out");
 	unset($_SESSION['CTS_SessionTimer']);
 	unset($_SESSION['CTS_SessionUser']);
@@ -27,7 +27,7 @@ if ((($action) == 'login')) {
 	$userid = $_REQUEST['userid'];
 	$password = $_REQUEST['password'];
 	if ($userid != "") {
-		include 'Incls/datautils.inc.php';	
+		include_once 'Incls/datautils.inc.php';	
 		$ok = checkcredentials($userid, $password);
 		if ($ok) {
 			//echo "check of user id and password passed<br>";
@@ -41,19 +41,31 @@ if ((($action) == 'login')) {
 		}
 	}
 
-include 'Incls/mainmenu.inc.php';
+include_once 'Incls/datautils.inc.php';
 echo "<div class=\"container\">";
 
 //	if (isset($_SESSION['CTS_TEST_MODE']))
 //		echo '<h4 style="color: #FF0000; ">TEST MODE ENABLED - using test database for session</h3>';
 
 if (isset($_SESSION['CTS_SessionUser'])) {
+  include_once 'Incls/mainmenu.inc.php';
 	echo '<h4>Session user logged in: ' . $_SESSION['CTS_SessionUser'] . '</h4>
 	<h5>Security level: ' . $_SESSION['CTS_SecLevel'] . '</h5>
 	<form class="form-inline" action="index.php" method="post"  id="xform">
   <h3>Home Page&nbsp  
   <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>
-  </h3></form>';
+  </h3></form>
+  <h4 style="color: red; ">Check out the latest bulletins:</h4>
+  <ul><table class="table table-condensed">
+  <tr><th>Posted</th><th>Title</th><th>Author</th></tr>
+  ';
+  $sql = "SELECT * FROM `bboard` WHERE '1' ORDER BY `DateTime` DESC LIMIT 0,5;";
+  $res = doSQLsubmitted($sql);
+  while ($r = $res->fetch_assoc()) {
+    echo "<tr><td>$r[DateTime]</td><td>$r[Subject]</td><td>By: $r[UserID]</td>";
+    }
+  echo '
+  </table></ul>';
 	}
 else {
 	echo '<form class="form-inline" action="calls.php" method="post\"  id="yform">

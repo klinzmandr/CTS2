@@ -4,12 +4,19 @@
 <title>Call Update</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
 <!--<body onload="initSelects(this)" onchange="flagChange()">-->
 <!-- <body onchange="flagChange()"> -->
 <body>
+<style>
+  .page-break  {
+    clear: left;
+    display:block;
+    page-break-after:always;
+    }
+</style>
 
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -29,13 +36,10 @@ if ($action == 'update') {
 // read call record
   $sessionuser = $_SESSION['CTS_SessionUser'];
   $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
-  //echo "sql: $sql<br>";
   $res = doSQLsubmitted($sql);
   $r = $res->fetch_assoc();
-//  echo '<pre>DB record '; print_r($r); echo'</pre>';
-  
+//  echo '<pre>DB record '; print_r($r); echo'</pre>';  
 	$notearray = array();  $vararray = array();
-	//echo 'Update action requested.';
 	$uri = $_SERVER['QUERY_STRING'];
 	parse_str($uri, $vararray);
 //	echo '<pre> input var '; print_r($vararray); echo '</pre>';
@@ -68,6 +72,15 @@ if ($action == 'update') {
 	$where = "`CallNbr`='" . $callnbr . "'";
 //echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
 	sqlupdate('calls',$vararray, $where);
+	
+  echo '  
+<script>
+$(document).ready(function() {
+  $("#X").fadeOut(2000);
+});
+</script>
+<h3 style="color: red; " id="X">Update Completed.</h3>';
+
 	$action = 'view';
 	}
 //echo '<pre>Notes  '; print_r($notearray); echo'</pre>';
@@ -108,17 +121,16 @@ if ($action == 'new') {
 //	echo '<pre> note '; print_r($notearray); echo '</pre>';
 	sqlinsert("callslog", $notearray);
 }
-
-print<<<scriptPart
+?>
 <script type="text/javascript">
 // set up select lists
 $(document).ready(function () { 
 	//alert("first the inline function");
-	$("#AL").val("$animallocation");
-	$("#CL").val("$calllocation");
-	$("#PT").val("$property");
-	$("#SP").val("$species");
-	$("#RE").val("$reason");
+	$("#AL").val("<?=$animallocation?>");
+	$("#CL").val("<?=$calllocation?>");
+	$("#PT").val("<?=$property?>");
+	$("#SP").val("<?=$species?>");
+	$("#RE").val("<?=$reason?>");
 	});
 </script>
 <script>
@@ -137,32 +149,24 @@ function chkdtp() {
 	return true;
 	}
 </script>
-scriptPart;
 
-// call tab
-print <<<pagePart1
+<?php
+echo '
 <div class="container">
-<h3>Call $callnbr&nbsp;&nbsp;&nbsp;<a href="callroview.php?call=$callnbr">
-<span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>
+<h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
+<span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>';
 
-<script>
-$(document).ready(function() {
-  $("#X").fadeOut(2000);
-});
-</script>
-<h3 style="color: red; " id="X">Update Completed.</h3>
-
-
+?>
+<!-- define the form -->
 <form class="form" id="tf" name="tf" action="callupdatertabbed.php" onsubmit="return chkdtp()">
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="callnbr" value="$callnbr">
+<input type="hidden" name="callnbr" value="<?=$callnbr?>">
 
-Date/Time Call Entered:&nbsp;&nbsp;$dtopened&nbsp;&nbsp;&nbsp;
-Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="DTPlaced" value="$dtplaced" style="width: 150px; height: 25px;"><br>
+Date/Time Call Entered:&nbsp;&nbsp;<?=$dtopened?>&nbsp;&nbsp;&nbsp;
+Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="DTPlaced" value="<?=$dtplaced?>" style="width: 150px; height: 25px;"><br>
 
-Caller Name:<input autofocus type="text" name="Name" placeholder="Caller Name" value="$name" />
-Phone: <input id="PN" onblur="return checkPhone()" type="text" name="PrimaryPhone" value="$primaryphone" size="12" maxlength="12" placeholder="Phone Number" />
-
+Caller Name:<input autofocus type="text" name="Name" placeholder="Caller Name" value="<?=$name?>" />
+Phone: <input id="PN" onblur="return checkPhone()" type="text" name="PrimaryPhone" value="<?=$primaryphone?>" size="12" maxlength="12" placeholder="Phone Number" />
 
 <script type="text/javascript">
 $('#DP1').datetimepicker({
@@ -237,56 +241,57 @@ bkLib.onDomLoaded(function() {
   });    
 </script>
 
-E-mail: <input type="text" name="EMail" value="$email" id="EM" onblur="return chkEMAddr()" placeholder="Email Address">
-<a href="emailsend.php?emadr=$email&callnbr=$callnbr&name=$name&crn=$crn" onclick="return checkemail()">
+E-mail: <input type="text" name="EMail" value="<?=$email?>" id="EM" onblur="return chkEMAddr()" placeholder="Email Address">
+<?php
+echo '
+<a href="emailsend.php?emadr='.$email.'&callnbr='.$callnbr.'&name='.$name.'&crn='.$crn.'" onclick="return checkemail()">';
+?>
 <span class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
 </span></a>
 <br />
 
-Call Description:<input type="text" name="Description" value="$description" size="60"  description="" />
+Call Description:<input type="text" name="Description" value="<?=$description?>" size="60"  description="" />
 <br />
 Additional Notes: (check History for prior note entries)<br />
 <textarea id="area1" name="notes" rows="5" cols="90"></textarea>
-<input type="hidden" name="Status" value="$status">
-<input type="hidden" name="OpenedBy" value="$openedby">
+<input type="hidden" name="Status" value="<?=$status?>">
+<input type="hidden" name="OpenedBy" value="<?=$openedby?>">
 
-pagePart1;
-
-// call details tab
-echo '<table class="table table-condensed" border=1><tr><td>
-<table class="table-condnensed">';
-echo '<tr><td>Animal Location:</td><td>
+<!-- call details tab -->
+<table class="table table-condensed" border=1><tr><td>
+<table class="table-condnensed">
+<tr><td>Animal Location:</td><td>
 <select id="AL" name="AnimalLocation" size="1">
-<option value=""></option>';
-loaddbselect("Locations");
-echo '</select></td></tr><tr><td>Call Location:</td><td>
+<option value=""></option>
+<?php loaddbselect("Locations"); ?>
+</select></td></tr><tr><td>Call Location:</td><td>
 <select id="CL" name="CallLocation" size="1">
-<option value=""></option>';
-loaddbselect("Locations");
-echo '</select></td></tr><tr><td>Property:</td><td>
+<option value=""></option>
+<?php loaddbselect("Locations"); ?>
+</select></td></tr><tr><td>Property:</td><td>
 <select id="PT" name="Property" size="1">
-<option value=""></option>';
-loaddbselect("Properties");
-echo '</select></td></tr><tr><td>Species:</td><td>
+<option value=""></option>
+<?php loaddbselect("Properties"); ?>
+</select></td></tr><tr><td>Species:</td><td>
 <select id="SP" name="Species" size="1">
-<option value=""></option>';
-loaddbselect("Species");
-echo '</select></td></tr><tr><td>Call Reason:</td><td>
+<option value=""></option>
+<?php loaddbselect("Species"); ?>
+</select></td></tr><tr><td>Call Reason:</td><td>
 <select id="RE" name="Reason" size="1">
-<option value=""></option>';
-loaddbselect("Reasons");
-echo '</select>';
-echo '</td>
+<option value=""></option>
+<?php loaddbselect("Reasons"); ?>
+</select>
+</td>
 </table>
 </td>
-';
-//echo '<input class="btn btn-success" type="submit" name="submit" value="Update Call" /><hr>';
-echo '<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><hr>';
-$citieslist = createddown();
 
-// caller extended details tab
-print <<<pagePart3
+<!-- <input class="btn btn-success" type="submit" name="submit" value="Update Call" /><hr> -->
+<div align="center">
+<br><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><br>
 
+<?php $citieslist = createddown(); ?>
+
+<!-- caller extended details tab -->
 <script>
 function loadcity() {
 //	alert("loadcity");
@@ -298,12 +303,12 @@ function loadcity() {
 	}
 </script>
 <td valign="top">
-WRMD Number: <input type="text" name="CaseRefNbr" value="$crn" maxlength="8" id="CRN"><br>
-Organization: <input type="text" name="Organization" size="50" placeholder="Organization" value="$org"><br>
-Address:<input id="PC" type="text" name="Address" size="50" placeholder="Address Line" value="$address"><br />
-City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="City" placeholder="City" value="$city" autocomplete="off" onblur="loadcity()" />, 
-State:<input id="ST" type="text" name="State" size="2" maxlength="2" value="$state"/>  
-Zip: <input id="ZI" type="text" name="Zip" size="5" maxlength="10" value="$zip"/>
+WRMD Number: <input type="text" name="CaseRefNbr" value="<?=$crn?>" maxlength="8" id="CRN"><br>
+Organization: <input type="text" name="Organization" size="50" placeholder="Organization" value="<?=$org?>"><br>
+Address:<input id="PC" type="text" name="Address" size="50" placeholder="Address Line" value="<?=$address?>"><br />
+City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="City" placeholder="City" value="<?=$city?>" autocomplete="off" onblur="loadcity()" />, 
+State:<input id="ST" type="text" name="State" size="2" maxlength="2" value="<?=$state?>"/>  
+Zip: <input id="ZI" type="text" name="Zip" size="5" maxlength="10" value="<?=$zip?>"/>
 <button href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
 <br>
 <script>
@@ -317,7 +322,22 @@ if ( sval.length == 0) {
 	return true;
 	}
 </script>
-pagePart3;
+<script>
+// synchronizes second select list with choice made from the first
+$( "#AL" ).change(function() {
+//alert("change seen");
+var sval = $("#AL").val();
+if ( sval.length ){
+	//alert("A value for sel1 selected: " + sval);
+	$("#CL").val(sval);
+	return;
+	}
+alert("no value seen");
+return;
+});
+</script>
+
+<?php
 if ($pcsent == '') {
 	echo 'Postcard Sent? <input id="PCChk" onchange="return checkaddr()" type="checkbox" name="PostcardSent" Value="Yes">'; }
 else {
@@ -326,40 +346,37 @@ if ($emsent == '') {
 	echo "&nbsp;&nbsp;&nbsp;Email Sent? No<br><br>"; }
 else {
 	echo "&nbsp;&nbsp;&nbsp;Email Sent? $emsent<br>"; }
-
-print <<<pagePart4
+?>
 
 <script src="js/bootstrap3-typeahead.js"></script>
 <script>
-var citylist = $citieslist
+var citylist = <?=$citieslist?>
 $('#CI').typeahead({source: citylist})
 </script>
 </td></tr></table>
 
-pagePart4;
-//echo '<input type="submit" name="submit" value="Update Call" /><hr>';
-echo '<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><hr>';
-echo '</form>';
+<!-- <input type="submit" name="submit" value="Update Call" /><hr> -->
+<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><hr>
+</form>
 
-// output the history log
-echo '
-
-<h4>Call Notes History (latest first)</h4>';
+<!-- output the history log -->
+<div class="page-break"></div> <!-- insert page break for print of page -->
+<h4>Call Notes History (latest first)</h4>
+<table class=\"table-condensed\">
+<?php
 $sql = "SELECT * FROM `callslog` 
 WHERE `CallNbr` =  '$callnbr' 
 ORDER BY `SeqNbr` DESC;";
 $res = doSQLsubmitted($sql);
-echo "<table class=\"table-condensed\">";
+
 while ($r = $res->fetch_assoc()) {
 	//echo '<pre> notes '; print_r($r); echo '</pre>';
 	$dt = date('Y-m-d \a\t H:i',strtotime($r[DateTime]));
 	echo "<tr><td>DateTime: $dt&nbsp;&nbsp;By: $r[UserID]<br><ul>$r[Notes]</ul></td></tr>";
 	}
-echo '</table>
-
+?>
+</table>
 </div>  <!-- container -->';
-
-print <<<theZipModal
 
 <!-- =========== Zip Code Modal  ==================== -->  
 <div class="modal fade" id="myZipModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -389,13 +406,11 @@ print <<<theZipModal
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
-    
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- end of modal -->
 
-theZipModal;
-
+<?php
 // php function to read db locations table and return it
 function createddown() {
 	$locs = readdblist('Locations');
@@ -406,20 +421,6 @@ function createddown() {
 	return($locslist);
 }
 ?>
-<script>
-// synchronizes second select list with choice made from the first
-$( "#AL" ).change(function() {
-//alert("change seen");
-var sval = $("#AL").val();
-if ( sval.length ){
-	//alert("A value for sel1 selected: " + sval);
-	$("#CL").val(sval);
-	return;
-	}
-alert("no value seen");
-return;
-});
-</script>
 
 </body>
 </html>

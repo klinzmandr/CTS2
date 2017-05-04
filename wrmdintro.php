@@ -4,7 +4,7 @@
 <title>WRMD</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
 <?php
@@ -23,7 +23,7 @@ outcome of the animals admitted to PWC.</p>
 check on the status of animals for callers. To access, log into the web
 site at: www.wrmd.org</p>
 
-<ul>userid: pwcdispos@gmail.com<br>
+<ul>userid: hotline@pacificwildlifecare.org<br>
 password: Raptor1 (it is case sensitive)</ul>
 
 <p>Remember, when providing information to callers, keep it simple, there is

@@ -4,7 +4,7 @@
 <title>Report Calls for Today</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
 <?php
@@ -14,9 +14,9 @@ include 'Incls/seccheck.inc.php';
 include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
-<h3>Report Calls For Today &nbsp;&nbsp;   <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>
-<p>This report merely lists those calls that have been entered since midnight.</p>
-<p>NOTE:  All reports open in a new window (or tab) ready for printing (if needed).  Use the 'CLOSE' button to close this window.</p>
+<h3>Report Calls For Today &nbsp;&nbsp;   <a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
+<p class="hidden-print">This report merely lists those calls that have been entered since midnight.</p>
+<p class="hidden-print">NOTE:  All reports open in a new window (or tab) ready for printing (if needed).  Use the 'CLOSE' button to close this window.</p>
 
 pagePart1;
 $today = date("Y-m-d 00:00:01",strtotime(now));

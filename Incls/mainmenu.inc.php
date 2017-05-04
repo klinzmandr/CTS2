@@ -36,6 +36,7 @@ function chkchg() {
 </script>
 
 <!-- ========= define main menu bar and choices ======== -->
+<div class="hidden-print">
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
@@ -69,7 +70,7 @@ print<<<menupart2
   		<li><a onclick="return chkchg()" href="admincloseany.php">Close Any Open Call</a></li>
   		<li><a onclick="return chkchg()" href="adminaddnewuser.php">Maintain Userid &amp; Passwords</a></li>
   		<li><a onclick="return chkchg()" href="adminresourcesmaint.php">Maintain Resource Links</a></li>
-  		<li><a onclick="return chkchg()" href="adminformsmaint.php">Maintain Docs and Forms</a></li>
+  		<li><a onclick="return chkchg()" href="adminformsmaint.php">Maintain Forms &amp; Docs</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Locations">Maintain Locations</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Properties">Maintain Properties</a></li>
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Species">Maintain Species</a></li>
@@ -127,7 +128,7 @@ print <<<menuPart3b
 <li><a onclick="return chkchg()" href="resources.php">Resource Links</a></li>
 
 <!-- =========== define Forms menu item ============== -->
-<li><a onclick="return chkchg()" href="forms.php">Forms</a></li>
+<li><a onclick="return chkchg()" href="forms.php">Forms&amp;Docs</a></li>
 
 <!-- ========== define reports dropdown ============== -->
 <!-- <li class="dropdown open">  example: to have open on load -->
@@ -135,10 +136,11 @@ print <<<menuPart3b
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Reports<b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
 	<li><a href="rptlast50calls.php" target="_blank">Last 50 Calls Report</a></li>
-	<li><a href="rptlistcallsfortoday.php" target="_blank">Today&apos;s Calls</a></li>
+	<li><a href="rptlistcallsfortoday.php" target="_blank">Today&amp;s Calls</a></li>
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
 	<li><a href="rptcallsbyhlvindaterange.php" target="_blank">Calls by HLV in Date Range</a></li>
 	<li><a href="rpthistoricalcalls.php" target="_blank">Historical Call Report</a></li>
+	<li><a href="../charts" target="_blank">PWC Business Charts</a></li>
 	<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
 	<li class="divider"></li>
 	<li><a href="#">Other report(s) added as needed</a></li>
@@ -150,6 +152,7 @@ print <<<menuPart3b
 </ul>		<!-- nav navbar-nav  *the menu bar* -->
 </div>  <!--/.nav-collapse -->
 </nav>  <!-- class = "navbar" -->
+</div> <!-- hidden-print -->
 <!-- End mainmenu.inc -->
 
 menuPart3b;

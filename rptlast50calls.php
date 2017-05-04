@@ -4,7 +4,7 @@
 <title>Last 50 Calls</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
 <?php
@@ -14,9 +14,9 @@ include 'Incls/seccheck.inc.php';
 include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
-<h3>Last 50 Calls Report  <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>  
-<p>This report will provide a listing of the last 50 calls logged into the database sorted in revers chronological order with the newest call at the top.</p>
-<p>NOTE:  All report links open the call in a format ready for printing (if needed).  Use the 'CLOSE' button to close this window.</p>
+<h3>Last 50 Calls Report  <a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>  
+<p class="hidden-print">This report will provide a listing of the last 50 calls logged into the database sorted in revers chronological order with the newest call at the top.</p>
+<p class="hidden-print">NOTE:  All report links open the call in a format ready for printing (if needed).  Use the 'CLOSE' button to close this window.</p>
 
 pagePart1;
 

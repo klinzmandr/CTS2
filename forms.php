@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <script src="jquery.js"></script>
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
 <?php
@@ -18,15 +18,15 @@ include 'Incls/mainmenu.inc.php';
 $fv = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '';
 
 $btnarray = array(
-  0 => "Group 0",
-  1 => "Group 1",
-  2 => "Group 2",
-  3 => "Group 3",
+  0 => "HLV Ref",
+  1 => "Animals",
+  2 => "RTV Info",
+  3 => "Gen Info",
   4 => "Group 4",
   5 => "Group 5",
   6 => "Group 6",
   7 => "Group 7",
-  8 => "Group 8",
+  8 => "Forms",
   9 => "Group 9"
   );
   
