@@ -117,8 +117,6 @@ function drawChart() {
 <!--Div that will hold the pie chart-->
 <div id="chart1"></div>
 
-
-
 <?php
 echo '<table class="table table-condensed">
 <tr><th>HLV Id</th><th>Total</th><th>Open</th><th>Closed</th><th>To Ctr</th><th>Earliest Opened</th><th>Last Opened</th></tr>';
@@ -173,8 +171,6 @@ function drawChart() {
 
 <!--Div that will hold the pie chart-->
 <div id="chart2"></div>
-
-
 
 <br>=== END OF REPORT===<br>
 </div>

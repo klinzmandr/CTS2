@@ -249,7 +249,7 @@ function checkcredentials($userid, $password) {
 	// echo '<pre>'; print_r($res); echo '</pre>';
 	$nbrofrows = $res->num_rows;
 	if ($nbrofrows == 0) {
-		echo "ERROR: userid not valid<br>";
+		echo '<h3 style="color: red; ">ERROR: Userid not valid</h3>';
 		addlogentry("Login attempt by $userid");
 		return(false);
 		}
@@ -260,13 +260,13 @@ function checkcredentials($userid, $password) {
 	
 	if (($r[UserID] == $userid) && ($r[Password] == $password)) {
 		//echo "found match - user: $uid, pw: $pw<br>";
-		$_SESSION['CTS_SessionTimer'] = time() + $_SESSION['CTS_SessionLength'];
-		$_SESSION['CTS_SecLevel'] = $r[Role];
+		$_SESSION['CTS_SessionTimer'] = time() + 5*60; // give 5 min's to start something
+		$_SESSION['CTS_SecLevel'] = $r[Role]; 
 		$_SESSION['CTS_SessionUser'] = $userid;
 		$_SESSION['CTS_ActiveCTSMCID'] = $r[MCID];
 		return(true);
 		}
-	echo "ERROR: userid and/or password provided not valid.<br>";
+	echo '<h3 style="color: red; ">ERROR: Password not valid.</h3>';
 	addlogentry("Password failure by $userid");
 	return(false);
 	}

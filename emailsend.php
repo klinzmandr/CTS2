@@ -34,7 +34,7 @@ if ($action == '') {
 //include 'Incls/vardump.inc.php';
 print <<<pagePart1
 <div class="container">
-<h3>Send Email to Caller  <a href="callupdatertabbed.php?callnbr=$callnbr" class="btn btn-xs btn-primary"><b>CANCEL</b></a></h3>
+<h3>Send Email to Caller  <a href="callupdatertabbed.php?callnbr=$callnbr" class="btn btn-danger"><b>CANCEL</b></a></h3>
 <h5>This action will result in an email message to be sent to the email address of $email supplied in call record $callnbr</h5>
 <p>This email will be sent FROM the PWC email address of hotline@pacificwildlifecare.org.  Please note that to review responses to this email message you must log into this email account by going to the URL of <a href="https://www.pacificwildlifecare.org/mail" target=_blank>www.pacificwildlifecare.org/mail/</a> and log in with the user id of '<b>hotline@pacificwildlifecare.org</b>' with a password of '<b>hotline9453</b>'.</p>
 <script>

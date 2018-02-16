@@ -16,8 +16,8 @@
 
 <?php
 session_start();
-include 'Incls/seccheck.inc.php';
 //include 'Incls/mainmenu.inc.php';
+include 'Incls/seccheck.inc.php';
 include 'Incls/datautils.inc.php';
 
 print <<<pagePart1

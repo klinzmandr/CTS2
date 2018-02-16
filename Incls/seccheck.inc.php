@@ -4,10 +4,10 @@ date_default_timezone_set('America/Los_Angeles');
 $_SESSION['CTS_SessionLength'] = 15*60;		// session length in seconds
 $sessexpiration = isset($_SESSION['CTS_SessionTimer']) ? $_SESSION['CTS_SessionTimer'] : 0;
 $currenttime= time();
-//echo "current: $currenttime, sessexpiration: $sessexpiration<br>";
+// echo "current: $currenttime, sessexpiration: $sessexpiration<br>";
 if ($currenttime <= $sessexpiration) {			// session is live, extend it
 	$_SESSION['CTS_SessionTimer'] = $currenttime + $_SESSION['CTS_SessionLength'];
-	//echo "time extended<br>";	
+	// echo "time extended<br>";	
 	}
 else {
 print <<<loginPage

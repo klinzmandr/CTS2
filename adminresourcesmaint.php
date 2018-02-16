@@ -7,6 +7,10 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -17,19 +21,25 @@ $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $msg =isset($_REQUEST['msg'])? $_REQUEST['msg'] : ""; 
 
 if ($action == 'update') {
-	echo 'Update request seen<br>';
 	//echo '<pre> update '; print_r($_REQUEST['msg']); echo '</pre>';
 	$msg = stripslashes($msg);
 	file_put_contents('Incls/links.inc.php', $msg);
+	echo '<h3 style="color: red; " id="X">Update Completed.</h3>';
 	}
 
 $lists = file_get_contents('Incls/links.inc.php');
 
 print <<<pagePart1
+<script>
+$("document").ready( function() {
+  $("#X").fadeOut(5000);
+});
+</script>
 <script type="text/javascript" src="js/nicEdit.js"></script>
 <script type="text/javascript">
 bkLib.onDomLoaded(function() {
-	new nicEditor({fullPanel:true}).panelInstance('area1');
+	// new nicEditor({fullPanel:true}).panelInstance('area1');
+	new nicEditor({buttonList:['fontSize','bold','italic','underline','strikeThrough','link','unlink']}).panelInstance('area1');
 });
 </script>
 <script>
@@ -62,7 +72,5 @@ pagePart1;
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

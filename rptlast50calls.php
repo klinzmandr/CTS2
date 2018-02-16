@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 include 'Incls/seccheck.inc.php';
@@ -38,7 +41,5 @@ echo '</table>';
 echo "=== END OF REPORT===<br>";
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

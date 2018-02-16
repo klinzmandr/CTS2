@@ -7,10 +7,13 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
-include 'Incls/seccheck.inc.php';
 //include 'Incls/mainmenu.inc.php';
+include 'Incls/seccheck.inc.php';
 include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
@@ -40,7 +43,5 @@ echo "=== END OF REPORT===<br>";
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

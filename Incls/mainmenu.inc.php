@@ -10,6 +10,11 @@ body { padding-top: 50px; }      <!-- add padding to top of each page for fixed 
 var chgFlag = 0;
 
 $(document).ready(function(){
+  $("#aboutInfo").hide();
+  $("#aboutBtn").click( function() {
+    $("#mm-modalBody").html($("#aboutInfo").html());
+    $("#myModal").modal("show");
+    });
   $("input").change(function(){
     chgFlag += 1; });
   $("textarea").change(function(){
@@ -24,15 +29,6 @@ function chkchg() {
 	if (r == true) { chgFlag = 0; return true; }
 		return false;
   }
-
-// add '<body onchange="flagChange()"> to all pages needed
-//function flagChange() {
-	//alert("change flagged");
-	//document.getElementById("chgflg").hidden=false;
-//	chgFlag += 1;
-//	return true;
-//	}
-
 </script>
 
 <!-- ========= define main menu bar and choices ======== -->
@@ -50,7 +46,7 @@ function chkchg() {
 
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="navbar-collapse-1">
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav" style='cursor: pointer;'>
       <li><a onclick="return chkchg()" href="index.php"><b>Home</b></a></li>
 			<!-- <li><a onclick="return chkchg()" href="">????</a></li> -->
 			
@@ -63,7 +59,7 @@ print<<<menupart2
 <!-- ======== define Admin dropdown ===================== -->
 <!-- Menu dropdown for Extended Donor Info pages -->	
   <li class="dropdown">
-  <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><font color="#FF0000">Admin</font><b class="caret"></b></a>
+  <a class="dropdown-toggle" data-toggle="dropdown" role="button"><font color="#FF0000">Admin</font><b class="caret"></b></a>
   	<ul class="dropdown-menu" aria-labelledby="drop2" role="menu">
   		<!-- <li><a onclick="return chkchg()" href="adminbboardmaint.php">Maintain BB</a></li> -->
   		<li><a onclick="return chkchg()" href="adminlistpvcalls.php">List All Calls for a PV</a></li>
@@ -84,22 +80,26 @@ print<<<menupart2
 menupart2;
 }
 
+if ($seclevel != 'guest') {
 print <<<menuPart3a
-<!-- ========= define Message Systems dropdown ============ -->
+<!-- ========= define External Systems dropdown ============ -->
 <li class="dropdown">
-<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Messages<b class="caret"></b></a>
+<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" ><b>External</b><b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
 	<li><a onclick="return chkchg()" href="vmsintro.php" target="_blank">Voice Messages</a></li>
-	<li><a onclick="return chkchg()" href="emailintro.php" target="_blank" >Email Messages</a></li>
-	<li><a onclick="return chkchg()" href="wrmdintro.php" target="_blank" >WRMD</a></li>
+	<li><a onclick="return chkchg()" href="emailintro.php" target="_blank" >Hotline Email</a></li>
+	<li><a onclick="return chkchg()" href="wrmdintro.php" target="_blank" >WRMD Case Mgmnt</a></li>
 </ul>
 </li>
+menuPart3a;
+}
+print <<<menuPart3b
 <!-- ========= define Calls dropdown ============= -->
 <!-- <li class="dropdown open">  example: to have open on load -->
 <li class="dropdown">
-<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Calls<b class="caret"></b></a>
+<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" ><b>Calls</b><b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
-menuPart3a;
+menuPart3b;
 if ($seclevel != 'guest') {
 	echo '
 	<li><a onclick="return chkchg()" href="calls.php?action=MyOpen">My Open</a></li>
@@ -122,21 +122,21 @@ print <<<menuPart3b
 </li>  <!-- class="dropdown" -->
 
 <!-- ============ define Info dropdown ============== -->
-<li><a onclick="return chkchg()" href="bboard.php?action=list">BBoard</a></li>
+<li><a onclick="return chkchg()" href="bboard.php?action=list"><b>BBoard</b></a></li>
 
 <!-- =========== define Resources menu item ========== -->
-<li><a onclick="return chkchg()" href="resources.php">Resource Links</a></li>
+<li><a onclick="return chkchg()" href="resources.php"><b>Resource Links</b></a></li>
 
 <!-- =========== define Forms menu item ============== -->
-<li><a onclick="return chkchg()" href="forms.php">Forms&amp;Docs</a></li>
+<li><a onclick="return chkchg()" href="forms.php"><b>Forms &amp; Docs</b></a></li>
 
 <!-- ========== define reports dropdown ============== -->
 <!-- <li class="dropdown open">  example: to have open on load -->
 <li class="dropdown">
-<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Reports<b class="caret"></b></a>
+<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button"><b>Reports</b><b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
 	<li><a href="rptlast50calls.php" target="_blank">Last 50 Calls Report</a></li>
-	<li><a href="rptlistcallsfortoday.php" target="_blank">Today&amp;s Calls</a></li>
+	<li><a href="rptlistcallsfortoday.php" target="_blank">Today&apos;s Calls</a></li>
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
 	<li><a href="rptcallsbyhlvindaterange.php" target="_blank">Calls by HLV in Date Range</a></li>
 	<li><a href="rpthistoricalcalls.php" target="_blank">Historical Call Report</a></li>
@@ -145,7 +145,7 @@ print <<<menuPart3b
 	<li class="divider"></li>
 	<li><a href="#">Other report(s) added as needed</a></li>
 	<li class="divider"></li>
-	<li><a href="#myModal" data-toggle="modal" data-keyboard="true">About CTS2</a></li>
+	<li><a id="aboutBtn" href="#myModal" data-toggle="modal" data-keyboard="true">About CTS2</a></li>
 </ul>
 </li>  <!-- class="dropdown" -->
 
@@ -164,11 +164,9 @@ print <<<theModal
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">About MbrDB</h4>
+        <h4 class="modal-title" id="myModalLabel"></h4>
       </div>
-    <div class="modal-body">
-   <p>Call Tracking System V2.0 (CTS2) is intended for the use by the Hot Line Volunteers of Pacific Wildlife Care.</p>
-   <p>CTS2 is offered under the General Public License (GPL) Version 3.  There is no license fee assoicated with the use of this system or any of the components used to develop it.  All improvements or updates made must be made available to the MbrDB community.</p>
+    <div id="mm-modalBody" class="modal-body">
     </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -178,6 +176,10 @@ print <<<theModal
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- end of modal -->
-
+<div id="aboutInfo">
+    <h3>About CTS2</h3>
+<p>Call Tracking System V2.0 (CTS2) is intended for the use by the Hot Line Volunteers of Pacific Wildlife Care.</p>
+<p>CTS2 is offered under the General Public License (GPL) Version 3.  There is no license fee assoicated with the use of this system or any of the components used to develop it.  All improvements or updates made must be made available to the MbrDB community.</p>
+</div>
 theModal;
 ?>

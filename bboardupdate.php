@@ -6,10 +6,14 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
-<body onchange="flagChange()">
+<body>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
+<script>
+$(document).ready(function() {
+  $("#X").fadeOut(2000);
+});
+</script>
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -35,21 +39,25 @@ if ($action == 'upd') {
 	//echo '<pre> sql '; print_r($where); echo '<br> notearray ';print_r($notearray); echo '</pre>';
 	sqlupdate('bboard',$notearray, $where);	
 	
-	echo '<script>
-$(document).ready(function() {
-  $("#X").fadeOut(2000);
-});
-</script>
+	echo '
 <div class="container">
 <h3 style="color: red; " id="X">Update Completed.</h3>
-</div>';
+</div>
+';
 	}
 
 if ($action == 'addnew') {
-	//echo "add a new note<br>";
-	$newarray[UserID] = '**NewRec**';
-	sqlinsert('bboard', $newarray);
-	echo "A new bulletin board note has been added<br><br>Please complete the details or delete it.<br>";
+  $sql = "SELECT * FROM `bboard` WHERE `UserID`	= '**NewRec**';";
+  $res = doSQLsubmitted($sql);
+  if ($res->num_rows == 0) {
+    //echo "add a new note<br>";
+    $newarray[UserID] = '**NewRec**';
+    sqlinsert('bboard', $newarray);
+    }
+	echo '
+<div class="container">
+<h3 style="color: red; " id="X">New bulletin board record added.</h3>
+</div>	';
 	}
 
 // read note for updating
@@ -64,7 +72,7 @@ print <<<pagePart1
 <script type="text/javascript" src="js/nicEdit.js"></script>
 <script type="text/javascript">
 bkLib.onDomLoaded(function() {
-	new nicEditor({fullPanel:true}).panelInstance('area1');
+	new nicEditor({buttonList : ['fontSize','bold','italic','underline','strikeThrough']}).panelInstance('area1');
 });
 </script>
 <script>
@@ -88,7 +96,7 @@ function movemsg() {
 <form action="bboardupdate.php"  class="form">
 <input type="text" name="Subject" value="$r[Subject]" size="80"  placeholder="Note Subject">
 <!-- <div style="font-size: 16px; padding: 3px; border: 5px solid #000; width: 800px; height: 400px; " id="area1"> -->
-<textarea name="Note" rows="20" cols="90"  id="area1">
+<textarea name="Note" rows="10" cols="90"  id="area1">
 $r[Note]
 </textarea>
 <input type="hidden" name="SeqNbr" value="$seqnbr">

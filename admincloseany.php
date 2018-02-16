@@ -6,7 +6,10 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
-<body onchange="flagChange()">
+<body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -60,8 +63,7 @@ if ($action == '') {
 		$cn = $r[CallNbr];
 		echo "<tr onclick=\"window.location='admincloseany.php?action=form&call=$cn';\" style='cursor: pointer;'><td>$cn</td><td>$r[DTOpened]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
 		}
-	echo '</table></div><script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
-</body></html>';
+	echo '</table>===== END LIST =====</div></body></html>';
 	exit;
 	}
 
@@ -103,8 +105,7 @@ The following errors are being reported:<br>
 <br>
 <a class="btn btn-warning" href="admincloseany.php">CANCEL</a>&nbsp;&nbsp;
 <a class="btn btn-danger" href="admincloseany.php?action=force&call=$call" onclick="return confirmContinue()">CONTINUE ANYWAY</a>&nbsp;&nbsp;
-<a class="btn btn-success" href="callupdatertabbed.php?callnbr=$call">Correct Errors</a><br>
-<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
+<a class="btn btn-success" href="callupdatertabbed.php?callnbr=$call">Correct Errors</a><br><br>
 </body></html>
 
 errMsg;
@@ -170,7 +171,5 @@ pagePart2;
 	}
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

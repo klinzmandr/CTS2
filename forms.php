@@ -8,6 +8,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 
@@ -34,28 +37,64 @@ $forms = scandir('Forms');
 
 echo '<div class="container">
 <h3>Forms & Documentation</h3>
-<h4>Documents will open in a new window.</h4>';
+Documents will open in a new tab/window.<br>';
 
 print <<<formPart
 <script>
+var inp = '';
 $(document).ready(function() {
-  $("tr").hide();
-  $("tr:first").show();
-  });
-$(function(){
- $('#btnALL').click(function() { $('tr').show(); });
- $('#btnNONE').click(function() { $('tr').hide(); $("tr:first").show(); });
- $('#btn0').click(function() { $('tr').hide(); $("tr:first").show(); $('.0').toggle(); });
- $('#btn1').click(function() { $('tr').hide(); $("tr:first").show(); $('.1').toggle(); });
- $('#btn2').click(function() { $('tr').hide(); $("tr:first").show(); $('.2').toggle(); });
- $('#btn3').click(function() { $('tr').hide(); $("tr:first").show(); $('.3').toggle(); });
- $('#btn4').click(function() { $('tr').hide(); $("tr:first").show(); $('.4').toggle(); });
- $('#btn5').click(function() { $('tr').hide(); $("tr:first").show(); $('.5').toggle(); });
- $('#btn6').click(function() { $('tr').hide(); $("tr:first").show(); $('.6').toggle(); });
- $('#btn7').click(function() { $('tr').hide(); $("tr:first").show(); $('.7').toggle(); });
- $('#btn8').click(function() { $('tr').hide(); $("tr:first").show(); $('.8').toggle(); });
- $('#btn9').click(function() { $('tr').hide(); $("tr:first").show(); $('.9').toggle(); });
+  $("tr").show();
+  $("#head").show();
+  $("#help").hide();
+  
+$("#helpclk").click(function() {
+  $("#help").toggle();
 });
+
+// does case insensitive search in 'btnALL'
+$.extend($.expr[":"], {
+  "containsNC": function(elem, i, match, array) {
+  return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+  }
+  });
+});
+  
+$(function(){
+  $('#btnFILTER').click(function() { 
+    inp = $('#inp').val();
+    //console.log(inp);
+    if (inp.length > 0) 
+      $('tr').hide().filter(':containsNC('+inp+')').show();
+      $("#head").show();
+      chgFlag = 0;
+      });
+    $('#btnALL').click(function() {
+      $('tr').show();
+      $('#inp').val('');
+      chgFlag = 0;     
+      });
+ 
+  $('#btn0').click(function() { 
+    $('tr').hide();  $('.0').toggle(); $("#head").show();});
+  $('#btn1').click(function() { 
+    $('tr').hide();  $('.1').toggle(); $("#head").show();});
+  $('#btn2').click(function() { 
+    $('tr').hide();  $('.2').toggle(); $("#head").show();});
+  $('#btn3').click(function() { 
+    $('tr').hide();  $('.3').toggle(); $("#head").show();});
+  $('#btn4').click(function() { 
+    $('tr').hide();  $('.4').toggle(); $("#head").show();});
+  $('#btn5').click(function() { 
+    $('tr').hide();  $('.5').toggle(); $("#head").show();});
+  $('#btn6').click(function() { 
+    $('tr').hide();  $('.6').toggle(); $("#head").show();});
+  $('#btn7').click(function() { 
+    $('tr').hide();  $('.7').toggle(); $("#head").show();});
+  $('#btn8').click(function() { 
+    $('tr').hide();  $('.8').toggle(); $("#head").show();});
+  $('#btn9').click(function() { 
+    $('tr').hide();  $('.9').toggle(); $("#head").show();});
+  });
 </script>
 
 formPart;
@@ -63,10 +102,9 @@ formPart;
 $count = 0;
 foreach ($forms as $formname) {
   if (($formname == '.') || ($formname == '..')) { continue; }
-  
+  if (preg_match("/php/i", $formname)) continue;
   $grp = substr($formname,0,1);
   $g[$grp][$count] = $formname;
-
   $count += 1;
   }
 
@@ -74,19 +112,27 @@ $moddt = filectime("Forms/$formname");
 $cd  = date("F d, Y \a\\t H:i:s.", $moddt) . "<br>";
 
 echo '
+Filter:<input id="inp" type="text" value="">&nbsp;&nbsp;+&nbsp;&nbsp;
+<button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp;
 <button id="btnALL">Show All</button>&nbsp;&nbsp;
-<button id="btnNONE">Show None</button>
+<span id="helpclk" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
+<div id="help">
+<p>Click the &quot;Show All&quot; button to list all available documents.  If a key word contained in a document title is entered in the &quot;Filter&quot; box then and clicking the &quot;Apply Filter&quot; will display only those documents containing that character string in their name.  Clicking the &quot;Show None&quot; will clear the contents of the Filter box as well as the results list.</p>
+<p>Documents are also grouped based on their document number.  Clicking a button wll list only those documents associated with that button&apos;s label.  Usually these are documents that are associated with that topic.  Documents may be duplicated between subjects when ever it might be appropriate.</p>
+</div>
 <br>';
 foreach ($btnarray as $k => $v) {
   if (isset($g[$k])) {
-    echo "<button class=\"btn btn-xs\" id=\"btn$k\">$v</button>&nbsp;&nbsp;";
+    echo "<button class=\"btn btn-success btn-xs\" id=\"btn$k\">$v</button>&nbsp;&nbsp;";
     }
   }
   
 echo '<br>';
 
-echo "<table border=0 width=\"90%\">
-<tr><td width=\"70%\"><b>Document Title</b></td><td><b>Date and time last updated</b></td></tr>
+echo "
+<table border=0 width=\"90%\">
+<tr id=\"head\"><td width=\"70%\"><b>Document Title</b></td><td><b>Date and time last updated</b></td></tr></table>
+<table border=0 width=\"90%\">
 ";
 
 foreach ($g as $k => $v) {
@@ -102,7 +148,5 @@ foreach ($g as $k => $v) {
 </table>
 ===== End of List =====
 <br>
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

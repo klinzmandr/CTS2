@@ -24,12 +24,14 @@ if ($action == 'delete') {
 	$res = doSQLsubmitted($sql);	
 	$sql = "DELETE FROM `callslog` WHERE `UserID` = 'jdoe';";
 	$res = doSQLsubmitted($sql);
+	$sql = "DELETE FROM `bboard` WHERE `UserID` = 'jdoe';";
+	$res = doSQLsubmitted($sql);
 	}
 
 print <<<pagePart1
 <div class="container">
 <h3>Delete Records for jdoe</h3>
-<p>This utility is used to delete all &apos;calls&apos; records and &apos;callslog&apos; records created by the userid of &apos;jdoe&apos; (the training and testing userid.)</p>
+<p>This utility is used to delete all &apos;calls&apos; records and &apos;call log&apos; records created by the userid of &apos;jdoe&apos; (the training and testing userid.)</p>
 
 pagePart1;
 $sql = "SELECT * FROM `calls` WHERE `OpenedBy` = 'jdoe';";
@@ -42,8 +44,13 @@ $res = doSQLsubmitted($sql);
 $logcount = $res->num_rows;
 //echo "logcount: $logcount<br>";
 
+$sql = "SELECT * FROM `bboard` WHERE `UserID` = 'jdoe';";
+$res = doSQLsubmitted($sql);
+$bullcount = $res->num_rows;
+//echo "logcount: $logcount<br>";
+
 print <<<pagePart2
-<h4>Currently there are $callscount call records and $logcount log records in the database entered by the userid &apos;jdoe&apos;.</h4>
+<h4>Currently there are $callscount call records, $logcount log records and $bullcount bulletin board items in the database entered by the userid &apos;jdoe&apos;.</h4>
 <h4>Click the CONTINUE button to delete all of these records (if any).</h4>
 
 <a id="CB" class="btn btn-danger" href="admdeletejdoerecs.php?action=delete">CONTINUE</a>

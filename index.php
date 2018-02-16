@@ -7,10 +7,13 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 session_start();
-//include 'Incls/vardump.inc.php'; 
+// include 'Incls/vardump.inc.php'; 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if (($action == 'logout')) {
 	include_once 'Incls/datautils.inc.php';
@@ -18,11 +21,11 @@ if (($action == 'logout')) {
 	unset($_SESSION['CTS_SessionTimer']);
 	unset($_SESSION['CTS_SessionUser']);
 	unset($_SESSION['CTS_SecLevel']);
-	unset($_SESSION['CTS_TEST_MODE']);
+	session_unset();
+	session_destroy();
 	include 'Incls/seccheck.inc.php';      // present login fields
 	}
 if ((($action) == 'login')) {
-	unset($_SESSION['CTS_TEST_MODE']);
 	//echo "login request received<br>";
 	$userid = $_REQUEST['userid'];
 	$password = $_REQUEST['password'];
@@ -35,17 +38,13 @@ if ((($action) == 'login')) {
 			}
 		else {
 //			addlogentry("Failed login attempt with password: $password");
-			unset($_SESSION['CTS_TEST_MODE']);
-			echo "Failed login attempt<br>";
+//			echo '<h3 style="color: red; ">Failed login attempt</h3>';
 			}
 		}
 	}
 
 include_once 'Incls/datautils.inc.php';
 echo "<div class=\"container\">";
-
-//	if (isset($_SESSION['CTS_TEST_MODE']))
-//		echo '<h4 style="color: #FF0000; ">TEST MODE ENABLED - using test database for session</h3>';
 
 if (isset($_SESSION['CTS_SessionUser'])) {
   include_once 'Incls/mainmenu.inc.php';
@@ -55,14 +54,16 @@ if (isset($_SESSION['CTS_SessionUser'])) {
   <h3>Home Page&nbsp  
   <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>
   </h3></form>
-  <h4 style="color: red; ">Check out the latest bulletins:</h4>
+  <h4 style="color: red; ">Check out the last 5 bulletins (<a href="bboard.php">or view all of them</a>):</h4>
   <ul><table class="table table-condensed">
   <tr><th>Posted</th><th>Title</th><th>Author</th></tr>
   ';
-  $sql = "SELECT * FROM `bboard` WHERE '1' ORDER BY `DateTime` DESC LIMIT 0,5;";
+  $sql = "SELECT * FROM `bboard` WHERE '1' ORDER BY `DateTime` DESC;";
   $res = doSQLsubmitted($sql);
   while ($r = $res->fetch_assoc()) {
+    if (preg_match("/newrec/i", $r[UserID])) continue;  // ignore newly added
     echo "<tr><td>$r[DateTime]</td><td>$r[Subject]</td><td>By: $r[UserID]</td>";
+    $count++; if ($count > 4) break;                    // only list 5
     }
   echo '
   </table></ul>';
@@ -82,15 +83,14 @@ else {
 
 <br>
 <b>Instructional Videos</b><br><ul>
-	<a href="http://youtu.be/MCX1wAn5lbc" target="_blank">Overview and Main Menu(8:13)</a><br>
-	<a href="http://youtu.be/ByaI0rxRlLs" target="_blank">Messages Menu Item(10:41)</a><br>
-	<a href="http://youtu.be/EI3XwZVAwYg" target="_blank">Calls Menu Item(14:28)</a>
+	<a href="https://youtu.be/kVp5n-dqNj0" target="_blank">Overview and Main Menu(14:00))</a><br>
+	<a href="https://youtu.be/0tWkY2ICwqE" target="_blank">External Systems Menu Item(12:21)</a><br>
+	<a href="https://youtu.be/3za8LbOyP8o" target="_blank">Calls Menu Item(12:56)</a><br>
+	<a href="https://youtu.be/Ex6jrTQPsy8" target="_blank">CTS2 Admin Functions (14:06)</a>
 	</ul><br><br>
 <div align="center"><img src="img/PWC1080logo.jpg" width="600" height="96" alt=""></div>
 <br />
 </div>
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
+<!-- <?php echo "<pre>"; print_r($GLOBALS); echo "</pre>"; ?> -->
 </body>
 </html>

@@ -10,8 +10,6 @@
 <body onload="initSelect()">
 <?php
 session_start();
-//unset($_SESSION['CTS_TEST_MODE']);
-//if (isset($_REQUEST['testdb'])) $_SESSION['CTS_TEST_MODE'] = 'ON'; 
 //include 'Incls/vardump.inc.php';
 //include 'Incls/seccheck.inc.php';
 // include 'Incls/mainmenu.inc.php';

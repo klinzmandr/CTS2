@@ -4,9 +4,26 @@
 <title>Page Title</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+// initial setup of jquery function(s) for page
+$(document).ready(function () {
+	alert(" example of action on document load");
+
+// this attaches an event to an object
+	$("h3").click(function () {
+    alert("example of a click of any header 3 like the page title"); 
+    });
+
+  });  // end ready function
+</script>
+
+
 <?php
 session_start();
 //include 'Incls/seccheck.inc.php';
@@ -22,7 +39,5 @@ pagePart1;
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

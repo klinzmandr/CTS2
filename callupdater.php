@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/seccheck.inc.php';
@@ -113,7 +116,5 @@ pageEnd;
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

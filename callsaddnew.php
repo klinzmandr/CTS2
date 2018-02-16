@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -98,8 +101,6 @@ Reason: Other
 <p><b>Preset fields can be redefined when call is updated.</b></p>
 </ul>
 </div>
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 pagePart1;
 exit;
 }
@@ -182,7 +183,5 @@ pagePart1;
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

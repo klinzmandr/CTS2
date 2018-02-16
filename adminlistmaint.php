@@ -6,7 +6,10 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
-<body onchange="flagChange()">
+<body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <script>
 <!-- Form change variable must be global -->
 var chgFlag = 0;
@@ -68,7 +71,7 @@ if ($file == "Locations") {
 	echo "<input type=\"hidden\" name=\"updfile\" value=\"$file\">";	
 	echo "<input type=\"submit\" name=\"Submit\" value=\"Submit Changes\" />";
 	echo "</form>";
-	echo '<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script></div></body></html>';
+	echo '</body></html>';
 	exit;
 	}
 
@@ -82,7 +85,7 @@ if ($file == "Properties") {
 	echo "<input type=\"hidden\" name=\"updfile\" value=\"$file\">";	
 	echo "<input type=\"submit\" name=\"Submit\" value=\"Submit Changes\" />";
 	echo "</form>";
-	echo '<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script></div></body></html>';
+	echo '</body></html>';
 	exit;
 	}
 
@@ -96,7 +99,7 @@ if ($file == "Species") {
 	echo "<input type=\"hidden\" name=\"updfile\" value=\"$file\">";	
 	echo "<input type=\"submit\" name=\"Submit\" value=\"Submit Changes\" />";
 	echo "</form>";
-	echo '<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script></div></body></html>';
+	echo '</body></html>';
 	exit;
 	}
 
@@ -110,7 +113,7 @@ if ($file == "Reasons") {
 	echo "<input type=\"hidden\" name=\"updfile\" value=\"$file\">";	
 	echo "<input type=\"submit\" name=\"Submit\" value=\"Submit Changes\" />";
 	echo "</form>";
-	echo '<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script></div></body></html>';
+	echo '</body></html>';
 	exit;
 	}
 
@@ -124,15 +127,13 @@ if ($file == "Actions") {
 	echo "<input type=\"hidden\" name=\"updfile\" value=\"$file\">";	
 	echo "<input type=\"submit\" name=\"Submit\" value=\"Submit Changes\" />";
 	echo "</form>";
-	echo '<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script></div></body></html>';
+	echo '</body></html>';
 	exit;
 	}
 
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </div>
 </body>
 </html>

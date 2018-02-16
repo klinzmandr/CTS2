@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 include 'Incls/seccheck.inc.php';
@@ -21,7 +24,5 @@ include 'Incls/links.inc.php';					// read file with links
 echo '</ul></div>';
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

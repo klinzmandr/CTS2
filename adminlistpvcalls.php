@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -24,7 +27,10 @@ print <<<pagePart1
 <p>This listing is provided to allow the administrator to list all calls for a specific PV.</p>
 
 pagePart1;
-$sql = "SELECT `UserID` from `cts2users` WHERE '1' ORDER BY `UserID` ASC;";
+$sql = "SELECT `UserID` from `cts2users` 
+WHERE (`Role` = 'admin'
+   OR `Role` = 'user') 
+ORDER BY `UserID` ASC;";
 $res = doSQLsubmitted($sql);
 echo '<form action="adminlistpvcalls.php" method="post"  class="form">
 Choose a user: <select onchange="this.form.submit()" name="userid">
@@ -37,7 +43,6 @@ while ($uid = $res->fetch_assoc()) {
 echo '</select><br>
 <input type="hidden" name="action" value="list">
 </form>';
-echo '</div><script src="jquery.js"></script><script src="js/bootstrap.min.js"></script></body></html>';
 exit;
 }
 
@@ -47,7 +52,7 @@ exit;
 $sql = "SELECT * FROM `calls` WHERE `OpenedBy` = '$userid' ORDER BY `CallNbr` DESC;";
 $res = doSQLsubmitted($sql);
 $rows = $res->num_rows;
-if ($rows == 0) { echo "no rows found<br>"; };
+// if ($rows == 0) { echo "no rows found<br>"; };
 echo "<div class=\"container\">
 <h3>All Calls for $userid</h3>";
 
@@ -72,8 +77,6 @@ while ($r = $res->fetch_assoc()) {
 	echo '</table>';
 
 ?>
-
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+====== END LISTING ======<br><br>
 </body>
 </html>

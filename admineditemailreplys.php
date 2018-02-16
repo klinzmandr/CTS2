@@ -6,9 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+<body>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-</head>
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 session_start();
@@ -29,7 +30,6 @@ if ($rfn != '') {
 //echo '<pre>'; print_r($rfn); echo '</pre>';
 ?>
 
-<body>
 <script src="js/nicEdit.js" type="text/javascript"></script>
 <script type="text/javascript">
 bkLib.onDomLoaded(function() {
@@ -78,9 +78,8 @@ function moveContent(){
 
 <h3>Customization Codes</h3>
 <p>Use these codes in a message to customize it with data from the database.</p>
-
 <ul>
-	<li>[callbnr] - replaced with the call number of the current call being updated.</li>
+	<li>[callnbr] - replaced with the call number of the current call being updated.</li>
 	<li>[name] - replaced with the caller name field of the current call being updated.</li>
 	<li>[crn] - replaced with the contents of the WRMD field of the current call.</li>
 </ul>

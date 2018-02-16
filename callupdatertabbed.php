@@ -7,9 +7,12 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
-<!--<body onload="initSelects(this)" onchange="flagChange()">-->
-<!-- <body onchange="flagChange()"> -->
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/nicEdit.js"></script>
+
 <style>
   .page-break  {
     clear: left;
@@ -17,19 +20,39 @@
     page-break-after:always;
     }
 </style>
+<script>
+// document ready function ============
+$(document).ready(function() {
+  $("#X").fadeOut(2000);
+$("#RE").change(function() {
+  const regex = /\*/g;
+  var reason = $("#RE option:selected").text();
+  if (regex.exec(reason) != null) {
+    $("#mm-modalBody").html("<center><h2 style=\"color: red; \">A T T E N T I O N!</h2></center><font size=\"2\">Selection of this call reason requires that this incident be reported to the CA DFW.<br><br><b>Please contact the Center and report this call so that appropriate follow up steps can be done.</b><br><br>Enter a details in the Additional Notes field to document your actions.</font>");
+    $("#myModal").modal("show");
+    }
+  });
+  
+$("#FC").click(function() {
+  event.preventDefault();
+  $('#tf').attr('action', 'callsfastcloser.php');
+  $("#tf").submit();  
+  });
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="./js/bootstrap-datetimepicker.min.js"></script>
+});
+</script>
+
 <?php
 session_start();
-//include 'Incls/vardump.inc.php';
+// include 'Incls/vardump.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 include 'Incls/datautils.inc.php';
 
 $callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$flds = $_REQUEST['flds'];
+$notes = $_REQUEST['notes'];
 
 // apply any fields updated to call record
 if ($action == 'update') {
@@ -38,30 +61,24 @@ if ($action == 'update') {
   $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
   $res = doSQLsubmitted($sql);
   $r = $res->fetch_assoc();
-//  echo '<pre>DB record '; print_r($r); echo'</pre>';  
+  // echo '<pre>existing DB record '; print_r($r); echo'</pre>';  
 	$notearray = array();  $vararray = array();
-	$uri = $_SERVER['QUERY_STRING'];
-	parse_str($uri, $vararray);
-//	echo '<pre> input var '; print_r($vararray); echo '</pre>';
-	unset($vararray[action]);
-	unset($vararray[submit]);
-	if (strlen($vararray[notes]) <= 4) { $vararray[notes] = 'Call updated'; }
+
+	if (strlen($notes) <= 4) { $vararray[notes] = 'Call updated'; }
 	$notearray[CallNbr] = $callnbr;
 	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
 	$notearray[Notes] = '';
 // add any changes to name, phone number of email address to call log record 
-  if ($r[Name] != $vararray[Name]) $notearray[Notes] .= '<br>Name: '.$vararray[Name];
-  if ($r[EMail] != $vararray[EMail]) $notearray[Notes] .= '<br>Email: '.$vararray[EMail];
-  if ($r[PrimaryPhone] != $vararray[PrimaryPhone])
-      $notearray[Notes] .= '<br>Phone: '.$vararray[PrimaryPhone].'<br>';
-  if ($r['CaseRefNbr'] != $vararray['CaseRefNbr']) 
-      $notearray[Notes] .= '<br>WRMD Ref. Nbr: '.$vararray['CaseRefNbr'].'<br>';
-  $notearray[Notes] .= '<br>'.$vararray[notes].'<br>';
+  if ($r[Name] != $flds[Name]) $notearray[Notes] .= '<br>old Name: '.$r[Name];
+  if ($r[EMail] != $flds[EMail]) $notearray[Notes] .= '<br>old Email: '.$r[EMail];
+  if ($r[PrimaryPhone] != $flds[PrimaryPhone])
+      $notearray[Notes] .= '<br>old Phone: '.$r[PrimaryPhone].'<br>';
+  if ($r['CaseRefNbr'] != $flds['CaseRefNbr']) 
+      $notearray[Notes] .= '<br>old WRMD Ref. Nbr: '.$r['CaseRefNbr'].'<br>';
+  $notearray[Notes] .= '<br>'.$notes.'<br>';
 //	echo '<pre> new note '; print_r($notearray); echo '</pre>';
 // add new call log records
 	sqlinsert("callslog", $notearray);
-	unset($notearray);
-  unset($vararray[notes]);
 	
 // now write updates to the call itself	
 	$vararray[LastUpdater] = $_SESSION['CTS_SessionUser'];
@@ -71,14 +88,9 @@ if ($action == 'update') {
     }
 	$where = "`CallNbr`='" . $callnbr . "'";
 //echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
-	sqlupdate('calls',$vararray, $where);
+	sqlupdate('calls',$flds, $where);
 	
   echo '  
-<script>
-$(document).ready(function() {
-  $("#X").fadeOut(2000);
-});
-</script>
 <h3 style="color: red; " id="X">Update Completed.</h3>';
 
 	$action = 'view';
@@ -91,12 +103,12 @@ $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
 if ($action == 'new') {
 	$sql = "SELECT * FROM `calls` WHERE `Status` = 'New' AND `OpenedBy` = '$sessionuser';";
 	}
-//echo "sql: $sql<br>";
+// echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
 $r = $res->fetch_assoc();
 
 // parse record fields into page
-//echo '<pre>DB record '; print_r($r); echo'</pre>';
+// echo '<pre>DB record '; print_r($r); echo'</pre>';
 $callnbr = $r[CallNbr];
 $status = $r[Status]; 
 if ($status == 'New') $status = 'Open';
@@ -110,7 +122,7 @@ $org = $r[Organization]; $name = $r[Name]; $address=$r[Address];
 $city = $r[City]; $state = $r[State]; $zip = $r[Zip]; 
 $primaryphone = $r[PrimaryPhone]; 
 $email = $r[EMail]; $crn = $r['CaseRefNbr'];
-$description = $r[Description];
+$description = htmlentities($r[Description]);
 $pcsent = $r[PostcardSent]; $emsent = $r[EmailSent];
 
 if ($action == 'new') {
@@ -131,7 +143,30 @@ $(document).ready(function () {
 	$("#PT").val("<?=$property?>");
 	$("#SP").val("<?=$species?>");
 	$("#RE").val("<?=$reason?>");
-	});
+
+$("#cinfo").click(function() {
+  var msg = '<center><h3>Caller Info</h3>(already copied to clipboard)</center><br><br><ul><pre>';
+  var msgcb = "Education/Presentation Request:\n";
+  msg += 'CT2 Call Number: ' + "<?=$callnbr?>\n";
+  msgcb += 'CT2 Call Number: ' + "<?=$callnbr?>\n";
+  msg += 'Date/Time of Call: ' + $("#DP1").val() + "\n";
+  msgcb += 'Date/Time of Call: ' + $("#DP1").val() + "\n";
+  msg += 'Caller Name: ' + $("#CN").val() + "\n";
+  msgcb += 'Caller Name: ' + $("#CN").val() + "\n";
+  msg += 'Caller Phone: ' + $("#PN").val() + "\n";
+  msgcb += 'Caller Phone: ' + $("#PN").val() + "\n";
+  msg += 'Caller Email: ' + $("#EM").val() + "\n";
+  msgcb += 'Caller Email: ' + $("#EM").val() + "\n";
+  msg += 'Call Description: ' + $("#CD").val() + "\n</pre></ul>";
+  msgcb += 'Call Description: ' + $("#CD").val() + "\n";
+  $("#mm-modalBody").html(msg);
+  $("textarea").val(msgcb);
+  $("textarea").select();
+  document.execCommand('copy');
+  $("#myModal").modal("show");
+  //alert (msg);
+  });
+});
 </script>
 <script>
 function chkdtp() {
@@ -153,20 +188,21 @@ function chkdtp() {
 <?php
 echo '
 <div class="container">
-<h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
+<h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success" form="tf" /><b>Update Call</b></button>&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
 <span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>';
 
 ?>
 <!-- define the form -->
-<form class="form" id="tf" name="tf" action="callupdatertabbed.php" onsubmit="return chkdtp()">
+<form action="callupdatertabbed.php" method="post"  class="form" id="tf" name="tf" onsubmit="return chkdtp()">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="callnbr" value="<?=$callnbr?>">
+<input type="hidden" name="flds[CallNbr]" value="<?=$callnbr?>">
 
 Date/Time Call Entered:&nbsp;&nbsp;<?=$dtopened?>&nbsp;&nbsp;&nbsp;
-Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="DTPlaced" value="<?=$dtplaced?>" style="width: 150px; height: 25px;"><br>
+Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="flds[DTPlaced]" value="<?=$dtplaced?>" style="width: 150px; height: 25px;"><br>
 
-Caller Name:<input autofocus type="text" name="Name" placeholder="Caller Name" value="<?=$name?>" />
-Phone: <input id="PN" onblur="return checkPhone()" type="text" name="PrimaryPhone" value="<?=$primaryphone?>" size="12" maxlength="12" placeholder="Phone Number" />
+Caller Name:<input autofocus id="CN" type="text" name="flds[Name]" placeholder="Caller Name" value="<?=$name?>" />
+Phone: <input id="PN" onblur="return checkPhone()" type="text" name="flds[PrimaryPhone]" value="<?=$primaryphone?>" size="12" maxlength="12" placeholder="Phone Number" />
 
 <script type="text/javascript">
 $('#DP1').datetimepicker({
@@ -214,7 +250,7 @@ return true;
 function checkemail() {
 	var sval = $("#EM").val();
 	if (sval == "") {
-		alert("ERROR: No email address provided");		
+		alert("ERROR: No email address recorded.  You must UPDATE the call with an email address before sending to it.");		
 		return false;
 		}
 	return true;
@@ -233,51 +269,48 @@ function chkEMAddr() {
   return false;
   }
 </script>    
-<script type="text/javascript" src="js/nicEdit.js"></script>
-<script type="text/javascript">
-//	bkLib.onDomLoaded(function() { nicEditors.allTextAreas(); initSelects(this) });
-bkLib.onDomLoaded(function() {
-  new nicEditor({fullPanel:true}).panelInstance("area1");
-  });    
-</script>
 
-E-mail: <input type="text" name="EMail" value="<?=$email?>" id="EM" onblur="return chkEMAddr()" placeholder="Email Address">
+E-mail: <input type="text" name="flds[EMail]" value="<?=$email?>" id="EM" onblur="return chkEMAddr()" placeholder="Email Address">
 <?php
 echo '
 <a href="emailsend.php?emadr='.$email.'&callnbr='.$callnbr.'&name='.$name.'&crn='.$crn.'" onclick="return checkemail()">';
 ?>
-<span class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
+<span id="desc" title="Send Email to Conatct" class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
 </span></a>
 <br />
 
-Call Description:<input type="text" name="Description" value="<?=$description?>" size="60"  description="" />
+Call Description:<input id="CD" name="flds[Description]" value="<?=$description?>" size="60"  description="" />
+
+<span id="cinfo" title="Copy Contact Info" class="glyphicon glyphicon-briefcase" style="color: blue; font-size: 20px">
+</span>
+
 <br />
 Additional Notes: (check History for prior note entries)<br />
-<textarea id="area1" name="notes" rows="5" cols="90"></textarea>
-<input type="hidden" name="Status" value="<?=$status?>">
-<input type="hidden" name="OpenedBy" value="<?=$openedby?>">
+<textarea name="notes" rows="5" cols="90"></textarea><br>
+<input type="hidden" name="flds[Status]" value="<?=$status?>">
+<input type="hidden" name="flds[OpenedBy]" value="<?=$openedby?>">
 
 <!-- call details tab -->
 <table class="table table-condensed" border=1><tr><td>
 <table class="table-condnensed">
 <tr><td>Animal Location:</td><td>
-<select id="AL" name="AnimalLocation" size="1">
+<select id="AL" name="flds[AnimalLocation]" size="1">
 <option value=""></option>
 <?php loaddbselect("Locations"); ?>
 </select></td></tr><tr><td>Call Location:</td><td>
-<select id="CL" name="CallLocation" size="1">
+<select id="CL" name="flds[CallLocation]" size="1">
 <option value=""></option>
 <?php loaddbselect("Locations"); ?>
 </select></td></tr><tr><td>Property:</td><td>
-<select id="PT" name="Property" size="1">
+<select id="PT" name="flds[Property]" size="1">
 <option value=""></option>
 <?php loaddbselect("Properties"); ?>
 </select></td></tr><tr><td>Species:</td><td>
-<select id="SP" name="Species" size="1">
+<select id="SP" name="flds[Species]" size="1">
 <option value=""></option>
 <?php loaddbselect("Species"); ?>
 </select></td></tr><tr><td>Call Reason:</td><td>
-<select id="RE" name="Reason" size="1">
+<select id="RE" name="flds[Reason]" size="1">
 <option value=""></option>
 <?php loaddbselect("Reasons"); ?>
 </select>
@@ -285,33 +318,40 @@ Additional Notes: (check History for prior note entries)<br />
 </table>
 </td>
 
-<!-- <input class="btn btn-success" type="submit" name="submit" value="Update Call" /><hr> -->
+<!-- <input class="btn btn-success" type="submit" name="submit" value="Update Call" /><hr>
 <div align="center">
 <br><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><br>
+ -->
+<td valign="top">
+WRMD Number: <input type="text" name="flds[CaseRefNbr]" value="<?=$crn?>" maxlength="8" id="CRN"><br>
+Organization: <input type="text" name="flds[Organization]" size="50" placeholder="Organization" value="<?=$org?>"><br>
+Address:<input id="PC" type="text" name="flds[Address]" size="50" placeholder="Address Line" value="<?=$address?>"><br />
+City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="flds[City]" placeholder="City" value="<?=$city?>" autocomplete="off" />, 
+State:<input id="ST" type="text" name="flds[State]" size="2" maxlength="2" value="<?=$state?>"/>  
+Zip: <input id="ZI" type="text" name="flds[Zip]" size="5" maxlength="10" value="<?=$zip?>"/>
+<button id="ZM" href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
+<br>
 
 <?php $citieslist = createddown(); ?>
 
-<!-- caller extended details tab -->
 <script>
-function loadcity() {
-//	alert("loadcity");
-	var cv = $("#CI").val();
-	var cva = cv.split(",");
-	$("#CI").val(cva[0]);
-	$("#ST").val(cva[1]);
-	$("#ZI").val(cva[2]);
-	}
-</script>
-<td valign="top">
-WRMD Number: <input type="text" name="CaseRefNbr" value="<?=$crn?>" maxlength="8" id="CRN"><br>
-Organization: <input type="text" name="Organization" size="50" placeholder="Organization" value="<?=$org?>"><br>
-Address:<input id="PC" type="text" name="Address" size="50" placeholder="Address Line" value="<?=$address?>"><br />
-City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="City" placeholder="City" value="<?=$city?>" autocomplete="off" onblur="loadcity()" />, 
-State:<input id="ST" type="text" name="State" size="2" maxlength="2" value="<?=$state?>"/>  
-Zip: <input id="ZI" type="text" name="Zip" size="5" maxlength="10" value="<?=$zip?>"/>
-<button href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
-<br>
-<script>
+$("document").ready (function() {
+  $("#ZM").click (function () {
+    var cla = <?=$citieslist?>;
+    cla.sort();
+    var res = "<center><h3>City and Zip List</h3><table><tr><th>City</th><th>Zip</th></tr>";
+    for (i=0; i<cla.length; i++) {
+      if(cla[i] == '') continue;    // ignore empty array items
+      var parts = cla[i].split(",");
+      if (parts[2] == '') continue;  // no zip, no list
+      res += "<tr><td>"+parts[0]+"</td><td>"+parts[2]+"</td></tr>";
+      }
+    res += "</table></center>";
+    $("#mm-modalBody").html(res);
+    $("#myModal").modal("show");
+    });
+  });
+
 function checkaddr() {
 	var sval = $("#PC").val();
 if ( sval.length == 0) {
@@ -332,31 +372,62 @@ if ( sval.length ){
 	$("#CL").val(sval);
 	return;
 	}
-alert("no value seen");
+// alert("no value seen");
 return;
 });
 </script>
 
 <?php
 if ($pcsent == '') {
-	echo 'Postcard Sent? <input id="PCChk" onchange="return checkaddr()" type="checkbox" name="PostcardSent" Value="Yes">'; }
+	echo 'Postcard Sent? <input id="PCChk" onchange="return checkaddr()" type="checkbox" name="flds[PostcardSent]" Value="Yes">'; }
 else {
 	echo "Postcard Sent? $pcsent "; }
 if ($emsent == '') {
 	echo "&nbsp;&nbsp;&nbsp;Email Sent? No<br><br>"; }
 else {
 	echo "&nbsp;&nbsp;&nbsp;Email Sent? $emsent<br>"; }
+	
+echo 'seclevel: '.$_SESSION['CTS_SecLevel'].', sessuser: '.$_SESSION['CTS_SessionUser'].', calluser: '.$openedby.'<br>';
+$fcbutton = '';
+if (($_SESSION['CTS_SecLevel'] == 'admin') OR 
+  ($_SESSION['CTS_SessionUser'] == $openedby)) { 
+    $fcbutton = '<button id="FC" class="btn btn-primary">Fast Close</button>'; }
+  
 ?>
+</td></tr></table>
 
 <script src="js/bootstrap3-typeahead.js"></script>
+
+<!-- caller extended details tab -->
+<script>
+$("document").ready(function () {
+$("#CI").keypress(function(e) {
+  //Enter key
+  if (e.which == 13) { return false; }
+});
+
+$("#CI").blur(function() {
+//	alert("loadcity");
+	var cv = $("#CI").val();
+	var cva = cv.split(",");
+	$("#CI").val(cva[0]);
+	$("#ST").val(cva[1]);
+	$("#ZI").val(cva[2]);
+	});
+	
+});
+</script>
+
 <script>
 var citylist = <?=$citieslist?>
 $('#CI').typeahead({source: citylist})
 </script>
-</td></tr></table>
 
 <!-- <input type="submit" name="submit" value="Update Call" /><hr> -->
-<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div><hr>
+<table class="table"><tr>
+<td>
+<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div></td>
+<td><?=$fcbutton?></td></tr></table>
 </form>
 
 <!-- output the history log -->
@@ -378,39 +449,8 @@ while ($r = $res->fetch_assoc()) {
 </table>
 </div>  <!-- container -->';
 
-<!-- =========== Zip Code Modal  ==================== -->  
-<div class="modal fade" id="myZipModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Cities and Zip Code List</h4>
-      </div>
-    <div class="modal-body">
-   <center><h3>Cities and Zip Codes</h3></center>
-<table cellpadding="0" cellspacing="0" border="0" align="center" width="95%">
-<tr><td>Arroyo Grande</td><td>93420</td><td>Oceano</td><td>93445</td></tr>
-<tr><td>Atascadero</td><td>93422</td><td>Paso Robles</td><td>93446</td></tr>
-<tr><td>Avila Beach</td><td>93424</td><td>Pismo Beach</td><td>93449</td></tr>
-<tr><td>Cambria</td><td>93428</td><td>San Luis Obispo</td><td>93401</td></tr>
-<tr><td>Cayucos</td><td>93430</td><td>San Luis Obispo</td><td>93405</td></tr>
-<tr><td>Creston</td><td>93432</td><td>San Miguel</td><td>93451</td></tr>
-<tr><td>Grover Beach</td><td>93433</td><td>Santa Margarita</td><td>93453</td></tr>
-<tr><td>Guadalupe</td><td>93434</td><td>Santa Maria</td><td>93455</td></tr>
-<tr><td>Los Osos</td><td>93402</td><td>Shandon</td><td>93461</td></tr>
-<tr><td>Morro Bay</td><td>93442</td><td>Templeton</td><td>93465</td></tr>
-<tr><td>Nipomo</td><td>93444</td></tr>
-</table>
-    </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- end of modal -->
-
 <?php
+//echo '<pre>'; print_r($citieslist); echo '</pre>';
 // php function to read db locations table and return it
 function createddown() {
 	$locs = readdblist('Locations');

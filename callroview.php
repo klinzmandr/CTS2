@@ -8,6 +8,9 @@
 <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.min.css">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -34,12 +37,15 @@ echo '<div class="container">
 <table class="table"><tr><td>';
 
 if ($action != '') {
-	echo "<br><h2>Call $call&nbsp;&nbsp;<a href=\"javascript:self.close();\" class=\"btn btn-primary\"><b>CLOSE</b></a></h2> ";
+	echo "<br><h1>Call $call&nbsp;&nbsp;<a href=\"rptlast50calls.php\" class=\"btn btn-primary\"><b>Return</b></a></h1> ";
 	}
 else {
-	echo "<h2><a href=\"callupdatertabbed.php?action=view&callnbr=$call\">Call $call</a></h2>";
+  if ($_SESSION['CTS_SecLevel'] == 'admin') {
+	  echo "<h1><a href=\"callupdatertabbed.php?action=view&callnbr=$call\">Call $call</a></h1>"; }
+	else {
+	  echo "<h1>Call $call</h1>"; }
 	}
-echo '</td><td><img src="https://apps.pacwilica.org/PWC_logo_only.jpg" width="250" alt="PWC logo" style="float: right; "></td></tr></table>';
+echo '</td><td><img src="https://apps.pacwilica.org/PWC_logo_only.jpg" width="200" alt="PWC logo" style="float: right; "></td></tr></table>';
 if ($r[DTClosed] == '') $end = strtotime('now');
 else $end = strtotime($r[DTClosed]);
 $start = strtotime($r[DTOpened]);
@@ -92,7 +98,5 @@ if ($rc > 0) {
 echo '=====END OF REPORT=====';
 ?>
 </div>
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

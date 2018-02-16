@@ -7,14 +7,17 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
-echo "<div class=\"hidden-print\">";
+// echo "<div class=\"hidden-print\">";
 include 'Incls/mainmenu.inc.php';
-echo '</div>';
+// echo '</div>';
 
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $seqnbr = isset($_REQUEST['seqnbr'])? $_REQUEST['seqnbr'] : ""; 

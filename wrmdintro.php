@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 include 'Incls/seccheck.inc.php';
@@ -15,8 +18,7 @@ include 'Incls/seccheck.inc.php';
 print <<<pagePart1
 <div class="container">
 <h3>Wildlife Rehab Medical Database (WRMD)</h3>
-<p>Wildlife Rehabilitation Database (WRMD) is a web-based, online system which
-can remotely provide reasonably current information on the status and
+<p>Wildlife Rehabilitation Database (WRMD) is a web-based, online system which can remotely provide reasonably current information on the status and
 outcome of the animals admitted to PWC.</p>
 
 <p>Volunteers now have 'view only' access to this program, in order to
@@ -40,7 +42,5 @@ pagePart1;
 
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -21,7 +21,7 @@ include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
 <div class="container">
-<h3>Historical Call Summary Report &nbsp;&nbsp;   <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>
+<h3>Historical Call Summary Report &nbsp;&nbsp;<a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>
 <p>This report lists a summary of all calls entered since Jan 1, 2010.  The detailed report is available for download ONLY.</p>
 
 pagePart1;

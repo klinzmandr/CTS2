@@ -7,6 +7,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -40,7 +43,6 @@ Call Status: <input type="radio" name="status" value="Open" checked="checked">Op
 </ol>
 
 </div>
-<script src="jquery.js"></script><script src="js/bootstrap.min.js"></script>
 </body></html>
 
 pagePart1;
@@ -84,11 +86,7 @@ while ($r = $res->fetch_assoc()) {
 	</tr>';
 	}
 echo '</table></div>--- END OF LIST ---';
-
-
 ?>
 
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
