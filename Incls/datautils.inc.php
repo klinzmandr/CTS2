@@ -261,7 +261,6 @@ function checkcredentials($userid, $password) {
 	
 	if (($r[UserID] == $userid) && ($r[Password] == $password)) {
 		//echo "found match - user: $uid, pw: $pw<br>";
-		$_SESSION['CTS_SessionTimer'] = time() + 5*60; // give 5 min's to start something
 		$_SESSION['CTS_SecLevel'] = $r[Role]; 
 		$_SESSION['CTS_SessionUser'] = $userid;
 		$_SESSION['CTS_ActiveCTSMCID'] = $r[MCID];

@@ -1,16 +1,29 @@
-<?php
-date_default_timezone_set('America/Los_Angeles');
+<script src="js/bootstrap-session-timeout.js"></script> 
+<script>
+$(document).ready(function() { 
+  $.sessionTimeout({
+      title: 'SESSION TIMEOUT ALERT',
+      message: '<h3>Your session is about to expire.</h3>',
+      keepAlive: false,
+      logoutUrl: 'indexsto.php',
+      redirUrl: 'indexsto.php',
+      warnAfter: 15*60*1000,
+      redirAfter: 20*60*1000,
+      countdownMessage: 'Time remaining:',
+      countdownBar: true,
+      showButtons: false
+  });
+});
+</script>
 
-$_SESSION['CTS_SessionLength'] = 15*60;		// session length in seconds
-$sessexpiration = isset($_SESSION['CTS_SessionTimer']) ? $_SESSION['CTS_SessionTimer'] : 0;
-$currenttime= time();
-// echo "current: $currenttime, sessexpiration: $sessexpiration<br>";
-if ($currenttime <= $sessexpiration) {			// session is live, extend it
-	$_SESSION['CTS_SessionTimer'] = $currenttime + $_SESSION['CTS_SessionLength'];
-	// echo "time extended<br>";	
-	}
-else {
-print <<<loginPage
+<?php
+// check if there is an active session
+if (isset($_SESSION['CTS_SessionUser'])) {
+  return;
+  }
+
+// if not display login form
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -93,8 +106,3 @@ function trim(s)
 </div> <!-- /container -->
 </body>
 </html>
-loginPage;
-exit;
-}
-
-?>

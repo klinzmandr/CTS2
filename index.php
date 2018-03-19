@@ -15,16 +15,15 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 session_start();
 // include 'Incls/vardump.inc.php'; 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-if (($action == 'logout')) {
-	include_once 'Incls/datautils.inc.php';
-  addlogentry("Logged Out");
-	unset($_SESSION['CTS_SessionTimer']);
-	unset($_SESSION['CTS_SessionUser']);
-	unset($_SESSION['CTS_SecLevel']);
-	session_unset();
-	session_destroy();
-	include 'Incls/seccheck.inc.php';      // present login fields
-	}
+
+if (!isset($_REQUEST['userid'])) {              // no user id
+  if (!isset($_SESSION['CTS_SessionUser'])) {   // and no session id
+  	include 'Incls/seccheck.inc.php';           // present login fields
+  	exit;
+  	}
+  }
+  
+include_once 'Incls/datautils.inc.php';
 if ((($action) == 'login')) {
 	//echo "login request received<br>";
 	$userid = $_REQUEST['userid'];
@@ -47,10 +46,11 @@ include_once 'Incls/datautils.inc.php';
 echo "<div class=\"container\">";
 
 if (isset($_SESSION['CTS_SessionUser'])) {
+  include 'Incls/seccheck.inc.php';         
   include_once 'Incls/mainmenu.inc.php';
 	echo '<h4>Session user logged in: ' . $_SESSION['CTS_SessionUser'] . '</h4>
 	<h5>Security level: ' . $_SESSION['CTS_SecLevel'] . '</h5>
-	<form class="form-inline" action="index.php" method="post"  id="xform">
+	<form class="form-inline" action="indexsto.php?lo=lo" method="post"  id="xform">
   <h3>Home Page&nbsp  
   <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>
   </h3></form>
@@ -69,7 +69,7 @@ if (isset($_SESSION['CTS_SessionUser'])) {
   </table></ul>';
 	}
 else {
-	echo '<form class="form-inline" action="calls.php" method="post\"  id="yform">
+	echo '<form class="form-inline" action="index.php" method="post\"  id="yform">
 	<h2>Call Tracking System II (CTS2)</h2>
 	<h3>Home Page&nbsp  
 	<button class="btn btn-large btn-primary" name="action" value="login" type="submit" form="yform" class="btn">Login</button></form></h3>
@@ -91,6 +91,5 @@ else {
 <div align="center"><img src="img/PWC1080logo.jpg" width="600" height="96" alt=""></div>
 <br />
 </div>
-<!-- <?php echo "<pre>"; print_r($GLOBALS); echo "</pre>"; ?> -->
 </body>
 </html>
