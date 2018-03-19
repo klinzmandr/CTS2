@@ -38,9 +38,9 @@ Start Date:
 
 inputForm;
 
-$today = date("Y-m-d 00:00:01",strtotime(now));
+$edhms = date("Y-m-d 23:59:59",strtotime($ed));
 $sql = "SELECT * FROM `calls` 
-WHERE `DTOpened` BETWEEN '$sd' AND '$ed'
+WHERE `DTOpened` BETWEEN '$sd' AND '$edhms'
 ORDER BY `CallNbr` DESC;";
 //echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
@@ -126,9 +126,9 @@ foreach ($hlvarray as $k => $r) {
 	echo '<td>'.$k.'</td><td>'.$count.'</td><td>'.$r[open].'</td><td>'.$r[closed].'</td><td>'.$r[center].'</td><td>'.$r[first].'</td><td>'.$r[last].'</td></tr>';
 	}
 echo '</table>';
-ksort($tot);
 $str = '';
 if (count($tot) > 0) {
+  ksort($tot);
   foreach ($tot as $k => $v) {
     $str .= "['$k', $v],";
     }

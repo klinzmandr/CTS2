@@ -117,8 +117,8 @@ Filter:<input id="inp" type="text" value="">&nbsp;&nbsp;+&nbsp;&nbsp;
 <button id="btnALL">Show All</button>&nbsp;&nbsp;
 <span id="helpclk" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
 <div id="help">
-<p>Click the &quot;Show All&quot; button to list all available documents.  If a key word contained in a document title is entered in the &quot;Filter&quot; box then and clicking the &quot;Apply Filter&quot; will display only those documents containing that character string in their name.  Clicking the &quot;Show None&quot; will clear the contents of the Filter box as well as the results list.</p>
-<p>Documents are also grouped based on their document number.  Clicking a button wll list only those documents associated with that button&apos;s label.  Usually these are documents that are associated with that topic.  Documents may be duplicated between subjects when ever it might be appropriate.</p>
+<p>Enter a key word or short character string and &quot;Apply Filter&quot; to list only those documents with titles containing the target string.  Click the &quot;Show All&quot; button to clear the filter and list all available documents.</p>
+<p>Documents are grouped based on the first digit of preceeding document number.  Clicking a button wll list only those documents associated with that button&apos;s label.  Usually these are documents that are associated with that topic.  Documents may be duplicated between subjects when ever it might be appropriate.</p>
 </div>
 <br>';
 foreach ($btnarray as $k => $v) {

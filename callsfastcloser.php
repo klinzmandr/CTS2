@@ -82,7 +82,7 @@ $("document").ready(function() {
     $("#mm-modalBody").html(errs);
     $("#myModal").modal("show");
     }
-$("#CForm").submit(function() {
+$("#CForm").submit(function(e) {
   // alert("form submit seen");
   var er = "";
   var rb = $(":checked").val();
@@ -99,7 +99,7 @@ $("#CForm").submit(function() {
     $("#mm-modalBody").html(er);
     $("#myModal").modal("show");
     //alert("error: " + er);
-    event.preventDefault();
+    e.preventDefault();
     return;
     }
   return;

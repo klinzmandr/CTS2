@@ -1,6 +1,3 @@
-<?php
-
-print <<<menupart1
 <style>
 body { padding-top: 50px; }      <!-- add padding to top of each page for fixed navbar -->
 </style>
@@ -10,18 +7,43 @@ body { padding-top: 50px; }      <!-- add padding to top of each page for fixed 
 var chgFlag = 0;
 
 $(document).ready(function(){
+// disable all buttons of class updb  
+  $('.updb').prop('disabled', true);
+    
   $("#aboutInfo").hide();
   $("#aboutBtn").click( function() {
     $("#mm-modalBody").html($("#aboutInfo").html());
     $("#myModal").modal("show");
+    return;
     });
+    
   $("input").change(function(){
-    chgFlag += 1; });
+    chgFlag += 1; 
+    $(".updb").css({"background-color": "red", "color":"black"});
+    $('.updb').prop('disabled', false);    
+    // setInterval(blink_text, 1000);
+    $("#FC").hide();
+    });
   $("textarea").change(function(){
-    chgFlag += 1; });
+    chgFlag += 1; 
+    $(".updb").css({"background-color": "red", "color":"black"});
+    $('.updb').prop('disabled', false);    
+    // setInterval(blink_text, 1000);
+    $("#FC").hide();
+    });
   $("select").change(function(){
-    chgFlag += 1; });
+    chgFlag += 1; 
+    $(".updb").css({"background-color": "red", "color":"black"});
+    $('.updb').prop('disabled', false);    
+    // setInterval(blink_text, 1000);
+    $("#FC").hide();
+    });
 }); 
+
+function blink_text() {
+    $('.updb').fadeOut(500);
+    $('.updb').fadeIn(500);
+}
 
 function chkchg() {
 	if (chgFlag <= 0) { return true; }
@@ -35,27 +57,27 @@ function chkchg() {
 <div class="hidden-print">
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-  </div>
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+</div>
 
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" id="navbar-collapse-1">
-    <ul class="nav navbar-nav" style='cursor: pointer;'>
-      <li><a onclick="return chkchg()" href="index.php"><b>Home</b></a></li>
-			<!-- <li><a onclick="return chkchg()" href="">????</a></li> -->
-			
-menupart1;
-
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse" id="navbar-collapse-1">
+  <ul class="nav navbar-nav" style='cursor: pointer;'>
+    <li><a onclick="return chkchg()" href="index.php"><b>Home</b></a></li>
+		<!-- <li><a onclick="return chkchg()" href="">????</a></li> -->
+<?php
 // include Admin menu options for special users
 $seclevel = isset($_SESSION['CTS_SecLevel']) ? $_SESSION['CTS_SecLevel'] : '';
 if ($seclevel == 'admin') {
-print<<<menupart2
+?> 
+
 <!-- ======== define Admin dropdown ===================== -->
 <!-- Menu dropdown for Extended Donor Info pages -->	
   <li class="dropdown">
@@ -77,11 +99,11 @@ print<<<menupart2
   	</ul>   <!-- ul dropdown-menu -->
   </li>  <!-- li dropdown -->
 
-menupart2;
+<?php
 }
 
 if ($seclevel != 'guest') {
-print <<<menuPart3a
+?>
 <!-- ========= define External Systems dropdown ============ -->
 <li class="dropdown">
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" ><b>External</b><b class="caret"></b></a>
@@ -91,15 +113,18 @@ print <<<menuPart3a
 	<li><a onclick="return chkchg()" href="wrmdintro.php" target="_blank" >WRMD Case Mgmnt</a></li>
 </ul>
 </li>
-menuPart3a;
+
+<?php
 }
-print <<<menuPart3b
+?>
+
 <!-- ========= define Calls dropdown ============= -->
 <!-- <li class="dropdown open">  example: to have open on load -->
 <li class="dropdown">
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" ><b>Calls</b><b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
-menuPart3b;
+
+<?php
 if ($seclevel != 'guest') {
 	echo '
 	<li><a onclick="return chkchg()" href="calls.php?action=MyOpen">My Open</a></li>
@@ -113,8 +138,8 @@ if ($seclevel != 'guest') {
 	<li><a onclick="return chkchg()" href="callscloser.php">Close A Call</a></li>
 	';
 	}
+?>
 
-print <<<menuPart3b
 	<li><a onclick="return chkchg()" href="callssearch.php">Search All</a></li>
 	<!-- <li><a onclick="return chkchg()" href="#">????</a></li> -->
 	<!-- <li><a href="#">?</a></li> -->
@@ -140,6 +165,8 @@ print <<<menuPart3b
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
 	<li><a href="rptcallsbyhlvindaterange.php" target="_blank">Calls by HLV in Date Range</a></li>
 	<li><a href="rpthistoricalcalls.php" target="_blank">Historical Call Report</a></li>
+	<li><a href="rptusersbydaterange.php" target="_blank">Users by Date Range</a></li>
+	<li><a href="rptmonthlyreport.php" target="_blank">CTS Monthly Report</a></li>
 	<li><a href="../charts" target="_blank">PWC Business Charts</a></li>
 	<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
 	<li class="divider"></li>
@@ -155,9 +182,6 @@ print <<<menuPart3b
 </div> <!-- hidden-print -->
 <!-- End mainmenu.inc -->
 
-menuPart3b;
-
-print <<<theModal
 <!-- =========== ABOUT Modal  ==================== -->  
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -181,5 +205,4 @@ print <<<theModal
 <p>Call Tracking System V2.0 (CTS2) is intended for the use by the Hot Line Volunteers of Pacific Wildlife Care.</p>
 <p>CTS2 is offered under the General Public License (GPL) Version 3.  There is no license fee assoicated with the use of this system or any of the components used to develop it.  All improvements or updates made must be made available to the MbrDB community.</p>
 </div>
-theModal;
-?>
+

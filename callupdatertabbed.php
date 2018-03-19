@@ -33,8 +33,9 @@ $("#RE").change(function() {
     }
   });
   
-$("#FC").click(function() {
-  event.preventDefault();
+$("#FC").click(function(e) {
+  e.preventDefault();
+  if (!chkchg()) return;
   $('#tf').attr('action', 'callsfastcloser.php');
   $("#tf").submit();  
   });
@@ -188,7 +189,7 @@ function chkdtp() {
 <?php
 echo '
 <div class="container">
-<h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success" form="tf" /><b>Update Call</b></button>&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
+<h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="updb btn btn-success" form="tf" /><b>Update Call</b></button>&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
 <span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>';
 
 ?>
@@ -292,7 +293,7 @@ Additional Notes: (check History for prior note entries)<br />
 
 <!-- call details tab -->
 <table class="table table-condensed" border=1><tr><td>
-<table class="table-condnensed">
+<table class="table-condnensed" border=0>
 <tr><td>Animal Location:</td><td>
 <select id="AL" name="flds[AnimalLocation]" size="1">
 <option value=""></option>
@@ -305,16 +306,23 @@ Additional Notes: (check History for prior note entries)<br />
 <select id="PT" name="flds[Property]" size="1">
 <option value=""></option>
 <?php loaddbselect("Properties"); ?>
-</select></td></tr><tr><td>Species:</td><td>
+</select></td></tr><tr><td>Species:</td>
+<td>
 <select id="SP" name="flds[Species]" size="1">
 <option value=""></option>
 <?php loaddbselect("Species"); ?>
-</select></td></tr><tr><td>Call Reason:</td><td>
+</select></td></tr><tr><td>Call Reason:</td>
+<td>
 <select id="RE" name="flds[Reason]" size="1">
 <option value=""></option>
 <?php loaddbselect("Reasons"); ?>
 </select>
-</td>
+</td></tr>
+<!-- <tr><td>Delivered to Center by: </td>
+<td>Caller: <input type="radio" name="flds[DeliveredBy]">
+RTV:<input type="radio" name="flds[DeliveredBy]">
+RTV Name: <input type="text" name="flds[DeliveredByName]" value="<?=$r[DeliveredByName]?>">
+</td></tr> -->
 </table>
 </td>
 
@@ -387,7 +395,7 @@ if ($emsent == '') {
 else {
 	echo "&nbsp;&nbsp;&nbsp;Email Sent? $emsent<br>"; }
 	
-echo 'seclevel: '.$_SESSION['CTS_SecLevel'].', sessuser: '.$_SESSION['CTS_SessionUser'].', calluser: '.$openedby.'<br>';
+// echo 'seclevel: '.$_SESSION['CTS_SecLevel'].', sessuser: '.$_SESSION['CTS_SessionUser'].', calluser: '.$openedby.'<br>';
 $fcbutton = '';
 if (($_SESSION['CTS_SecLevel'] == 'admin') OR 
   ($_SESSION['CTS_SessionUser'] == $openedby)) { 
@@ -426,7 +434,7 @@ $('#CI').typeahead({source: citylist})
 <!-- <input type="submit" name="submit" value="Update Call" /><hr> -->
 <table class="table"><tr>
 <td>
-<div align="center"><button class="btn btn-success" form="tf" /><b>Update Call</b></button></div></td>
+<div align="center"><button class="updb btn btn-success" form="tf" /><b>Update Call</b></button></div></td>
 <td><?=$fcbutton?></td></tr></table>
 </form>
 

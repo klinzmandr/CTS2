@@ -17,7 +17,7 @@ session_start();
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if (($action == 'logout')) {
 	include_once 'Incls/datautils.inc.php';
-//	addlogentry("Logging Out");
+  addlogentry("Logged Out");
 	unset($_SESSION['CTS_SessionTimer']);
 	unset($_SESSION['CTS_SessionUser']);
 	unset($_SESSION['CTS_SecLevel']);

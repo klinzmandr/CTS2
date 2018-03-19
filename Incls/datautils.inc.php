@@ -17,6 +17,7 @@ if ($mysqli->connect_errno) {
     $_SESSION['CTS_DB_ERROR'] = $db;
     }
 $_SESSION['CTS_DB_InUse'] = $db;
+addlogentry('Page Load');
 // auto returns to code following the 'include' statement
 // echo "Initial Connection Info: ".$mysqli->host_info . "<br><br>";
 
@@ -40,8 +41,8 @@ if (substr_compare($sql,"DELETE",0,6,TRUE) == 0) {
 
 if (!$res) {
     showError($res);
+    addlogentry('ERROR on: ' . $sql);
 		}
-addlogentry($sql);
 return($res);
 }
 
