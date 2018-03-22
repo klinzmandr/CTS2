@@ -24,19 +24,6 @@ if (isset($_SESSION['CTS_SessionUser'])) {
 
 // if not display login form
 ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="Dave Klinzman" >
-    <title>Call Tracking Login</title>
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-  </head>
-
-<body>
 <script>
 function checkform(theForm) {
 	var reason = "";

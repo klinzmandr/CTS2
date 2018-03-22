@@ -17,7 +17,7 @@ session_start();
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
 if (!isset($_REQUEST['userid'])) {              // no user id
-  if (!isset($_SESSION['CTS_SessionUser'])) {   // and no session id
+  if (!isset($_SESSION['SessionUser'])) {   // and no session id
   	include 'Incls/seccheck.inc.php';           // present login fields
   	exit;
   	}
