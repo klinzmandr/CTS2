@@ -1,5 +1,6 @@
 <h3>Import of Bulletin Board items from old CTS</h3><br>
-<h4>DO NOT USE MORE THAN ONCE WITHOUT TRUNCATING THE DATABASE TABLE!!!!!</h4>
+<h4>TRUNCATE THE DATABASE TABLE BEFORE USE!!!!!</h4>
+<p>Otherwise the new items will be added to the existing ones!</p>
 <?php
 // read text cts directory
 $bb = scandir("../cts/BBNotes");
@@ -11,7 +12,8 @@ arsort($fnarray);
 
 include 'Incls/datautils.inc.php';
 
-$bbcount = 0;
+$bbcount = 0; $ret = 1; $bbitems = count($fnarray);
+echo "BBoard items being added to existing: $bbitems<br>";
 foreach ($fnarray as $fn) {
   $insarray = array();
 	$rawnote = file("../cts/BBNotes/" . $fn);
@@ -36,7 +38,8 @@ foreach ($fnarray as $fn) {
   if ($ret != 1) echo "return value: $ret<br>";
 	}
 
-echo "BBoard Items added: $bbcount<br>";
+echo "<p style='color: red'; >BBoard ITEMS NOT added - need to modify code to allow sqlinsert.</p>";
+echo "BBoard Items added to database: $bbcount<br><br>";
 		
 ?>
 DONE!

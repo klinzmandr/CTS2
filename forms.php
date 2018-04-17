@@ -21,7 +21,7 @@ include 'Incls/mainmenu.inc.php';
 $fv = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '';
 
 $btnarray = array(
-  0 => "HLV Ref",
+  0 => "Ref Guides",
   1 => "Animals",
   2 => "RTV Info",
   3 => "Gen Info",
@@ -101,15 +101,13 @@ formPart;
 
 $count = 0;
 foreach ($forms as $formname) {
-  if (($formname == '.') || ($formname == '..')) { continue; }
-  if (preg_match("/php/i", $formname)) continue;
+  // if (($formname == '.') || ($formname == '..')) { continue; }
+  // if (preg_match("/php/i", $formname)) continue;
+  if (preg_match("/^\.|php/i", $formname)) continue;
   $grp = substr($formname,0,1);
   $g[$grp][$count] = $formname;
   $count += 1;
   }
-
-$moddt = filectime("Forms/$formname");
-$cd  = date("F d, Y \a\\t H:i:s.", $moddt) . "<br>";
 
 echo '
 Filter:<input id="inp" type="text" value="">&nbsp;&nbsp;+&nbsp;&nbsp;
@@ -130,22 +128,26 @@ foreach ($btnarray as $k => $v) {
 echo '<br>';
 
 echo "
-<table border=0 width=\"90%\">
-<tr id=\"head\"><td width=\"70%\"><b>Document Title</b></td><td><b>Date and time last updated</b></td></tr></table>
-<table border=0 width=\"90%\">
+<ul><table border=0>
+<tr id=\"head\"><td><b>Document Title</b></td><td><b>Size(KB)</b></td><td><b>Date and time last updated</b></td></tr>
 ";
 
 foreach ($g as $k => $v) {
   foreach ($v as $formname) {
+  $moddt = filectime("Forms/$formname");
+  $cd  = date("F d, Y \a\\t H:i:s.", $moddt) . "<br>";
+  $fs = number_format(filesize("Forms/$formname")/1000,1);
+
   echo "<tr class=\"$k\">
   <td><a target=_blank href=\"Forms/$formname\">$formname</a></td>
+ <td align=right>$fs</td>
   <td>$cd</td></tr>
   ";
     }
   }
 ?>
 </div>  <!-- container -->
-</table>
+</table></ul>
 ===== End of List =====
 <br>
 </body>

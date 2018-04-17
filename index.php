@@ -13,39 +13,41 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 session_start();
-// include 'Incls/vardump.inc.php'; 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
-if (!isset($_REQUEST['userid'])) {              // no user id
-  if (!isset($_SESSION['SessionUser'])) {   // and no session id
+$userid = isset($_REQUEST['userid']) ? $_REQUEST['userid'] : '';
+
+// NOTE:
+// NOTE: (isset($var) && !empty($var)) will be equals to !empty($var)
+// http://php.net/manual/en/types.comparisons.php
+
+// echo "show login fields"; include 'Incls/vardump.inc.php'; 
+if (!isset($_REQUEST['userid'])) {                // no user id
+  if (!isset($_SESSION['CTS_SessionUser'])) {    // and no session id
+    // echo "userid empty, no cts_sessionuser<br>"; 
   	include 'Incls/seccheck.inc.php';           // present login fields
   	exit;
   	}
   }
-  
-include_once 'Incls/datautils.inc.php';
-if ((($action) == 'login')) {
-	//echo "login request received<br>";
-	$userid = $_REQUEST['userid'];
+
+if (!empty($userid)) {
+//  echo "check uid/pw"; include 'Incls/vardump.inc.php';  
+  include_once 'Incls/datautils.inc.php';
 	$password = $_REQUEST['password'];
-	if ($userid != "") {
-		include_once 'Incls/datautils.inc.php';	
-		$ok = checkcredentials($userid, $password);
-		if ($ok) {
-			//echo "check of user id and password passed<br>";
-			addlogentry("Logged In");
-			}
-		else {
+	$ok = checkcredentials($userid, $password);
+	if ($ok) {
+		//echo "check of user id and password passed<br>";
+		addlogentry("Logged In");
+		}
+	else {
 //			addlogentry("Failed login attempt with password: $password");
 //			echo '<h3 style="color: red; ">Failed login attempt</h3>';
-			}
 		}
 	}
 
-include_once 'Incls/datautils.inc.php';
 echo "<div class=\"container\">";
-
-if (isset($_SESSION['CTS_SessionUser'])) {
+if (!empty($_SESSION['CTS_SessionUser'])) {
+  // echo "show logged in"; include 'Incls/vardump.inc.php';
+  include_once 'Incls/datautils.inc.php';
   include 'Incls/seccheck.inc.php';         
   include_once 'Incls/mainmenu.inc.php';
 	echo '<h4>Session user logged in: ' . $_SESSION['CTS_SessionUser'] . '</h4>

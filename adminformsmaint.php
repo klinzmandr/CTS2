@@ -52,12 +52,13 @@ if ($action == 'copy') {
 if ($action == 'rename') {
 	$old = 'Forms/' . $_REQUEST['oldname'];
 	$new = 'Forms/' . $_REQUEST['newname'];
-	if (rename($old, $new)) {
+	// echo "old: $old, new: $new<br>";
+	if ($stat = rename($old, $new)) {
 	  $updmsg = "File $old renamed to $new";
 	  addlogentry("File $old renamed to $new"); 
 		}
-	else { 
-    addlogentry("Rename of $old failed");
+	else {
+	  addlogentry("Rename of $old failed");
 		$errmsg = "Rename request FAILED!<br>
 		New name provided already exists OR path name invalid";
 		}
@@ -141,7 +142,7 @@ print <<<listPart1
 
 <a onclick="return chkdel()" href="adminformsmaint.php?action=delete&form=$formname"><span title="DELETE" class="glyphicon glyphicon-trash" style="color: blue; font-size: 15px"></span></a>
 &nbsp;
-<a href="#" onclick="return getfld('$formname')"><span title="RENAME" class="glyphicon glyphicon-star" style="color: blue; font-size: 15px"></span></a>
+<a href="#" onclick="return getfld('$formname')"><span title="RENAME (name starting with period will hide the file without deletion)" class="glyphicon glyphicon-star" style="color: blue; font-size: 15px"></span></a>
 &nbsp;
 <a href="adminformsmaint.php?action=copy&file=$formname"><span title="COPY" class="glyphicon glyphicon-tags" style="color: blue; font-size: 15px"></span></a>
 </td>

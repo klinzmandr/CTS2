@@ -1,10 +1,13 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
 <title>Users in Date Range</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 <link href="css/datepicker3.css" rel="stylesheet">
 
 </head>
@@ -42,7 +45,6 @@ $('#btnALL').click(function() {
 
 </script>
 <?php
-session_start();
 //include 'Incls/mainmenu.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/datautils.inc.php';
@@ -50,7 +52,7 @@ $sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-01', strtotime("previ
 $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-d', strtotime("now"));
 ?>
 
-<h3>List Users In Date Range&nbsp;&nbsp; <a href="javascript:self.close();" class="btn btn-primary"><b>CLOSE</b></a></h3>
+<h3>List Users In Date Range&nbsp;&nbsp; <a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
 Filter:<input id="inp" type="text" value="">&nbsp;&nbsp;+&nbsp;&nbsp;
 <button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp;
 <button id="btnALL">Show All</button>&nbsp;&nbsp;
@@ -84,6 +86,7 @@ echo '<table class="table table-condensed">
 asort($dtarray);
 foreach ($dtarray as $k => $v) {
 	//echo '<pre> year '; print_r($r); echo '</pre>';
+	if ($k == '') continue;
 	$c = $cntarray[$k];
 	echo "<tr><td>$k</td><td>$v</td><td>$resarray[$k]</td><td>$c</td></tr>";
 	}
