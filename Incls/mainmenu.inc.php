@@ -6,44 +6,40 @@ body { padding-top: 50px; }      <!-- add padding to top of each page for fixed 
 <!-- Form change variable must be global -->
 var chgFlag = 0;
 
-$(document).ready(function(){
+$(document).ready(function() {
 // disable all buttons of class updb  
   $('.updb').prop('disabled', true);
     
   $("#aboutInfo").hide();
-  $("#aboutBtn").click( function() {
+  $("#aboutBtn").click(function() {
     $("#mm-modalBody").html($("#aboutInfo").html());
     $("#myModal").modal("show");
     return;
     });
     
-  $("input").change(function(){
-    chgFlag += 1; 
-    $(".updb").css({"background-color": "red", "color":"black"});
+// to detect and change on form
+var $form = $('form');
+// var formValues = $('form').getFormValues();  // save form in case of reset
+var origForm = $form.serialize();   // to save field values on initial load
+ 
+$('form :input').on('keyup input', function() {
+  if ($form.serialize() !== origForm) {         // check for any changes
+    chgFlag++;
     $('.updb').prop('disabled', false);    
-    // setInterval(blink_text, 1000);
-    $("#FC").hide();
-    });
-  $("textarea").change(function(){
-    chgFlag += 1; 
-    $(".updb").css({"background-color": "red", "color":"black"});
-    $('.updb').prop('disabled', false);    
-    // setInterval(blink_text, 1000);
-    $("#FC").hide();
-    });
-  $("select").change(function(){
-    chgFlag += 1; 
-    $(".updb").css({"background-color": "red", "color":"black"});
-    $('.updb').prop('disabled', false);    
-    // setInterval(blink_text, 1000);
-    $("#FC").hide();
-    });
-}); 
+    $(".updb").css({"background-color": "red", "color":"white"});
+    // console.log("chgFlag: "+chgFlag);
+    return;
+    }
+  });
 
-function blink_text() {
-    $('.updb').fadeOut(500);
-    $('.updb').fadeIn(500);
-}
+$("form").change(function(){
+  if (this.id == "filter") return;  // ignore filter input
+  chgFlag += 1; 
+  $(".updb").css({"background-color": "red", "color":"black"});
+  $('.updb').prop('disabled', false);    
+  // setInterval(blink_text, 1000);
+  });    
+});
 
 function chkchg() {
 	if (chgFlag <= 0) { return true; }
@@ -51,6 +47,12 @@ function chkchg() {
 	if (r == true) { chgFlag = 0; return true; }
 		return false;
   }
+
+function blink_text() {
+    $('.updb').fadeOut(500);
+    $('.updb').fadeIn(500);
+  }
+
 </script>
 
 <!-- ========= define main menu bar and choices ======== -->
