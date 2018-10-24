@@ -1,5 +1,2 @@
-
-
 <p>
-
 Thank you for your call regarding an educational presentation.&nbsp; </p><p>Your request has been forwarded to our Education Team and you should hear from them in the near future.&nbsp; If you do not, please&nbsp; feel free to contact the hotline again and mention that your initial request was noted on call <b>CR[callnbr]</b> so that we can follow up, if needed.</p><p>If you would like to support Pacific Wildlife Care by joining, donating, or volunteering you may obtain more information at the <a href="http://www.pacificwildlifecare.org/become-a-member/">Pacific Wildlife Care</a> web site.  Your support is greatly appreciated!&nbsp; You may also sign up to receive our periodic eNewsletter so that you may continue to be informed about news and events concerning Pacific Wildlife Care.</p><br>

@@ -24,14 +24,14 @@ $bbid = $_REQUEST['bbid'];
 
 //echo "$note - $bbid";
 echo '<table class="table" border=1>';
-echo "<tr><td><h3>$r[Subject]</h3></td><td>Note Nbr: $r[SeqNbr]</td></tr>";
+echo "<tr><td><h3>$r[Subject]</h3></td><td width='20%'>Note Nbr: $r[SeqNbr]</td></tr>";
 echo "<tr><td colspan=\"2\">$bbnote</td></tr>";
 echo "<tr><td>By: $r[UserID] on $r[DateTime]</td><td>";
 if (($_SESSION['CTS_SessionUser'] == $r[UserID]) || ($_SESSION['CTS_SecLevel'] == 'admin')) {
-		echo "<a href=\"bboardupdate.php?SeqNbr=$r[SeqNbr]&action=update\"<span title=\"Update Note\" class=\"glyphicon glyphicon-pencil\" style=\"color: blue; font-size: 20px\"></span></a>&nbsp;&nbsp;&nbsp;"; }
+		echo "<a href=\"bboardupdate.php?SeqNbr=$r[SeqNbr]&action=update\"<i title=\"Update Note\" class=\"glyphicon glyphicon-pencil\" style=\"color: blue; font-size: 20px\"></i></a>&nbsp;&nbsp;&nbsp;"; }
 	if (($_SESSION['CTS_SessionUser'] == $r[UserID]) || ($_SESSION['CTS_SecLevel'] == 'admin')) {
-		echo "<a onclick=\"return confirmContinue()\" href=\"bboard.php?seqnbr=$r[SeqNbr]&action=delete\"<span title=\"Delete Note\" class=\"glyphicon glyphicon-trash\" style=\"color: blue; font-size: 20px\"></span></a>&nbsp;&nbsp;&nbsp;";	}
-	echo "<a href=\"bboardprint.php?seqnbr=$r[SeqNbr]&action=print\"<span title=\"Print Note\" class=\"glyphicon glyphicon-print\" style=\"color: blue; font-size: 20px\"></span></a></td></tr>";
+		echo "<a onclick=\"return confirmContinue()\" href=\"bboard.php?seqnbr=$r[SeqNbr]&action=delete\"<i title=\"Delete Note\" class=\"glyphicon glyphicon-trash\" style=\"color: blue; font-size: 20px\"></i></a>&nbsp;&nbsp;&nbsp;";	}
+	echo "<a href=\"bboardprint.php?seqnbr=$r[SeqNbr]&action=print\"<i title=\"Print Note\" class=\"glyphicon glyphicon-print\" style=\"color: blue; font-size: 20px\"></i></a></td></tr>";
 echo '</table>';
 
 ?>

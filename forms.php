@@ -20,6 +20,7 @@ include 'Incls/mainmenu.inc.php';
 
 $fv = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '';
 
+// array key 0-9 corresond to the titles of the buttons defined
 $btnarray = array(
   0 => "Ref Guides",
   1 => "Animals",
@@ -60,7 +61,8 @@ $.extend($.expr[":"], {
 });
   
 $(function(){
-  $('#btnFILTER').click(function() { 
+  // $('#btnFILTER').click(function() { 
+  $('#inp').keyup(function() { 
     inp = $('#inp').val();
     //console.log(inp);
     if (inp.length > 0) 
@@ -110,8 +112,9 @@ foreach ($forms as $formname) {
   }
 
 echo '
-Filter:<input id="inp" type="text" value="">&nbsp;&nbsp;+&nbsp;&nbsp;
-<button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp;
+<input placeholder="FILTER" id="inp" type="text" value="" autofocus title="Enter string to limit the number of rows listed.">&nbsp;&nbsp;
+<!-- +&nbsp;&nbsp;
+<button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp; -->
 <button id="btnALL">Show All</button>&nbsp;&nbsp;
 <span id="helpclk" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
 <div id="help">

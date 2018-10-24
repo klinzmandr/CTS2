@@ -1,3 +1,9 @@
+<?php
+session_start();
+include 'Incls/seccheck.inc.php';
+//include 'Incls/mainmenu.inc.php';
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,12 +13,6 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 </head>
 <body>
-<?php
-session_start();
-include 'Incls/seccheck.inc.php';
-//include 'Incls/mainmenu.inc.php';
-
-print <<<pagePart1
 <div class="container">
 <h3>Email Message System</h3>
 <p>A new option has been provided to allow an email confirmation message to be sent to the caller (assuming that an email address has been obtained and entered, of coursel.)  In the event that a message is sent to the caller, that message will contain a 'FROM' address that to facilitate a response being sent.  That response will be sent to 'hotline@pacificwildlifecare.org' and deposited in the inbox of that email system.</p>
@@ -23,11 +23,6 @@ password: hotline9453</b>.</p></ul>
 <a class="btn btn-primary" href="http://www.pacwilica.org/mail">EMAIL SYSTEM</a><br /><br />
 <a href="javascript:self.close();" class="btn btn-warning"><b>CLOSE</b></a>
 </div>  <!-- container -->
-pagePart1;
 
-?>
-
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

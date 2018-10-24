@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
+<link href="css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <script src="jquery.js"></script>
@@ -27,9 +28,9 @@ include 'Incls/mainmenu.inc.php';
 ?>
 
 <div class="container">
-<h2 class="hidden-print">Bulletin Board&nbsp;&nbsp;<a href="bboardupdate.php?action=addnew"><span title="Add New Note" class="glyphicon glyphicon-plus" style="color: blue; font-size: 20px"></span></a></h2>
-Filter:<input id="inp" type="text" value="">&nbsp;&nbsp;+&nbsp;&nbsp;
-<button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp;
+<h2 class="hidden-print">Bulletin Board&nbsp;&nbsp;<a href="bboardupdate.php?action=addnew"><i title="Add New Note" class="glyphicon glyphicon-plus" style="color: blue; font-size: 20px"></i></a></h2>
+Filter:<input id="inp" type="text" value="" autofocus>&nbsp;&nbsp;&nbsp;&nbsp;
+<!-- <button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp; -->
 <button id="btnALL">Show All</button>&nbsp;&nbsp;
 <script>
 $("document").ready( function() {
@@ -58,7 +59,7 @@ $.extend($.expr[":"], {
   }
   });
   
-$('#btnFILTER').click(function() { 
+$('#inp').keyup(function() { 
   inp = $('#inp').val();
   //console.log(inp);
   if (inp.length > 0) 
@@ -103,8 +104,8 @@ if ($action == 'update') {
 
 $sql = "SELECT * FROM `bboard` WHERE '1' ORDER BY `DateTime` DESC;";
 $res = doSQLsubmitted($sql);
-echo '<table class="table table-condensed" border=0>
-<tr><th>Title/Topic</th><th>Author</th><th>Last Update</th></tr>';
+echo '<table class="table table-condensed" border=1>
+<tr><th>Title/Topic</th><th>Author</th><th width="20%">Last Update</th></tr>';
 while ($r = $res->fetch_assoc()) {
   if (preg_match("/newrec/i", $r[UserID])) continue;
   //echo '<pre> bboard '; print_r($r); echo '</pre>';
