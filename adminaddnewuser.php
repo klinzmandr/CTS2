@@ -30,7 +30,7 @@ $("#filterbtn2").click(function() {
   chgFlag = 0;
   });
   
-$("#filterbtn1").click(function() {
+$("#filter").keyup(function() {
   var filter = $("#filter").val();
   if (filter.length) {
     // alert("filter button clicked:" + filter);
@@ -72,7 +72,7 @@ print <<<pagePart1
 <h3>User Administration</h3>
 <button id="addnewbtn">Add New User Record</button>
 <b>Filter:</b><input id="filter" value="">
-<button id="filterbtn1">Apply filter</button>
+<!-- <button id="filterbtn1">Apply filter</button> -->
 <button id="filterbtn2">Show All</button>
 <div id="addnew">
 <p>Adds new admin user to the registration database.  User id is the email address of the user.  The role that is to be assigned is in the dropdown.  Both of these fields are required.  The default password provided is 'raptor' but any may be specified.  The password can be updated to a personal password by the user when they log in.</p>

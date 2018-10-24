@@ -5,7 +5,8 @@
 // read text cts directory
 $bb = scandir("../cts/BBNotes");
 foreach ($bb as $fn) {
-	if (($fn == ".") or ($fn == "..")) { $out = array_shift($bb); continue; }
+	if (($fn == ".") or ($fn == "..")) { 
+	$out = array_shift($bb); continue; }
 	$fnarray[] = $fn;
 	}
 arsort($fnarray);
@@ -28,11 +29,9 @@ foreach ($fnarray as $fn) {
 	// echo '<pre>NB: '; print_r($nb); echo '</pre>';
   $nb = preg_replace("/[\r]/i", "", $nb);
   $nb = preg_replace("/[\n]/i", "<br>", $nb);
-	// echo '<pre>NEWNB: '; print_r($newnb); echo '</pre>';
-	// $insarray[Note] = implode($newnb);
 	$insarray[Note] = $nb;
 	
-  // echo '<pre>'; print_r($insarray); echo '</pre>';
+  echo '<pre>'; print_r($insarray); echo '</pre>';
   // $ret = sqlinsert('bboard', $insarray);
   $bbcount++;
   if ($ret != 1) echo "return value: $ret<br>";

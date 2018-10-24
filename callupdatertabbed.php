@@ -190,7 +190,7 @@ function chkdtp() {
 echo '
 <div class="container">
 <h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="updb btn btn-success" form="tf" /><b>Update Call</b></button>&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
-<span title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></span></a></h3>';
+<i title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></i></a></h3>';
 
 ?>
 <!-- define the form -->

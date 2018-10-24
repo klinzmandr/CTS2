@@ -47,7 +47,7 @@ function blink_text() {
 
 function chkchg() {
 	if (chgFlag <= 0) { return true; }
-	var r=confirm("All changes made will be lost.\\n\\nConfirm leaving page by clicking OK.");	
+	var r=confirm("All changes made will be lost.\n\nConfirm leaving page by clicking OK.");	
 	if (r == true) { chgFlag = 0; return true; }
 		return false;
   }
