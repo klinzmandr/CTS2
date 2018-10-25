@@ -19,10 +19,10 @@ $(document).ready(function() {
     
 // to detect and change on form
 var $form = $('form');
-// var formValues = $('form').getFormValues();  // save form in case of reset
-var origForm = $form.serialize();   // to save field values on initial load
+var origForm = $form.serialize();   // save all fields values on initial load
  
-$('form :input').on('keyup input', function() {
+$('form :input').on('keyup input', function(e) {
+  if (e.keyCode == 9) { return; } // ignore tabs
   if ($form.serialize() !== origForm) {         // check for any changes
     chgFlag++;
     $('.updb').prop('disabled', false);    
@@ -42,10 +42,11 @@ $("form").change(function(){
 });
 
 function chkchg() {
-	if (chgFlag <= 0) { return true; }
-	var r=confirm("All changes made will be lost.\n\nConfirm leaving page by clicking OK.");	
-	if (r == true) { chgFlag = 0; return true; }
-		return false;
+	if ($form.serialize() !== origForm) {         // check for any changes
+  	var r=confirm("All changes made will be lost.\n\nConfirm leaving page by clicking OK.");	
+  	if (r == true) { chgFlag = 0; return true; }
+    return false;
+    }
   }
 
 function blink_text() {

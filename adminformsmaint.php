@@ -97,7 +97,7 @@ if (count($_FILES)) {
   }
 
 if ($errmsg <> '') echo "<h4 style=\"color: red; \" id=\"Xx\">$errmsg</h4>";
-if ($updmsg <> '') echo "<span id=\"Xy\">$updmsg<br></span>";
+if ($updmsg <> '') echo "<span id=\"Xy\"><b>$updmsg</b><br></span>";
 
 ?>
 <script>
