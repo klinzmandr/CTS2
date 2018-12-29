@@ -12,7 +12,7 @@
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
-<script src="Incls/bootstrap-datepicker-range.inc.php"></script>
+<script src="js/bootstrap-datepicker-range.js"></script>
 
 <?php
 session_start();

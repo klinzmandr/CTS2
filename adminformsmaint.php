@@ -54,6 +54,7 @@ if ($action == 'rename') {
 	$new = 'Forms/' . $_REQUEST['newname'];
 	// echo "old: $old, new: $new<br>";
 	if ($stat = rename($old, $new)) {
+	  touch($new);   // update file time
 	  $updmsg = "File $old renamed to $new";
 	  addlogentry("File $old renamed to $new"); 
 		}

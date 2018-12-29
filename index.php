@@ -85,9 +85,9 @@ else {
 
 <br>
 <b>Instructional Videos</b><br><ul>
-	<a href="https://youtu.be/kVp5n-dqNj0" target="_blank">Overview and Main Menu(14:00))</a><br>
-	<a href="https://youtu.be/0tWkY2ICwqE" target="_blank">External Systems Menu Item(12:21)</a><br>
-	<a href="https://youtu.be/3za8LbOyP8o" target="_blank">Calls Menu Item(12:56)</a><br>
+	<!-- <a href="https://youtu.be/kVp5n-dqNj0" target="_blank">Overview and Main Menu(14:00))</a><br> -->
+	<!-- <a href="https://youtu.be/0tWkY2ICwqE" target="_blank">External Systems Menu Item(12:21)</a><br> -->
+	<a href="https://youtu.be/8JIri-aBhXQ" target="_blank">Calls Menu Item(10:06)</a><br>
 	<a href="https://youtu.be/Ex6jrTQPsy8" target="_blank">CTS2 Admin Functions (14:06)</a>
 	</ul><br><br>
 <div align="center"><img src="img/PWC1080logo.jpg" width="600" height="96" alt=""></div>

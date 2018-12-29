@@ -22,16 +22,16 @@ $fv = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '';
 
 // array key 0-9 corresond to the titles of the buttons defined
 $btnarray = array(
-  0 => "Ref Guides",
-  1 => "Animals",
-  2 => "RTV Info",
-  3 => "Gen Info",
-  4 => "Group 4",
-  5 => "Group 5",
-  6 => "Group 6",
-  7 => "Group 7",
+  0 => "Contacts",
+  1 => "Hotline",
+  2 => "Rescue",
+  3 => "Dirs & Misc",
+  4 => "Mammals",
+  5 => "Birds",
+  6 => "Baby Animals",
+  7 => "Humane Excl",
   8 => "Forms",
-  9 => "Group 9"
+  9 => "System"
   );
   
 $forms = scandir('Forms');
@@ -132,18 +132,19 @@ echo '<br>';
 
 echo "
 <ul><table border=0>
-<tr id=\"head\"><td><b>Document Title</b></td><td><b>Size(KB)</b></td><td><b>Date and time last updated</b></td></tr>
+<tr id=\"head\"><td><b>Document Title</b></td><td><b>Size(KB)</b></td><td>&nbsp;</td><td><b>Date/time last updated</b></td></tr>
 ";
 
 foreach ($g as $k => $v) {
   foreach ($v as $formname) {
   $moddt = filectime("Forms/$formname");
-  $cd  = date("F d, Y \a\\t H:i:s.", $moddt) . "<br>";
+  $cd  = date("M d, Y \a\\t H:i:s.", $moddt) . "<br>";
   $fs = number_format(filesize("Forms/$formname")/1000,1);
 
   echo "<tr class=\"$k\">
   <td><a target=_blank href=\"Forms/$formname\">$formname</a></td>
- <td align=right>$fs</td>
+  <td align=right>$fs</td>
+  <td>&nbsp;</td>
   <td>$cd</td></tr>
   ";
     }

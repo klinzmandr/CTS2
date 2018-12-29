@@ -18,7 +18,7 @@ $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("previo
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
-<script src="Incls/bootstrap-datepicker-range.inc.php"></script>
+<script src="js/bootstrap-datepicker-range.js"></script>
 
 <script>
 // initial setup of jquery function(s) for page
@@ -33,7 +33,7 @@ $(document).ready(function () {
   });  // end ready function
 </script>
 <div class="container">
-<h3>CTS2 Summary Report</h3>
+<h3>CTS2 Summary Report&nbsp;&nbsp;<a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
 <button class="btn btn-xs">HELP</button>
 <div id="help">
 <h3>Summary Report Explained</h3>
@@ -42,8 +42,8 @@ Lorem ipsum dolor sit amet. Arcu eu proin id velit non urna adipiscing. Vestibul
 </div>    <!-- help -->
 
 <?php
-//include 'Incls/seccheck.inc.php';
-include 'Incls/mainmenu.inc.php';
+include 'Incls/seccheck.inc.php';
+// include 'Incls/mainmenu.inc.php';
 ?>
 
 <form action="rptmonthlyreport.php" method="post"  id="form">
@@ -74,6 +74,7 @@ while ($r = $res->fetch_assoc()) {
 	$resolutionarray[$r[Resolution]] += 1;
 	$ttrarray[$r[TimeToResolve]] += 1;
   }
+echo '<h3>Under Development</h3>';
 echo '<pre> result '; print_r($resarray); echo '</pre>';  
 echo '<pre> hlv '; print_r($hlvarray); echo '</pre>';  
 echo '<pre> city '; print_r($cityarray); echo '</pre>';  

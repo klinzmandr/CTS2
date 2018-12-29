@@ -5,8 +5,18 @@ body { padding-top: 50px; }      <!-- add padding to top of each page for fixed 
 <script>
 <!-- Form change variable must be global -->
 var chgFlag = 0;
-
+<?php
+$sl = (isset($_SESSION['CTS_SecLevel'])) ? $_SESSION['CTS_SecLevel'] : '';
+?>
 $(document).ready(function() {
+  if ("<?=$sl?>" == 'demo') {
+    // alert("session security is in demo mode");
+    $("a.demo").removeAttr('href');     // disable links for demo mode
+    $("a.demo").click(function() {
+      alert("This menu item diabled in demo mode.");
+      });
+  }
+
 // disable all buttons of class updb  
   $('.updb').prop('disabled', true);
     
@@ -27,7 +37,10 @@ $('form :input').on('keyup input', function(e) {
     chgFlag++;
     $('.updb').prop('disabled', false);    
     $(".updb").css({"background-color": "red", "color":"white"});
-    // console.log("chgFlag: "+chgFlag);
+    if ("#FC".length) { 
+      // alert("Fast Chg button exists");      
+      $('#FC').prop('disabled', true);    // disable to force update of form
+      }    
     return;
     }
   });
@@ -42,7 +55,7 @@ $("form").change(function(){
 });
 
 function chkchg() {
-	if ($form.serialize() !== origForm) {         // check for any changes
+	if (chgFlag > 0) {         // check for any changes
   	var r=confirm("All changes made will be lost.\n\nConfirm leaving page by clicking OK.");	
   	if (r == true) { chgFlag = 0; return true; }
     return false;
@@ -99,6 +112,8 @@ if ($seclevel == 'admin') {
   		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Actions">Maintain Actions</a></li>
   		<li><a onclick="return chkchg()" href="admineditemailreplys.php">Edit Email Replys</a></li>
   		<li><a onclick="return chkchg()" href="admdeletejdoerecs.php">Delete jdoe records</a></li>
+  		<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
+	    <li><a href="rptlogviewer.php" target="_blank">System Log Viewer</a></li>
   	</ul>   <!-- ul dropdown-menu -->
   </li>  <!-- li dropdown -->
 
@@ -111,7 +126,7 @@ if ($seclevel != 'guest') {
 <li class="dropdown">
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" ><b>External</b><b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
-	<li><a onclick="return chkchg()" href="vmsintro.php" target="_blank">Voice Messages</a></li>
+	<!-- <li><a onclick="return chkchg()" href="vmsintro.php" target="_blank">Voice Messages</a></li> -->
 	<li><a onclick="return chkchg()" href="emailintro.php" target="_blank" >Hotline Email</a></li>
 	<li><a onclick="return chkchg()" href="wrmdintro.php" target="_blank" >WRMD Case Mgmnt</a></li>
 </ul>
@@ -134,7 +149,7 @@ if ($seclevel != 'guest') {
 	<li><a onclick="return chkchg()" href="calls.php?action=MyClosed">My Closed</a></li>';
 	}
 echo	'
-  <li><a onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>';
+  <li><a class="demo" onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>';
 if ($seclevel != 'guest') {
 	echo '
 	<li><a onclick="return chkchg()" href="callsaddnew.php">Add New Call</a></li>
@@ -168,10 +183,10 @@ if ($seclevel != 'guest') {
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
 	<li><a href="rptcallsbyhlvindaterange.php" target="_blank">Calls by HLV in Date Range</a></li>
 	<li><a href="rpthistoricalcalls.php" target="_blank">Historical Call Report</a></li>
+	<li><a href="rptcallsarchive.php" target="_blank">Call Archival Report</a></li>
 	<li><a href="rptusersbydaterange.php" target="_blank">Users by Date Range</a></li>
 	<li><a href="rptmonthlyreport.php" target="_blank">CTS Monthly Report</a></li>
 	<li><a href="../charts" target="_blank">PWC Business Charts</a></li>
-	<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
 	<li class="divider"></li>
 	<li><a href="#">Other report(s) added as needed</a></li>
 	<li class="divider"></li>

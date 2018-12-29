@@ -77,6 +77,7 @@ Role: <select id="ROLE" name="flds[Role]">
 <option value="admin">Admin</option>
 <option value="user">User</option>
 <option value="guest">Guest</option>
+<option value="demo">DemoMode</option>
 </select><br />
 Full Name: <input type="text" name="flds[FullName]" placeholder="First/Last Name" value="<?=$flds[FullName]?>">
 Email: <input type="text" name="flds[Email]" placeholder="Email Address" value="<?=$flds[Email]?>"> 

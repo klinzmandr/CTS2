@@ -3,16 +3,17 @@ session_start();
 $lotype = isset($_REQUEST['lo']) ? $_REQUEST['lo'] : 'to';
 
 include_once 'Incls/datautils.inc.php';
+$user = $_SESSION['CTS_SessionUser'];
 unset($_SESSION['CTS_SessionUser']);
 unset($_SESSION['CTS_SecLevel']);
 
 // logout or timeout reset requested
 if ($lotype == 'lo') { 
   $title = "Session Logged Out";  
-  addlogentry("Logged out");	}
+  addlogentry("$user Logged out");	}
 else { 
   $title = "Session Timed Out";
-  addlogentry("Timed out"); }
+  addlogentry("$user Timed out"); }
 
 session_unset();
 session_destroy();
@@ -23,6 +24,7 @@ session_destroy();
 <head>
 <title><?=$title?></title>
 <meta charset="utf-8" />
+<meta http-equiv="refresh" content="10; URL='https://apps.pacwilica.org/cts2' "/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>

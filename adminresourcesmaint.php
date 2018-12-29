@@ -21,13 +21,18 @@ $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $msg =isset($_REQUEST['msg'])? $_REQUEST['msg'] : ""; 
 
 if ($action == 'update') {
-	//echo '<pre> update '; print_r($_REQUEST['msg']); echo '</pre>';
+	// echo '<pre> update :'; print_r($_REQUEST['msg']); echo ':</pre>';
 	$msg = stripslashes($msg);
 	file_put_contents('Incls/links.inc.php', $msg);
 	echo '<h3 style="color: red; " id="X">Update Completed.</h3>';
 	}
 
-$lists = file_get_contents('Incls/links.inc.php');
+$linksarray = array(); $links = '';
+$linksarray = file('Incls/links.inc.php', FILE_IGNORE_NEW_LINES);
+foreach ($linksarray as $l) {
+  if (strlen($l) == 0) continue;
+  $links .= "$l\n";
+  }
 
 print <<<pagePart1
 <script>
@@ -39,14 +44,17 @@ $("document").ready( function() {
 <script type="text/javascript">
 bkLib.onDomLoaded(function() {
 	// new nicEditor({fullPanel:true}).panelInstance('area1');
-	new nicEditor({buttonList:['fontSize','bold','italic','underline','strikeThrough','link','unlink']}).panelInstance('area1');
+	new nicEditor({buttonList:['fontSize', 'bold', 'italic', 'underline', 'strikeThrough', 'removeformat', 'link',  'unlink', 'xhtml']}).panelInstance('area1');
 });
 </script>
 <script>
 function movemsg() {
 	//alert("moving text from div to input field");
-	var msgtext = document.getElementById('area1').innerHTML
-	document.sndform.msg.value = msgtext;
+	var msgtext = "";
+	// msgtext = document.getElementById('area1').innerHTML
+	msgtext = $("#area1").html();
+	// document.sndform.msg.value = msgtext;
+	$("#msg").val(msgtext);
 	if (msgtext.length <= 1) {
 		alert("No resources text entered."); 
 		return false;
@@ -60,17 +68,14 @@ function movemsg() {
 <p>NOTE: use the same type of editting functionality found in most all web email composition windows to create bold, italicized or underlined text, lists and links.</p>
 <form name="sndform" action="adminresourcesmaint.php" method="post" onsubmit="return movemsg()">
 <input type="hidden" name="msg" id="msg" value="">
-<div id="area1" style="font-size: 16px; padding: 3px; border: 5px solid #000; width: 800px;">
-$lists
-</div>
+<div id="area1" style="font-size: 16px; padding: 3px; border: 5px solid #000; width: 800px;">$links</div>
 <input type="hidden" name="action" value="update">
 <input type="submit" name="submit" value="submit">
-
 </form>
 
 pagePart1;
 
 ?>
-
+<br><br><br><br>
 </body>
 </html>

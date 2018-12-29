@@ -25,7 +25,7 @@
 $(document).ready(function() {
   $("#X").fadeOut(2000);
 $("#RE").change(function() {
-  const regex = /\*/g;
+  const regex = /\*/g;    // check selection for an astrix
   var reason = $("#RE option:selected").text();
   if (regex.exec(reason) != null) {
     $("#mm-modalBody").html("<center><h2 style=\"color: red; \">A T T E N T I O N!</h2></center><font size=\"2\">Selection of this call reason requires that this incident be reported to the CA DFW.<br><br><b>Please contact the Center and report this call so that appropriate follow up steps can be done.</b><br><br>Enter a details in the Additional Notes field to document your actions.</font>");
@@ -35,7 +35,6 @@ $("#RE").change(function() {
   
 $("#FC").click(function(e) {
   e.preventDefault();
-  if (!chkchg()) return;
   $('#tf').attr('action', 'callsfastcloser.php');
   $("#tf").submit();  
   });
@@ -53,7 +52,7 @@ include 'Incls/datautils.inc.php';
 $callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $flds = $_REQUEST['flds'];
-$notes = $_REQUEST['notes'];
+$notes = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : '';
 
 // apply any fields updated to call record
 if ($action == 'update') {
@@ -65,7 +64,7 @@ if ($action == 'update') {
   // echo '<pre>existing DB record '; print_r($r); echo'</pre>';  
 	$notearray = array();  $vararray = array();
 
-	if (strlen($notes) <= 4) { $vararray[notes] = 'Call updated'; }
+	if (strlen($notes) <= 4) { $notes = 'Call updated'; }
 	$notearray[CallNbr] = $callnbr;
 	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
 	$notearray[Notes] = '';
@@ -146,7 +145,7 @@ $(document).ready(function () {
 	$("#RE").val("<?=$reason?>");
   
 $("#cinfo").click(function() {
-  var msg = '<center><h3>Caller Info</h3>(already copied to clipboard)</center><br><br><ul><pre>';
+  var msg = '<center><h3>Caller Info</h3></center><br><br><ul><pre>';
   var msgcb = "Education/Presentation Request:\n";
   msg += 'CT2 Call Number: ' + "<?=$callnbr?>\n";
   msgcb += 'CT2 Call Number: ' + "<?=$callnbr?>\n";
@@ -163,8 +162,15 @@ $("#cinfo").click(function() {
   $("#mm-modalBody").html(msg);
   $("textarea").val(msgcb);
   $("textarea").select();
-  document.execCommand('copy');
+  // document.execCommand('copy');
   $("#myModal").modal("show");
+  $("textarea").val('');
+  // $('.updb').prop('disabled', false);    
+  // $(".updb").css({"background-color": "red", "color":"white"});
+  // if ("#FC".length) { 
+    // alert("Fast Chg button exists");      
+    // $('#FC').prop('disabled', true);    // disable to force update of form
+    // } 
   //alert (msg);
   });
 });

@@ -107,6 +107,14 @@ exit;
 $addarray = array();
 // action contains the type of new record to be added
 // add in here the logic for the various call type presets
+if ($action == 'new') {
+	$addarray[AnimalLocation] = '';
+	$addarray[CallLocation] = '';
+	$addarray[Property] = '';
+	$addarray[Species] = '';
+	$addarray[Reason] = '';
+	$addarray[Organization] = '';
+	}
 if ($action == 'odsrva') {
 	$addarray[AnimalLocation] = 'Oceano';
 	$addarray[CallLocation] = 'Oceano';
@@ -120,7 +128,7 @@ if ($action == 'cmc') {
 	$addarray[CallLocation] = 'SanLuisObispo';
 	$addarray[Property] = 'State';
 	$addarray[Species] = 'Seabird';
-	$addarray[Reason] = 'AppearInjured';
+	$addarray[Reason] = 'AppearsInjured';
 	$addarray[Organization] = 'CA Mens Colony';
 	}
 if ($action == 'ed') {
@@ -129,6 +137,7 @@ if ($action == 'ed') {
 	$addarray[Property] = 'NA';
 	$addarray[Species] = 'NA';
 	$addarray[Reason] = 'EdRequest';
+	$addarray[Organization] = '';
 	}
 if ($action == 'info') {
 	$addarray[AnimalLocation] = 'NA';
@@ -136,6 +145,7 @@ if ($action == 'info') {
 	$addarray[Property] = 'NA';
 	$addarray[Species] = 'NA';
 	$addarray[Reason] = 'Info';
+	$addarray[Organization] = '';
 	}
 if ($action == 'na') {
 	$addarray[AnimalLocation] = 'NA';
@@ -143,6 +153,7 @@ if ($action == 'na') {
 	$addarray[Property] = 'NA';
 	$addarray[Species] = 'NA';
 	$addarray[Reason] = 'Other';
+	$addarray[Organization] = '';
 	}
 
 // check to determine if a new records has been added but not used

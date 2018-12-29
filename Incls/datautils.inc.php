@@ -17,7 +17,7 @@ if ($mysqli->connect_errno) {
     $_SESSION['CTS_DB_ERROR'] = $db;
     }
 $_SESSION['CTS_DB_InUse'] = $db;
-addlogentry('Page Load');
+// addlogentry('Page Load');
 // auto returns to code following the 'include' statement
 // echo "Initial Connection Info: ".$mysqli->host_info . "<br><br>";
 

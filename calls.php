@@ -30,7 +30,7 @@ if ($action == 'MyClosed') {
 elseif ($action == 'AllOpen') {
 	$rpthdg = "</tr><th>Call#</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>";
 	$hdg = 'All Open';
-	$sql = "SELECT * from `calls` WHERE `Status` = 'Open';";
+	$sql = "SELECT * from `calls` WHERE `Status` = 'Open' OR `Status` = 'New';";
 	}
 	
 else {		// gotta be MyCalls then

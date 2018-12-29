@@ -32,12 +32,12 @@ foreach ($fnarray as $fn) {
 	$insarray[Note] = $nb;
 	
   echo '<pre>'; print_r($insarray); echo '</pre>';
-  // $ret = sqlinsert('bboard', $insarray);
+  $ret = sqlinsert('bboard', $insarray);
   $bbcount++;
   if ($ret != 1) echo "return value: $ret<br>";
 	}
 
-echo "<p style='color: red'; >BBoard ITEMS NOT added - need to modify code to allow sqlinsert.</p>";
+// echo "<p style='color: red'; >BBoard ITEMS NOT added - need to modify code to allow sqlinsert.</p>";
 echo "BBoard Items added to database: $bbcount<br><br>";
 		
 ?>

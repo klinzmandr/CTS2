@@ -54,7 +54,7 @@ if ($action == 'close') {
 // do sql query for all open calls for pv and list
 if ($action == '') {
 	$sql = "SELECT * FROM `calls`	
-	WHERE `Status` = 'Open'
+	WHERE (`Status` = 'Open' OR `Status` = 'New')
 	AND `OpenedBy` = '$user';";
 	$res = doSQLsubmitted($sql);
 //	echo "sql: $sql<br>";

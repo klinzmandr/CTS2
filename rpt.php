@@ -8,6 +8,11 @@
 <link href="css/datepicker3.css" rel="stylesheet">
 </head>
 <body onload="initSelect()">
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-datepicker-range.js"></script>
+
 <?php
 session_start();
 //include 'Incls/vardump.inc.php';
@@ -17,25 +22,26 @@ include 'Incls/datautils.inc.php';
 
 $dbinuse = "DB in use: " . $_SESSION['CTS_DB_InUse'] . "<br>";
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-$sd = isset($_REQUEST['from_date']) ? $_REQUEST['from_date'] : date('Y-m-d', strtotime("today"));
+$sd = isset($_REQUEST['from_date']) ? $_REQUEST['from_date'] : date('Y-m-d', strtotime("today - 30 days"));
 $ed = isset($_REQUEST['to_date']) ? $_REQUEST['to_date'] : date('Y-m-d', strtotime("tomorrow -1 second"));
 $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '%mbrdb/%';
 $testdb = isset($_REQUEST['testdb']) ? $_REQUEST['testdb'] : '';
 
 print <<<pagePart1
 <script>
-function initSelect() {
+$(function initSelect() {
 // Initialize a selection list (single valued)
 var patt = '$type';
 //alert("initSelect: pattern: " + patt);
 if (patt == "") return;
-	for (var i = 0; i < inform.type.length; i++) {
-		if (inform.type.options[i].value == patt) {
-			inform.type.options[i].selected = true;
-			break;
-			}
-		}
-	}
+  $("select").val(patt);
+//	for (var i = 0; i < inform.type.length; i++) {
+//		if (inform.type.options[i].value == patt) {
+//			inform.type.options[i].selected = true;
+//			break;
+//			}
+//		}
+	});
 </script>
 <h3>Report on Page Usage</h3>
 $dbinuse<br>
@@ -47,7 +53,8 @@ $dbinuse<br>
 <input type="text" name="to_date" value="$ed" placeholder="End Date" class="from_date" id="ed">
 
 <input type="hidden" name="action" value="continue">
-<select name="type" onchange="this.form.submit()">
+<select name="type">
+<option value=""></option>
 <option value="%cts2/%">ALL</option >
 <option value="%cts2/rpt%">Reports</option>
 <option value="%cts2/call%">Calls</option>
@@ -141,11 +148,6 @@ echo '</td></tr></table>';
 
 
 ?>
-
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="Incls/bootstrap-datepicker-range.inc.php"></script>
 
 </body>
 </html>
