@@ -1,3 +1,8 @@
+<?php
+session_start();
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,20 +15,17 @@
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-<?php
-session_start();
-//include 'Incls/vardump.inc.php';
-include 'Incls/seccheck.inc.php';
-include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
-
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-
-if ($action == '') {
-print <<<pagePart1
 <div class="container">
 <h3>Add New Call</h3>
-<p>A new call will be added for $_SESSION[CTS_SessionUser]</p>
+
+<?php 
+//include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
+
+if ($action == '') { ?>
+<p>A new call will be added for <?=$_SESSION[CTS_SessionUser]?></p>
 <p>Choose one of the following:</p>
 <ul>
 <a class="btn btn-success" href="callsaddnew.php?action=new">BLANK</a>&nbsp;
@@ -101,9 +103,10 @@ Reason: Other
 <p><b>Preset fields can be redefined when call is updated.</b></p>
 </ul>
 </div>
-pagePart1;
-exit;
+<?php
+  exit; 
 }
+
 $addarray = array();
 // action contains the type of new record to be added
 // add in here the logic for the various call type presets
@@ -157,7 +160,9 @@ if ($action == 'na') {
 	}
 
 // check to determine if a new records has been added but not used
+
 $currentuser = $_SESSION['CTS_SessionUser'];
+
 $sql = "SELECT * FROM `calls` 
 	WHERE `Status` = 'New' 
 	AND `OpenedBy` = '$currentuser';";
@@ -166,33 +171,31 @@ $rc = $res->num_rows;
 
 $addarray[OpenedBy] = $_SESSION['CTS_SessionUser'];
 $addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
-$addarray[DTPlaced] = date('Y-m-d H:00', strtotime(now));
+$addarray[DTPlaced] = date('Y-m-d H:i', strtotime(now));
 $addarray[Status] = 'New';
 //echo '<pre> addarray '; print_r($addarray); echo '</pre>';
 if ($rc == 0) {							// nope - add a new record
 //	echo 'inserting new record<br>';
 	sqlinsert('calls', $addarray);
+	addlogentry("New call inserted");
 	}
 else {											// one exists, update it instead
 	$r = $res->fetch_assoc();
 	$where = "CallNbr = '$r[CallNbr]'";
 //	echo "where: $where<br>";
 	sqlupdate('calls', $addarray, $where);
+	addlogentry("New call existed");
 	}
+?>
 
-print <<<pagePart1
 <div class="container">
 <h3>New Call Added</h3>
-<p>A new $action call has been added for $currentuser</p>
+<p>A new <?=$action?> call has been added for <?=$currentuser?></p>
 
 <p>Click the continue button to complete the details of the call.</p>
 
 <a class="btn btn-success" href="callupdatertabbed.php?action=new">CONTINUE</a>&nbsp;
 <br><br>
-<div>
-pagePart1;
-
-?>
-
+</div>
 </body>
 </html>

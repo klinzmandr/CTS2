@@ -17,7 +17,10 @@ if ($mysqli->connect_errno) {
     $_SESSION['CTS_DB_ERROR'] = $db;
     }
 $_SESSION['CTS_DB_InUse'] = $db;
-// addlogentry('Page Load');
+$pl = 'Page Load ';
+if (isset($_SESSION['4log'])) $pl .= 'for '.$_SESSION['4log'];
+addlogentry($pl);
+unset($_SESSION['4log']);
 // auto returns to code following the 'include' statement
 // echo "Initial Connection Info: ".$mysqli->host_info . "<br><br>";
 
@@ -144,10 +147,18 @@ function addlogentry($text) {
 	if (isset($_SESSION['CTS_DB_ERROR'])) return(FALSE);
 	$user = $_SESSION['CTS_SessionUser'];
 	$seclevel = $_SESSION['CTS_SecLevel'];
+	$str = $_SERVER['HTTP_USER_AGENT'];
+	// echo "log str: $str<br>";
+	$re1 = '/\((.*?)\)/';      // hw info
+  $re2 = '/.+\)(.+) /';      // browser info
+  preg_match_all($re1, $str, $matches1, PREG_SET_ORDER, 0);
+  preg_match_all($re2, $str, $matches2, PREG_SET_ORDER, 0);
+  $svrinfo = $matches1[0][1] . ", " . $matches2[0][1];
+  // echo "log svrinfo: $svrinfo<br>";
 	$page = $_SERVER['PHP_SELF'];
 	$txt = addslashes($text);
-	$sql = "INSERT INTO `log` (`User`, `SecLevel`, `Page`, `Text`) VALUES ('$user', '$seclevel', '$page', '$txt');";
-	//echo "Log: $sql<br>";
+	$sql = "INSERT INTO `log` (`Agent`, `User`, `SecLevel`, `Page`, `Text`) VALUES ('$svrinfo', '$user', '$seclevel', '$page', '$txt');";
+	// echo "Log: $sql<br>";
 	$res = $mysqli->query($sql);
 	if (!$res) {
 		$errno = $mysqli->errno;
@@ -264,6 +275,7 @@ function checkcredentials($userid, $password) {
 		$_SESSION['CTS_SecLevel'] = $r[Role]; 
 		$_SESSION['CTS_SessionUser'] = $userid;
 		$_SESSION['CTS_ActiveCTSMCID'] = $r[MCID];
+		$_SESSION['CTS_VolEmail'] = $r[Email];
 		return(true);
 		}
 	echo '<h3 style="color: red; ">ERROR: Password not valid.</h3>';

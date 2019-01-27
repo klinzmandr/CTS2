@@ -42,16 +42,30 @@ $(document).ready(function () {
 
 <?php
 session_start();
-//include 'Incls/vardump.inc.php';
+// include 'Incls/vardump.inc.php';
 
-
-// connect to production database
-define("ProdDBName", 'pacwilic_phplist');define("DBUserName", 'pacwilic_drkphp');define("DBPassword", 'gsAHMzyiNoxQd7P4');
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '';
 $sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-d 00:00', strtotime('now'));
 $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-d 23:59', strtotime('now'));
 $bl = isset($_REQUEST['bl']) ? true : false;
+
+// regex to extract info from HTTP_USER_AGENT 
+$str = $_SERVER['HTTP_USER_AGENT'];
+// extracts os and hw type
+$re1 = '/\((.*?)\)/';
+// extract browser
+$re2 = '/.+\)(.+) /';
+
+preg_match_all($re1, $str, $matches1, PREG_SET_ORDER, 0);
+// echo '<pre>'; print_r($matches1); echo '</pre>';
+preg_match_all($re2, $str, $matches2, PREG_SET_ORDER, 0);
+// echo '<pre>'; print_r($matches2); echo '</pre>';
+
+// $svr = $matches1[0][1]; $brow = $matches2[0][1]; 
+// echo "server: $svr, browser: $brow<br>";
+$svrinfo = $matches1[0][1] . ", " . $matches2[0][1];
+// echo "$svrinfo<br>";
 
 print <<<sendForm
 <h3>CTS2 Log Viewer&nbsp;&nbsp;&nbsp;&nbsp;
@@ -94,20 +108,21 @@ $sql = "
 SELECT * FROM `log` 
 WHERE `DateTime` BETWEEN '$sd' AND '$ed' 
 AND (`User` LIKE '%$filter%' 
+ OR `Agent` LIKE '%$filter%' 
  OR `Page` LIKE '%$filter%' 
  OR `SecLevel` LIKE '%$filter%' 
  OR `Text` LIKE '%$filter%')
 ORDER BY `LogID` ASC";
-// echo "sql: $sql<br>";
+echo "sql: $sql<br>";
 
 $uures = doSQLsubmitted($sql);
 $nr = $uures->num_rows;
 
 $html[] = '
 <table border=0 class="table" >
-<tr><th>Log Id</th><th>DT Entered</th><th>User</th><th>SecLevel</th><th>Page</th><th>Log Text</th></tr>';
+<tr><th>Log Id</th><th>DT Entered</th><th>Agent</th><th>User</th><th>SecLevel</th><th>Page</th><th>Log Text</th></tr>';
 while ($r = $uures->fetch_assoc()) {
-    $html[] = "<tr><td>$r[LogID]</td><td>$r[DateTime]</td><td>$r[User]</td><td>$r[SecLevel]</td><td>$r[Page]</td><td>$r[Text]</td></tr>";  
+    $html[] = "<tr><td>$r[LogID]</td><td>$r[DateTime]</td><td>$r[Agent]</td><td>$r[User]</td><td>$r[SecLevel]</td><td>$r[Page]</td><td>$r[Text]</td></tr>";  
   } 
 $html[] = '</table>';
 

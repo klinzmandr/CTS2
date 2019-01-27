@@ -1,3 +1,13 @@
+<?php
+session_start();
+$callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$flds = isset($_REQUEST['flds']) ? $_REQUEST['flds'] : '';
+$notes = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : '';
+$_SESSION['4log'] = $callnbr;
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +31,19 @@
     }
 </style>
 <script>
+// block use of enter key on input form, shift focus to next field
+$(function() {  
+  $('form input').keydown(function (e) {
+      if (e.keyCode == 13) {
+          var inputs = $(this).parents("form").eq(0).find(":input");
+          if (inputs[inputs.index(this) + 1] != null) {                    
+              inputs[inputs.index(this) + 1].focus();
+          }
+          e.preventDefault();
+          return false;
+      }
+  });
+});
 // document ready function ============
 $(document).ready(function() {
   $("#X").fadeOut(2000);
@@ -43,16 +66,19 @@ $("#FC").click(function(e) {
 </script>
 
 <?php
-session_start();
 // include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
 
-$callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-$flds = $_REQUEST['flds'];
-$notes = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : '';
+// block attempt to update call with no session user
+// caused when user does a 'back' button on browser after logout or timeout
+if ($_SESSION[CTS_SessionUser] == '') {
+  addlogentry("callupdater is trying to update a call with no userid");
+  echo '<h2>Session has timed out</h2>
+  <h3 style="color: #FF0000; "><a href="indexsto.php">Log in again</a></h3>';
+  exit;
+  }
 
 // apply any fields updated to call record
 if ($action == 'update') {
@@ -87,7 +113,7 @@ if ($action == 'update') {
     $r[City] = $cszarray[0]; $r[State] = $cszarray[1]; $r[Zip] = $cszarray[2];
     }
 	$where = "`CallNbr`='" . $callnbr . "'";
-//echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
+// echo '<pre> sql '; print_r($where); echo '<br> flds ';print_r($flds); echo '</pre>';
 	sqlupdate('calls',$flds, $where);
 	
   echo '  
@@ -110,6 +136,8 @@ $r = $res->fetch_assoc();
 // parse record fields into page
 // echo '<pre>DB record '; print_r($r); echo'</pre>';
 $callnbr = $r[CallNbr];
+$_SESSION['4log'] = $callnbr;
+
 $status = $r[Status]; 
 if ($status == 'New') $status = 'Open';
 $dtplaced = $r[DTPlaced]; $dtopened = $r[DTOpened]; $dtclosed = $r[DTClosed]; 
@@ -143,6 +171,9 @@ $(document).ready(function () {
 	$("#PT").val("<?=$property?>");
 	$("#SP").val("<?=$species?>");
 	$("#RE").val("<?=$reason?>");
+	$("#AT").val("<?=$resolution?>");
+	// var ttr = "'<?=$timetoresolve?>'";
+	$('input[type=radio][value=' + "'<?=$timetoresolve?>'" + ']').attr('checked', true);
   
 $("#cinfo").click(function() {
   var msg = '<center><h3>Caller Info</h3></center><br><br><ul><pre>';
@@ -165,13 +196,6 @@ $("#cinfo").click(function() {
   // document.execCommand('copy');
   $("#myModal").modal("show");
   $("textarea").val('');
-  // $('.updb').prop('disabled', false);    
-  // $(".updb").css({"background-color": "red", "color":"white"});
-  // if ("#FC".length) { 
-    // alert("Fast Chg button exists");      
-    // $('#FC').prop('disabled', true);    // disable to force update of form
-    // } 
-  //alert (msg);
   });
 });
 </script>
@@ -196,7 +220,7 @@ function chkdtp() {
 echo '
 <div class="container">
 <h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="updb btn btn-success" form="tf" /><b>Update Call</b></button>&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
-<i title="Print View" class="glyphicon glyphicon-print" style="color: blue; font-size: 20px"></i></a></h3>';
+<i title="Print View" class="lvr glyphicon glyphicon-print" style="color: blue; font-size: 20px"></i></a></h3>';
 
 ?>
 <!-- define the form -->
@@ -233,13 +257,13 @@ var stripped = fld.replace(/[a-zA-z\(\)\.\-\ \/]/g, '');
 if (stripped.length == 7)
 	stripped = "805" + stripped;
 if (stripped.length != 10) { 
-	errmsg += "Invalid phone number.  Please include the Area Code.\\n";
+	errmsg += "Invalid phone number.  Please include the Area Code.\n\n";
 	}
 if(!stripped.match(/^[0-9]{10}/))  { 
-	errmsg += "Value entered not 7 or 10 digits OR a non-numeric character entered.\\n";
+	errmsg += "Value entered not 7 or 10 digits OR a non-numeric character entered.\n\n";
 	}
 if (errmsg.length > 0) {
-	errmsg += "\\nValid formats: 123-456-7890 or 123 456 7890 or 123-456-7890 or 1234567890";
+	errmsg += "Valid formats: 123-456-7890 or 123 456 7890 or 123-456-7890 or 1234567890";
 	//fld.attr().background = 'Pink';
 	$("#PN").attr("style","background-color:pink;");
 	alert(errmsg);
@@ -278,11 +302,10 @@ function chkEMAddr() {
 </script>    
 
 E-mail: <input type="text" name="flds[EMail]" value="<?=$email?>" id="EM" onblur="return chkEMAddr()" placeholder="Email Address">
-<?php
-echo '
-<a href="emailsend.php?emadr='.$email.'&callnbr='.$callnbr.'&name='.$name.'&crn='.$crn.'" onclick="return checkemail()">';
-?>
-<span id="desc" title="Send Email to Conatct" class="glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
+
+<!-- <a href="emailsend.php?emadr='<?=$email?>'&callnbr=<?=$callnbr?>&name=<?=$name?>&crn=<?=$crn?>" onclick="return checkemail()"> -->
+<a href="#">
+<span id="desc" title="(Disabled Send Email to Caller" class="lvr glyphicon glyphicon-envelope" style="color: blue; font-size: 20px">
 </span></a>
 <br />
 
@@ -300,11 +323,11 @@ Additional Notes: (check History for prior note entries)<br />
 <!-- call details tab -->
 <table class="table table-condensed" border=1><tr><td>
 <table class="table-condnensed" border=0>
-<tr><td>Animal Location:</td><td>
+<tr><td>Animal Loc:</td><td>
 <select id="AL" name="flds[AnimalLocation]" size="1">
 <option value=""></option>
 <?php loaddbselect("Locations"); ?>
-</select></td></tr><tr><td>Call Location:</td><td>
+</select></td></tr><tr><td>Call Loc:</td><td>
 <select id="CL" name="flds[CallLocation]" size="1">
 <option value=""></option>
 <?php loaddbselect("Locations"); ?>
@@ -317,12 +340,27 @@ Additional Notes: (check History for prior note entries)<br />
 <select id="SP" name="flds[Species]" size="1">
 <option value=""></option>
 <?php loaddbselect("Species"); ?>
-</select></td></tr><tr><td>Call Reason:</td>
+</select></td></tr><tr><td>Call&nbsp;Reason:</td>
 <td>
 <select id="RE" name="flds[Reason]" size="1">
 <option value=""></option>
 <?php loaddbselect("Reasons"); ?>
 </select>
+</td></tr>
+<tr><td>
+Est.TimeToResolve:</td><td>
+<input class="RB" type="radio" name="flds[TimeToResolve]" value="<15"><15&nbsp;
+<input class="RB" type="radio" name="flds[TimeToResolve]" value="<30"><30&nbsp;
+<input class="RB" type="radio" name="flds[TimeToResolve]" value="<45"><45&nbsp;
+<input class="RB" type="radio" name="flds[TimeToResolve]" value="<60"><60&nbsp;
+<input class="RB" type="radio" name="flds[TimeToResolve]" value="60+">60+
+</td></tr>
+<tr><td>
+Action Taken:</td><td>
+<select id="AT" name="flds[Resolution]" size="1">
+<option value=""></option>
+<?php loaddbselect("Actions"); ?>
+</select><br />
 </td></tr>
 <!-- <tr><td>Delivered to Center by: </td>
 <td>Caller: <input type="radio" name="flds[DeliveredBy]">
@@ -342,7 +380,7 @@ Organization: <input type="text" name="flds[Organization]" size="50" placeholder
 Address:<input id="PC" type="text" name="flds[Address]" size="50" placeholder="Address Line" value="<?=$address?>"><br />
 City:<input id="CI" data-provide="typeahead" data-items="4" type="text" name="flds[City]" placeholder="City" value="<?=$city?>" autocomplete="off" />, 
 State:<input id="ST" type="text" name="flds[State]" size="2" maxlength="2" value="<?=$state?>"/>  
-Zip: <input id="ZI" type="text" name="flds[Zip]" size="5" maxlength="10" value="<?=$zip?>"/>
+Zip:<input id="ZI" type="text" name="flds[Zip]" size="5" maxlength="10" value="<?=$zip?>"/>
 <button id="ZM" href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
 <br>
 
@@ -379,13 +417,12 @@ if ( sval.length == 0) {
 <script>
 // synchronizes second select list with choice made from the first
 $( "#AL" ).change(function() {
-//alert("change seen");
-var sval = $("#AL").val();
-if ( sval.length ){
-	//alert("A value for sel1 selected: " + sval);
-	$("#CL").val(sval);
-	return;
-	}
+  var sval = $("#AL").val();
+  // alert("AL text: "+sval);
+  if ( sval.length ){
+  	$("#CL").val(sval);
+  	return;
+  	}
 // alert("no value seen");
 return;
 });
@@ -406,7 +443,6 @@ $fcbutton = '';
 if (($_SESSION['CTS_SecLevel'] == 'admin') OR 
   ($_SESSION['CTS_SessionUser'] == $openedby)) { 
     $fcbutton = '<button id="FC" class="btn btn-primary">Fast Close</button>'; }
-  
 ?>
 </td></tr></table>
 

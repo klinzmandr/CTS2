@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-$sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-01', strtotime("previous month"));
-$ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("previous month"));
+$sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-01', strtotime("now"));
+$ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("now"));
 
 ?>
 <!DOCTYPE html>
@@ -17,26 +17,21 @@ $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("previo
 <body>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jsutils.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-datepicker-range.js"></script>
 
 <script>
 // initial setup of jquery function(s) for page
 $(document).ready(function () {
-	$("#help").hide();
-
-// this attaches an event to an object
-	$(".btn").click(function () {
-    $("#help").toggle(); 
-    });
-
+  // alert ("document ready");
   });  // end ready function
 </script>
 <div class="container">
-<h3>CTS2 Summary Report&nbsp;&nbsp;<a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
-<button class="btn btn-xs">HELP</button>
+<h3>CTS2 Monthly Report<span id="helpbtn" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>&nbsp;&nbsp;<a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
+
 <div id="help">
-<h3>Summary Report Explained</h3>
+<h3>Monthly Report Explained</h3>
 Lorem ipsum dolor sit amet. Arcu eu proin id velit non urna adipiscing. Vestibulum. Sollicitudin tellus. Non montes montes risus parturient ullamcorper. Mi, vitae at enim. A malesuada lorem. Facilisis parturient, quisque. Mollis proin scelerisque ultrices curabitur ut. Ullamcorper ac, luctus vulputate leo, pretium. At, erat metus nonummy. Nisl nam primis per potenti, ut, euismod nisl, et. Curabitur. Felis. Faucibus class ante nulla, fames. A etiam feugiat hac. Nulla mi curabitur a risus ve porta litora. Tortor eros, ante gravida porttitor dictumst aptent ipsum. Auctor diam, condimentum rhoncus consectetuer feugiat magna etiam ullamcorper. Proin luctus eros erat consequat nascetur, dictum pretium libero erat. Auctor molestie torquent posuere netus cum odio parturient rutrum, mi fames eu pellentesque quam curae nullam.
 
 </div>    <!-- help -->
@@ -74,8 +69,8 @@ while ($r = $res->fetch_assoc()) {
 	$resolutionarray[$r[Resolution]] += 1;
 	$ttrarray[$r[TimeToResolve]] += 1;
   }
-echo '<h3>Under Development</h3>';
-echo '<pre> result '; print_r($resarray); echo '</pre>';  
+echo '<h3 style="color: #FF0000; ">Under Development</h3>';
+// echo '<pre> result '; print_r($resarray); echo '</pre>';  
 echo '<pre> hlv '; print_r($hlvarray); echo '</pre>';  
 echo '<pre> city '; print_r($cityarray); echo '</pre>';  
 echo '<pre> reason '; print_r($reasonarray); echo '</pre>';  

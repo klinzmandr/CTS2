@@ -1,25 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Add New Admin User</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-</head>
-<body>
-<script src="jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
 <?php
 session_start();
-// include 'Incls/vardump.inc.php';
-include 'Incls/mainmenu.inc.php';
-include 'Incls/seccheck.inc.php';
-include 'Incls/datautils.inc.php';
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : ''; 
-$flds = $_REQUEST['flds'];
-$recno = $_REQUEST['SeqNo'];
+$flds = isset($_REQUEST['flds']) ? $_REQUEST['flds'] : '';
+$recno = isset($_REQUEST['SeqNo']) ? $_REQUEST['SeqNo'] : '';
+
+// include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 
 if ($recno == '') {
   echo "Record number is missing.<br><br>
@@ -38,6 +25,22 @@ $sql = "SELECT * FROM `cts2users` WHERE `SeqNo` = '$recno';";
 $res = doSQLsubmitted($sql);
 $flds = $res->fetch_assoc();
 // echo '<pre>DB flds '; print_r($flds); echo '</pre>';
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add New Admin User</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<?php
+include 'Incls/mainmenu.inc.php';
+include 'Incls/seccheck.inc.php';
 ?>
 <script>
 $("document").ready( function() {

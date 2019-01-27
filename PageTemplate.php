@@ -1,3 +1,12 @@
+<?php
+session_start();
+// include 'Incls/datautls.inc.php';
+// include 'Incls/seccheck.inc.php';
+// include 'Incls/mainmenu.inc.php';
+
+// get any input values in $_REQUEST parameters
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,36 +17,35 @@
 </head>
 <body>
 <script src="jquery.js"></script>
+<script src="js/jsutils.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
 <script>
 // initial setup of jquery function(s) for page
-$(document).ready(function () {
+$(function(){
 	alert(" example of action on document load");
 
 // this attaches an event to an object
-	$("h3").click(function () {
-    alert("example of a click of any header 3 like the page title"); 
+	$("h4").click(function () {
+    alert("example of a click of any header 4 like the page title"); 
     });
 
   });  // end ready function
 </script>
 
-
-<?php
-session_start();
-//include 'Incls/seccheck.inc.php';
-include 'Incls/mainmenu.inc.php';
-
-print <<<pagePart1
 <div class="container">
-<h3>Page Heading</h3>
-<p>Explaination of page.</p>
+<h3>Page Heading
+<span id="helpbtn" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
+&nbsp;&nbsp;   <a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a>
+</h3>
+<div id=help>
+Explaination of page.
+</div>
+
+<h4>Header 4 title to click</h4>
+<!-- page contents -->
 
 </div>  <!-- container -->
-pagePart1;
-
-?>
 
 </body>
 </html>

@@ -1,3 +1,8 @@
+<?php
+session_start();
+$fv = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '';
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,36 +16,10 @@
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-<?php
-session_start();
-
-include 'Incls/seccheck.inc.php';
-include 'Incls/mainmenu.inc.php';
-//include 'Incls/vardump.inc.php';
-
-$fv = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : '';
-
-// array key 0-9 corresond to the titles of the buttons defined
-$btnarray = array(
-  0 => "Contacts",
-  1 => "Hotline",
-  2 => "Rescue",
-  3 => "Dirs & Misc",
-  4 => "Mammals",
-  5 => "Birds",
-  6 => "Baby Animals",
-  7 => "Humane Excl",
-  8 => "Forms",
-  9 => "System"
-  );
-  
-$forms = scandir('Forms');
-
-echo '<div class="container">
+<div class="container">
 <h3>Forms & Documentation</h3>
-Documents will open in a new tab/window.<br>';
+Documents will open in a new tab/window.<br>
 
-print <<<formPart
 <script>
 var inp = '';
 $(document).ready(function() {
@@ -99,8 +78,26 @@ $(function(){
   });
 </script>
 
-formPart;
+<?php
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
+// include 'Incls/vardump.inc.php';
 
+// array key 0-9 corresond to the titles of the buttons defined
+$btnarray = array(
+  0 => "Contacts",
+  1 => "Hotline",
+  2 => "Rescue",
+  3 => "Dirs & Misc",
+  4 => "Mammals",
+  5 => "Birds",
+  6 => "Baby Animals",
+  7 => "Humane Excl",
+  8 => "Forms",
+  9 => "System"
+  );
+
+$forms = scandir('Forms');
 $count = 0;
 foreach ($forms as $formname) {
   // if (($formname == '.') || ($formname == '..')) { continue; }
@@ -112,9 +109,7 @@ foreach ($forms as $formname) {
   }
 
 echo '
-<input placeholder="FILTER" id="inp" type="text" value="" autofocus title="Enter string to limit the number of rows listed.">&nbsp;&nbsp;
-<!-- +&nbsp;&nbsp;
-<button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp; -->
+<input placeholder="Enter search string" id="inp" type="text" value="" autofocus title="Enter string to limit the number of rows listed.">&nbsp;&nbsp;
 <button id="btnALL">Show All</button>&nbsp;&nbsp;
 <span id="helpclk" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
 <div id="help">
@@ -127,7 +122,6 @@ foreach ($btnarray as $k => $v) {
     echo "<button class=\"btn btn-success btn-xs\" id=\"btn$k\">$v</button>&nbsp;&nbsp;";
     }
   }
-  
 echo '<br>';
 
 echo "
@@ -138,11 +132,13 @@ echo "
 foreach ($g as $k => $v) {
   foreach ($v as $formname) {
   $moddt = filectime("Forms/$formname");
-  $cd  = date("M d, Y \a\\t H:i:s.", $moddt) . "<br>";
+  $cd  = date("m-d-y \a\\t H:i.", $moddt) . "<br>";
   $fs = number_format(filesize("Forms/$formname")/1000,1);
 
-  echo "<tr class=\"$k\">
-  <td><a target=_blank href=\"Forms/$formname\">$formname</a></td>
+  echo "<tr class=\"$k\">";
+  // echo "<td><a target=_blank href=\"Forms/$formname\">$formname</a></td>";
+  echo "<td><a target=_blank href='formviewer.php?dsp=Forms/$formname'>$formname</a></td>";
+  echo "
   <td align=right>$fs</td>
   <td>&nbsp;</td>
   <td>$cd</td></tr>

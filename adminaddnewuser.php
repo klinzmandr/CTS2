@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
+$recno = isset($_REQUEST['SeqNo']) ? $_REQUEST['SeqNo'] : "";
+$flds = isset($_REQUEST['flds']) ? $_REQUEST['flds'] : '';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,15 +53,11 @@ $("#filter").keyup(function() {
 </script>
 
 <?php
-session_start();
 //include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/mainmenu.inc.php';
 include 'Incls/seccheck.inc.php';
-include 'Incls/datautils.inc.php';
 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
-$recno = isset($_REQUEST['SeqNo']) ? $_REQUEST['SeqNo'] : "";
-$flds = $_REQUEST['flds'];
 if ($action == "delete") {
 	$sql = "DELETE FROM `cts2users` WHERE `SeqNo` = '$recno'";
 	$res = doSQLsubmitted($sql);
@@ -66,8 +69,7 @@ if ($action == "addnew") {
 	$res = sqlinsert('cts2users', $flds);
 	echo '<h3 style="color: red; " id="X">User Record Added.</h3>';
 	}
-
-print <<<pagePart1
+?>
 <div class="container">
 <h3>User Administration</h3>
 <button id="addnewbtn">Add New User Record</button>
@@ -128,10 +130,8 @@ Notes:<br /><textarea name="flds[Notes]" rows="3" cols="50"></textarea><br />
 <a class="btn btn-primary" href="index.php">RETURN</a>
 <hr width="50%"><h4>Existing Users</h4>
 </div>  <!-- addnew div -->
-pagePart1;
 
-// list exising entries to allow delete of individual rows from DB
-
+<?php
 $sql = "select * from cts2users ORDER BY `Role` ASC, `UserID` ASC";
 $res = doSQLsubmitted($sql);
 echo "<table border=1 class=\"table\">";

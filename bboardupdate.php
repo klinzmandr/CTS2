@@ -72,7 +72,14 @@ print <<<pagePart1
 <script type="text/javascript" src="js/nicEdit.js"></script>
 <script type="text/javascript">
 bkLib.onDomLoaded(function() {
-	new nicEditor({buttonList : ['fontSize','bold','italic','underline','strikeThrough']}).panelInstance('area1');
+	var myEditor = new nicEditor({buttonList : ['fontSize','bold','italic','underline','strikeThrough']}).panelInstance('area1');
+
+  myEditor.addEvent('focus', function() {
+    // alert( "chgFlag: " + chgFlag); 
+    chgFlag +=1;    // block leaving page until changes saved
+    console.log ("chgFlag: " + chgFlag);
+    });
+
 });
 </script>
 <script>
@@ -90,8 +97,7 @@ function movemsg() {
 
 <div class="container">
 
-<h3>Update Bulletin Board Note $seqnbr&nbsp;&nbsp;
-<a class="btn btn-success" href="bboard.php">RETURN</a></h3>
+<h3>Update Bulletin Board Note $seqnbr&nbsp;&nbsp;</h3>
 
 <form action="bboardupdate.php"  class="form">
 <input type="text" name="Subject" value="$r[Subject]" size="80"  placeholder="Note Subject">
@@ -102,8 +108,8 @@ $r[Note]
 <input type="hidden" name="SeqNbr" value="$seqnbr">
 <input type="hidden" name="UserID" value="$userid">
 <input type="hidden" name="action" value="upd">
-<input type="submit" name="submit" value="submit">
-By: $r[UserID] on $r[DateTime]
+<input type="submit" name="submit" value="Save All Changes">
+&nbsp;By: $r[UserID] on $r[DateTime]
 </form
 <br>
 

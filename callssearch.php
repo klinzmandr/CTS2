@@ -1,3 +1,11 @@
+<?php
+session_start();
+// include 'Incls/vardump.inc.php';
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$search = isset($_REQUEST['sstr']) ? $_REQUEST['sstr'] : '';
+$xsearch = isset($_REQUEST['xsstr']) ? $_REQUEST['xsstr'] : '';
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,50 +17,63 @@
 <body>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jsutils.js"></script>
+<script>
+$(function() {
+  var xinp = "<?=$xsearch?>";
+  if (xinp.length == 0) {
+    $(".tips").show();
+    }
+$("form").submit(function(e) {
+  $("#xsstr").val($("#sstr").val());
+  var inp = $("#sstr").val();
+  if (inp.length == 0) {
+    e.preventDefault();
+    alert("Search string entry is empty");
+    $("#help").show();
+    return;
+    }
+  $("#help").hide();
+  });
+});
+</script>
 
-<?php
-session_start();
-//include 'Incls/vardump.inc.php';
-include 'Incls/datautils.inc.php';
-include 'Incls/seccheck.inc.php';
-include 'Incls/mainmenu.inc.php';
-
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-$search = isset($_REQUEST['search']) ? $_REQUEST['search'] : '';
-// $status = isset($_REQUEST['status']) ? $_REQUEST['status'] : '';
-
-if ($action == '') {
-print <<<pagePart1
 <div class="container">
-<h3>Search All Calls</h3>
+<h3>Search All Calls
+<span id="helpbtn" title="Tips and Tricks" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
+</h3>
+<form class="form-inline" action="callssearch.php" method="post">
+<input type="text" id=sstr name="sstr" size="50" value="" autofocus placeholder="Enter search string">
+<input type="hidden" id=xsstr name="xsstr" value="">
+<input type="submit" name="submit" value="Search">
+</form>
+
+<div id=help class=tips>
+<b>Tips and Tricks:</b><br>
 <p>General search of all calls for given search string.</p>
-<h4>Enter search string:</h4>
-<form action="callssearch.php" method="post">
-<!-- Call Status: <input type="radio" name="status" value="Open" checked="checked">Open
-&nbsp;&nbsp;&nbsp;<input type="radio" name="status" value="Closed">Closed<br> -->
-<input type="text" name="search" size="50" value="" autofocus placeholder="Search string">
-<br><br>
-<input type="hidden" name="action" value="search">
-<input type="submit" name="submit" value="Submit">
-</form><br><br>
-<b>Hints:</b><br>
 <ol>
-  <li>Fields searched: Animal Location, Call Location, Property, Species, Resolution, Reason, Organization, Name, Address, City, Email, Description and Opened By.</li>
+  <li>Use the 'Last 50 Calls Report' for listing all calls.</li>
+  <li>Use this function to find specific calls by key word/phrase.</li>
+  <li>Fields searched: Call Number, Animal Location, Call Location, Property, Species, Resolution, Reason, Organization, Name, Address, City, Email, Description and Opened By.</li>
   <li>The call log is NOT searched.</li>
 	<li>Enter a 3-5 character search string.  The longer the string, usually the fewer the results listed.</li>
 	<li>Avoid special characters like &lt;, &gt;, :, !, $, %, &apos; and so on.</li>
 </ol>
-
+</div>
 </div>
 </body></html>
 
-pagePart1;
-exit;
-}
+<?php
+include 'Incls/datautils.inc.php';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
+
+if ($search == '') exit;
 
 // $action == search
 $sql = "SELECT * FROM `calls` 
-	WHERE (`AnimalLocation` LIKE '%$search%' 
+	WHERE (`CallNbr` LIKE '%$search%'  
+	  OR  `AnimalLocation` LIKE '%$search%' 
 		OR  `CallLocation` LIKE '%$search%'
 		OR  `Property` LIKE '%$search%'
 		OR  `Species` LIKE '%$search%'		
@@ -72,24 +93,26 @@ ORDER BY `CallNbr` ASC;";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 echo "<div class=\"container\"><h4>Rows matched: $rc</h4>";
-echo '<table border="0" class="table table-condensed table-hover">'.$rpthdg;
-while ($r = $res->fetch_assoc()) {
-  $status = $r[Status];
-//	echo '<pre>'; print_r($r); echo '</pre>';
-	$callnbr = $r[CallNbr]; $dtopened = $r[DTOpened]; $openedby = $r[OpenedBy];
-	$lastupdater = $r[LastUpdater]; $desc = $r[Description];
-	if ($status == 'Closed') 
-		echo "<tr onclick=\"window.location='callroview.php?call=$callnbr'\" style='cursor: pointer;'>";
-	else
-		echo "<tr onclick=\"window.location='callupdatertabbed.php?action=view&callnbr=$callnbr'\" style='cursor: pointer;'>";
-	echo '<td>'.$callnbr.'</td>
-	<td>'.$status.'</td>
-	<td>'.$dtopened.'</td>
-	<td>'.$openedby.'</td>
-	<td>'.$desc.'</td>
-	</tr>';
-	}
-echo '</table></div>--- END OF LIST ---';
+if ($rc > 0) {
+  echo '<table border="0" class="table table-condensed table-hover">'.$rpthdg;
+  while ($r = $res->fetch_assoc()) {
+    $status = $r[Status];
+  //	echo '<pre>'; print_r($r); echo '</pre>';
+  	$callnbr = $r[CallNbr]; $dtopened = $r[DTOpened]; $openedby = $r[OpenedBy];
+  	$lastupdater = $r[LastUpdater]; $desc = $r[Description];
+  	if ($status == 'Closed') 
+  		echo "<tr onclick=\"window.location='callroview.php?call=$callnbr'\" style='cursor: pointer;'>";
+  	else
+  		echo "<tr onclick=\"window.location='callupdatertabbed.php?action=view&callnbr=$callnbr'\" style='cursor: pointer;'>";
+  	echo '<td>'.$callnbr.'</td>
+  	<td>'.$status.'</td>
+  	<td>'.$dtopened.'</td>
+  	<td>'.$openedby.'</td>
+  	<td>'.$desc.'</td>
+  	</tr>';
+  	}
+  echo '</table></div>--- END OF LIST ---';
+}
 ?>
 
 </body>

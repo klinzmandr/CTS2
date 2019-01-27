@@ -14,9 +14,9 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 session_start();
 //include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
 
 // update reply if reply name is not blank
 $ta = $_REQUEST['ta'];

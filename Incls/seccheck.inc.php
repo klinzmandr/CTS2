@@ -1,4 +1,9 @@
-<script src="js/bootstrap-session-timeout.js"></script> 
+<?php
+// check if there is an active session
+if (isset($_SESSION['CTS_SessionUser'])) {
+// output page timeout script
+echo "
+<script src='js/bootstrap-session-timeout.js'></script> 
 <script>
 $(document).ready(function() { 
   $.sessionTimeout({
@@ -7,20 +12,17 @@ $(document).ready(function() {
       keepAlive: false,
       logoutUrl: 'indexsto.php',
       redirUrl: 'indexsto.php',
-      warnAfter: 15*60*1000,
+      warnAfter:  15*60*1000,
       redirAfter: 20*60*1000,
       countdownMessage: 'Time remaining:',
       countdownBar: true,
       showButtons: false
   });
 });
-</script>
-
-<?php
-// check if there is an active session
-if (isset($_SESSION['CTS_SessionUser'])) {
+</script>";
   return;
   }
+// echo 'indexsto entered with no active session set<br>';
 
 // if not display login form
 ?>
@@ -39,7 +41,7 @@ function checkform(theForm) {
 function validateUserID(fld) {
 	var error="";
 	var tfld = trim(fld.value); 		// value of field with whitespace trimmed off
-  if (fld.length == 0) {
+  if (fld.value == '') {
 	  fld.style.background = '#F7645E';
     error = 'User ID not entered.\n';
     }
@@ -48,7 +50,6 @@ function validateUserID(fld) {
     }
   return error;
 	}
-}
 
 function validatePassword(fld) {
   var error = "";

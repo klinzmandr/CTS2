@@ -12,7 +12,7 @@
 
 <?php
 session_start();
-//include 'Incls/vardump.inc.php';
+// include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
@@ -30,14 +30,14 @@ if ($action == 'MyClosed') {
 elseif ($action == 'AllOpen') {
 	$rpthdg = "</tr><th>Call#</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>";
 	$hdg = 'All Open';
-	$sql = "SELECT * from `calls` WHERE `Status` = 'Open' OR `Status` = 'New';";
+	$sql = "SELECT * from `calls` WHERE `Status` = 'Open' ORDER BY `CallNbr` ASC;";
 	}
 	
 else {		// gotta be MyCalls then
 	$hdg = 'My Open';
 	$rpthdg = "<tr><th>Call#</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>";
 	$sql = "SELECT * from `calls` 
-		WHERE ( `Status` = 'Open' OR `Status` = 'New'	)
+		WHERE ( `Status` = 'Open' )
 		AND `OpenedBy` = '$userid';";
 	}
 $res = doSQLsubmitted($sql);

@@ -1,3 +1,11 @@
+<?php
+session_start();
+$call = isset($_REQUEST['call']) ? $_REQUEST['call'] : '';
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'notset';
+// echo "referer: $referer<br>";
+$_SESSION['4log'] = $call;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,16 +20,12 @@
 <script src="js/bootstrap.min.js"></script>
 
 <?php
-session_start();
-//include 'Incls/vardump.inc.php';
+// include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
-echo "<div class=\"hidden-print\">";
-include 'Incls/mainmenu.inc.php';
-echo "</div>  <!-- hidden-print -->";
 
-$call = isset($_REQUEST['call']) ? $_REQUEST['call'] : '';
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+if ($action == '') 
+  include 'Incls/mainmenu.inc.php';
 
 $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$call';";
 $res = doSQLsubmitted($sql);
@@ -37,7 +41,7 @@ echo '<div class="container">
 <table class="table"><tr><td>';
 
 if ($action != '') {
-	echo "<br><h1>Call $call&nbsp;&nbsp;<a href=\"rptlast50calls.php\" class=\"btn btn-primary\"><b>Return</b></a></h1> ";
+	echo "<br><h1>Call $call&nbsp;&nbsp;<a href=\"$referer\" class=\"btn btn-primary\"><b>Return</b></a></h1> ";
 	}
 else {
   if ($_SESSION['CTS_SecLevel'] == 'admin') {

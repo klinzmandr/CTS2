@@ -2,12 +2,23 @@
 body { padding-top: 50px; }      <!-- add padding to top of each page for fixed navbar -->
 </style>
 
+<?php
+$sl = (isset($_SESSION['CTS_SecLevel'])) ? $_SESSION['CTS_SecLevel'] : '';
+
+require_once 'Incls/datautils.inc.php';
+
+// block attempt to access any function with no session user
+// caused when user does a 'back' button on browser after logout or timeout
+if (!isset($_SESSION['CTS_SessionUser'])) {
+  addlogentry("User is trying to access main menu with no session established");
+  echo '<h3 style="color: red; "><a href="indexsto.php">Log in again</a></h3>';
+  exit;
+  }
+?>
+
 <script>
 <!-- Form change variable must be global -->
 var chgFlag = 0;
-<?php
-$sl = (isset($_SESSION['CTS_SecLevel'])) ? $_SESSION['CTS_SecLevel'] : '';
-?>
 $(document).ready(function() {
   if ("<?=$sl?>" == 'demo') {
     // alert("session security is in demo mode");
@@ -52,16 +63,21 @@ $("form").change(function(){
   $('.updb').prop('disabled', false);    
   // setInterval(blink_text, 1000);
   });    
+
+// for buttons of dropdown classes check for form changes
+$(".dropdown, .lvr").click(function(event) {
+	if (chgFlag <= 0) { return true; }
+	var r=confirm("All changes made will be lost.\n\nConfirm abandoning changes and leaving page by clicking OK.");	
+	if (r == true) { 
+    chgFlag = 0; 
+    return true; 
+	  }
+  event.preventDefault();
+  return false;
+  });
 });
-
-function chkchg() {
-	if (chgFlag > 0) {         // check for any changes
-  	var r=confirm("All changes made will be lost.\n\nConfirm leaving page by clicking OK.");	
-  	if (r == true) { chgFlag = 0; return true; }
-    return false;
-    }
-  }
-
+</script>
+<script>
 function blink_text() {
     $('.updb').fadeOut(500);
     $('.updb').fadeIn(500);
@@ -86,8 +102,8 @@ function blink_text() {
 <!-- Collect the nav links, forms, and other content for toggling -->
 <div class="collapse navbar-collapse" id="navbar-collapse-1">
   <ul class="nav navbar-nav" style='cursor: pointer;'>
-    <li><a onclick="return chkchg()" href="index.php"><b>Home</b></a></li>
-		<!-- <li><a onclick="return chkchg()" href="">????</a></li> -->
+    <li><a class="dropdown" href="index.php"><b>Home</b></a></li>
+		<!-- <li><a href="">????</a></li> -->
 <?php
 // include Admin menu options for special users
 $seclevel = isset($_SESSION['CTS_SecLevel']) ? $_SESSION['CTS_SecLevel'] : '';
@@ -99,19 +115,19 @@ if ($seclevel == 'admin') {
   <li class="dropdown">
   <a class="dropdown-toggle" data-toggle="dropdown" role="button"><font color="#FF0000">Admin</font><b class="caret"></b></a>
   	<ul class="dropdown-menu" aria-labelledby="drop2" role="menu">
-  		<!-- <li><a onclick="return chkchg()" href="adminbboardmaint.php">Maintain BB</a></li> -->
-  		<li><a onclick="return chkchg()" href="adminlistpvcalls.php">List All Calls for a PV</a></li>
-  		<li><a onclick="return chkchg()" href="admincloseany.php">Close Any Open Call</a></li>
-  		<li><a onclick="return chkchg()" href="adminaddnewuser.php">Maintain Userid &amp; Passwords</a></li>
-  		<li><a onclick="return chkchg()" href="adminresourcesmaint.php">Maintain Resource Links</a></li>
-  		<li><a onclick="return chkchg()" href="adminformsmaint.php">Maintain Forms &amp; Docs</a></li>
-  		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Locations">Maintain Locations</a></li>
-  		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Properties">Maintain Properties</a></li>
-  		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Species">Maintain Species</a></li>
-  		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Reasons">Maintain Reasons</a></li>
-  		<li><a onclick="return chkchg()" href="adminlistmaint.php?file=Actions">Maintain Actions</a></li>
-  		<li><a onclick="return chkchg()" href="admineditemailreplys.php">Edit Email Replys</a></li>
-  		<li><a onclick="return chkchg()" href="admdeletejdoerecs.php">Delete jdoe records</a></li>
+  		<!-- <li><a href="adminbboardmaint.php">Maintain BB</a></li> -->
+  		<li><a href="adminlistpvcalls.php">List All Calls for a HLV</a></li>
+  		<li><a href="admincloseany.php">Close Any Open Call</a></li>
+  		<li><a href="adminaddnewuser.php">Maintain Userid &amp; Passwords</a></li>
+  		<li><a href="adminresourcesmaint.php">Maintain Resource Links</a></li>
+  		<li><a href="adminformsmaint.php">Maintain Forms &amp; Docs</a></li>
+  		<li><a href="adminlistmaint.php?file=Locations">Maintain Locations</a></li>
+  		<li><a href="adminlistmaint.php?file=Properties">Maintain Properties</a></li>
+  		<li><a href="adminlistmaint.php?file=Species">Maintain Species</a></li>
+  		<li><a href="adminlistmaint.php?file=Reasons">Maintain Reasons</a></li>
+  		<li><a href="adminlistmaint.php?file=Actions">Maintain Actions</a></li>
+  		<li><a href="admineditemailreplys.php">Edit Email Replys</a></li>
+  		<li><a href="admdeletejdoerecs.php">Delete jdoe records</a></li>
   		<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
 	    <li><a href="rptlogviewer.php" target="_blank">System Log Viewer</a></li>
   	</ul>   <!-- ul dropdown-menu -->
@@ -126,9 +142,9 @@ if ($seclevel != 'guest') {
 <li class="dropdown">
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" ><b>External</b><b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
-	<!-- <li><a onclick="return chkchg()" href="vmsintro.php" target="_blank">Voice Messages</a></li> -->
-	<li><a onclick="return chkchg()" href="emailintro.php" target="_blank" >Hotline Email</a></li>
-	<li><a onclick="return chkchg()" href="wrmdintro.php" target="_blank" >WRMD Case Mgmnt</a></li>
+	<!-- <li><a href="vmsintro.php" target="_blank">Voice Messages</a></li> -->
+	<li><a href="emailintro.php" target="_blank" >Hotline Email</a></li>
+	<li><a href="wrmdintro.php" target="_blank" >WRMD Case Mgmnt</a></li>
 </ul>
 </li>
 
@@ -145,33 +161,34 @@ if ($seclevel != 'guest') {
 <?php
 if ($seclevel != 'guest') {
 	echo '
-	<li><a onclick="return chkchg()" href="calls.php?action=MyOpen">My Open</a></li>
-	<li><a onclick="return chkchg()" href="calls.php?action=MyClosed">My Closed</a></li>';
+	<li><a href="calls.php?action=MyOpen">My Open</a></li>
+	<li><a href="calls.php?action=MyClosed">My Closed</a></li>
+	';
 	}
 echo	'
-  <li><a class="demo" onclick="return chkchg()" href="calls.php?action=AllOpen">All Open</a></li>';
+  <li><a class="demo" href="calls.php?action=AllOpen">All Open</a></li>';
 if ($seclevel != 'guest') {
 	echo '
-	<li><a onclick="return chkchg()" href="callsaddnew.php">Add New Call</a></li>
-	<li><a onclick="return chkchg()" href="callscloser.php">Close A Call</a></li>
+	<li><a href="callsaddnew.php">Add New Call</a></li>
+	<!-- <li><a href="callscloser.php">Close A Call</a></li> -->
 	';
 	}
 ?>
 
-	<li><a onclick="return chkchg()" href="callssearch.php">Search All</a></li>
-	<!-- <li><a onclick="return chkchg()" href="#">????</a></li> -->
+	<li><a href="callssearch.php">Search All</a></li>
+	<!-- <li><a href="#">????</a></li> -->
 	<!-- <li><a href="#">?</a></li> -->
 </ul>
 </li>  <!-- class="dropdown" -->
 
 <!-- ============ define Info dropdown ============== -->
-<li><a onclick="return chkchg()" href="bboard.php?action=list"><b>BBoard</b></a></li>
+<li><a class="dropdown" href="bboard.php?action=list"><b>BBoard</b></a></li>
 
 <!-- =========== define Resources menu item ========== -->
-<li><a onclick="return chkchg()" href="resources.php"><b>Resource Links</b></a></li>
+<li><a class="dropdown" href="resources.php"><b>Resource Links</b></a></li>
 
 <!-- =========== define Forms menu item ============== -->
-<li><a onclick="return chkchg()" href="forms.php"><b>Forms &amp; Docs</b></a></li>
+<li><a class="dropdown" href="forms.php"><b>Forms &amp; Docs</b></a></li>
 
 <!-- ========== define reports dropdown ============== -->
 <!-- <li class="dropdown open">  example: to have open on load -->
@@ -179,10 +196,10 @@ if ($seclevel != 'guest') {
 <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button"><b>Reports</b><b class="caret"></b></a>
 <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
 	<li><a href="rptlast50calls.php" target="_blank">Last 50 Calls Report</a></li>
-	<li><a href="rptlistcallsfortoday.php" target="_blank">Today&apos;s Calls</a></li>
+	<!-- <li><a href="rptlistcallsfortoday.php" target="_blank">Today&apos;s Calls</a></li> -->
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
-	<li><a href="rptcallsbyhlvindaterange.php" target="_blank">Calls by HLV in Date Range</a></li>
-	<li><a href="rpthistoricalcalls.php" target="_blank">Historical Call Report</a></li>
+	<li><a href="rptcallsbyhlvindaterange.php" target="_blank"> HLV Calls in Date Range</a></li>
+	<li><a href="rptcallcharts.php" target="_blank">Call Charts in Date Range</a></li>
 	<li><a href="rptcallsarchive.php" target="_blank">Call Archival Report</a></li>
 	<li><a href="rptusersbydaterange.php" target="_blank">Users by Date Range</a></li>
 	<li><a href="rptmonthlyreport.php" target="_blank">CTS Monthly Report</a></li>

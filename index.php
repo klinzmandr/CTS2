@@ -36,7 +36,7 @@ if (!empty($userid)) {
 	$ok = checkcredentials($userid, $password);
 	if ($ok) {
 		//echo "check of user id and password passed<br>";
-		addlogentry("Logged In");
+		addlogentry("$userid Logged In");
 		}
 	else {
 //			addlogentry("Failed login attempt with password: $password");
@@ -56,7 +56,7 @@ if (!empty($_SESSION['CTS_SessionUser'])) {
   <h3>Home Page&nbsp  
   <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>
   </h3></form>
-  <h4 style="color: red; ">Check out the last 5 bulletins (<a href="bboard.php">or view all of them</a>):</h4>
+  <h4 style="color: red; ">Check out the last 5 bulletins (<a href="bboard.php">or view all of them</a>)</h4>
   <ul><table class="table table-condensed">
   <tr><th>Posted</th><th>Title</th><th>Author</th></tr>
   ';

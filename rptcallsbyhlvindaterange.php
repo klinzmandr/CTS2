@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>List Calls in Date Range</title>
+<title>HLV Calls</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
@@ -16,17 +16,17 @@
 
 <?php
 session_start();
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 //include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
 
 print <<<pagePart1
 <div class="container">
-<h3>List Calls In Date Range&nbsp;&nbsp; <a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
+<h3>Chart HLV Calls In Date Range&nbsp;&nbsp; <a href="javascript:self.close();" class="hidden-print btn btn-primary"><b>CLOSE</b></a></h3>
 
 pagePart1;
-$sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-01', strtotime("previous month"));
-$ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("previous month"));
+$sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-01', strtotime("now"));
+$ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("now"));
 print <<<inputForm
 
 <form action="rptcallsbyhlvindaterange.php" method="post"  class="form">

@@ -12,10 +12,10 @@
 
 <?php
 session_start();
-//include 'Incls/vardump.inc.php';
+// include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $call = isset($_REQUEST['call']) ? $_REQUEST['call'] : ''; 
@@ -28,7 +28,7 @@ if ($action == 'close') {
 	$updarray[Status] = 'Closed';
 	$updarray[DTClosed] = $closedate;
 	$updarray[TimeToResolve] = isset($_REQUEST['TimeToResolve']) ? $_REQUEST['TimeToResolve'] : '15';
-	$updarray[Resolution] = isset($_REQUEST['TimeToResolve']) ? $_REQUEST['TimeToResolve'] : 'Closed with No Action';
+	$updarray[Resolution] = isset($_REQUEST['Resolution']) ? $_REQUEST['Resolution'] : 'Force close without Resolution';
 	if (isset($_REQUEST['AnimalLocation'])) $updarray[AnimalLocation] = $_REQUEST['AnimalLocation'];
 	if (isset($_REQUEST['CallLocation'])) $updarray[CallLocation] = $_REQUEST['CallLocation'];
 	if (isset($_REQUEST['Property'])) $updarray[Property] = $_REQUEST['Property'];
@@ -156,7 +156,7 @@ pagePart2;
 		}
 
 	echo '</select><br />Action Taken:
-	<select name="resolution" size="1">
+	<select name="Resolution" size="1">
 	<option value=""></option>';
 	loaddbselect("Actions");
 	echo "</select><br />

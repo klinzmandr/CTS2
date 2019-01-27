@@ -30,9 +30,9 @@ function flagChange() {
 
 <?php
 session_start();
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
 
 $file = isset($_REQUEST['file'])? $_REQUEST['file'] : "";
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";

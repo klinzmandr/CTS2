@@ -4,20 +4,21 @@
 <title>Forms and Documentation Administration</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 <link href="css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jsutils.js"></script>
 <script src="js/fileinput.min.js"></script>
 
 <?php
 session_start();
 // include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
 
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $form =isset($_REQUEST['form'])? $_REQUEST['form'] : ""; 
@@ -85,14 +86,15 @@ if (count($_FILES)) {
       continue;
       }
     if ($_FILES["files"]["error"][$i] > 0) {
-    	$errmsg .= "Error " . $_FILES["files"]["error"][$i] . " on upload of $filen<br>";
+    	$errmsg .= "<b>ERROR:</b> " . $_FILES["files"]["error"][$i] . " on upload of $filen<br>";
     	continue;
     	}
   //  echo "i: $i<br>, name: " . $_FILES["files"]["name"][$i] . '<br>';
   //  echo "tmp_name: " . $_FILES["files"]["tmp_name"][$i] . "<br />";
   //  echo "Size: " . ($_FILES["files"]["size"][$i] / 1024) . " Kb<br>=====<br>";
    	if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], $filen)) {
-      $updmsg .= "File# ".($i+1)." ($filen) uploaded successfully<br>"; 	  
+      $updmsg .= "File# ".($i+1)." ($filen) uploaded successfully<br>";
+      addlogentry("Upload successful: filen"); 	  
    	  }
     }
   }
@@ -120,8 +122,31 @@ $(document).ready(function() {
 </script>
 
 <div class="container">
-<h3>Documentation &amp; Forms Directory Maintenance</h3>
+<h3>Documentation &amp; Forms Directory Maintenance
+<span id="helpbtn" title="Help Documentation" class="hidden-print glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
+</h3>
+<div id=help>
+<h3>Help Documentation</h3>
+<p>This is a library of reference documents that can be utilized by the volunteers to better serve their community of callers.</p>
+<p>All documents have a 3 digit number at the start of the name.  Grouping of all documents in the library is based on the first digit (0-9) of the 3 digit sequence.  The second and third digits will provide sequencing of the documents within a group.</p>
+<p>Currently the the names assigned to each group is:</p>
+<ol>
+	<li>Contacts - contact lists and calendars</li>
+	<li>Hotline - reference guides and docmentation</li>
+	<li>Rescue - reference guides and documentation</li>
+	<li>Dirs & Misc - maps, directions and miscellaneous documents</li>
+	<li>Mammals - documentation on capture and handing</li>
+	<li>Birds - documentation on capture and handling</li>
+	<li>Baby Animals - documentation on capture and handling</li>
+	<li>Humane Excl. - information regarding exclusion protocols</li>
+	<li>Forms - miscellaneous forms for printing</li>
+	<li>System - information about CTS2</li>
+</ol>
+<p>Changes to the group names requires modification of the listing program and must be done by technical support staff.</p>
+<p>Documents may be duplicated by merely making a copy and changing the leading group digit.  However, maintaining multiple copies of the same document may lead to multiple versions of a document to reside in the library.</p>
+<p>The three icons preceeding each line of this listing allows for a maintenance action to be performed.  In addition, adding one or more files to the system is done by clicing the 'ADD NEW DOC(S) or FORM(S)' button.  Use the displayed dialogue to browse to and select one or more files to be uploaded.  Use the provided maitenance functions to copy, rename or delete.</p>
 
+</div>
 <button id="addclick">ADD NEW DOC(S) or FORM(S)</button>
 <div id="addfile">
 <form class="form-inline" role="form" action="adminformsmaint.php" method="post" enctype="multipart/form-data">

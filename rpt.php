@@ -1,3 +1,17 @@
+<?php
+session_start();
+//include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
+//include 'Incls/seccheck.inc.php';
+// include 'Incls/mainmenu.inc.php';
+
+$dbinuse = "DB in use: " . $_SESSION['CTS_DB_InUse'] . "<br>";
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$sd = isset($_REQUEST['from_date']) ? $_REQUEST['from_date'] : date('Y-m-01', strtotime("today"));
+$ed = isset($_REQUEST['to_date']) ? $_REQUEST['to_date'] : date('Y-m-t', strtotime("today"));
+$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '%mbrdb/%';
+$testdb = isset($_REQUEST['testdb']) ? $_REQUEST['testdb'] : '';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,34 +27,13 @@
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-datepicker-range.js"></script>
 
-<?php
-session_start();
-//include 'Incls/vardump.inc.php';
-//include 'Incls/seccheck.inc.php';
-// include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
-
-$dbinuse = "DB in use: " . $_SESSION['CTS_DB_InUse'] . "<br>";
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-$sd = isset($_REQUEST['from_date']) ? $_REQUEST['from_date'] : date('Y-m-d', strtotime("today - 30 days"));
-$ed = isset($_REQUEST['to_date']) ? $_REQUEST['to_date'] : date('Y-m-d', strtotime("tomorrow -1 second"));
-$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : '%mbrdb/%';
-$testdb = isset($_REQUEST['testdb']) ? $_REQUEST['testdb'] : '';
-
-print <<<pagePart1
 <script>
 $(function initSelect() {
 // Initialize a selection list (single valued)
-var patt = '$type';
+var patt = '<?=$type?>';
 //alert("initSelect: pattern: " + patt);
 if (patt == "") return;
   $("select").val(patt);
-//	for (var i = 0; i < inform.type.length; i++) {
-//		if (inform.type.options[i].value == patt) {
-//			inform.type.options[i].selected = true;
-//			break;
-//			}
-//		}
 	});
 </script>
 <h3>Report on Page Usage</h3>
@@ -48,9 +41,9 @@ $dbinuse<br>
 <!-- <h4>Page useage selected: $type</h4> -->
 <form name="inform" action="rpt.php" method="post">
 
-<input type="text" name="from_date" value="$sd"  placeholder="Start Date" class="from_date" id="sd">
+<input type="text" name="from_date" value="<?=$sd?>"  placeholder="Start Date" class="from_date" id="sd">
 &nbsp;&nbsp;
-<input type="text" name="to_date" value="$ed" placeholder="End Date" class="from_date" id="ed">
+<input type="text" name="to_date" value="<?=$ed?>" placeholder="End Date" class="from_date" id="ed">
 
 <input type="hidden" name="action" value="continue">
 <select name="type">
@@ -65,28 +58,21 @@ $dbinuse<br>
 </form>
 <p>This report peruses the system log and isolates all web pages that have been used and summaries their usage by user.</p>
 
-pagePart1;
-
+<?php
 if ($testdb != '') echo "Using Test Database<br>";
 if ($type == '') echo "<a href=\"rpt.php\">No page type selected - RETRY</a><br /><br />";
 
 //echo "sd: $sd, ed: $ed<br />";
 // generate the report
 $msd = date('Y-m-d 00:00:00', strtotime($sd)); $med = date('Y-m-d 23:59:59', strtotime($ed));
-$sql = "SELECT `DateTime`,`User`,`Page`
+$sql = "SELECT `DateTime`,`User`,`Page`, `Text`
 FROM `log`
 WHERE  `DateTime` BETWEEN '$msd' AND '$med' 
 AND `Page` LIKE '$type' 
-AND `User` NOT LIKE '%klinz%' 
+AND `Text` LIKE 'Page Load%' 
 ORDER BY `DateTime` ASC;";
-/*
-$sql = "SELECT `DateTime`,`User`,`Page`
-FROM `log`
-WHERE  `DateTime` BETWEEN '$msd' AND '$med' 
-AND `Page` LIKE '$type' 
-ORDER BY `LogID` ASC;";
-*/
-//echo "sql: $sql<br />";
+echo "sql: $sql<br />";
+
 $rc = 0;
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
@@ -111,7 +97,7 @@ while ($r = $res->fetch_assoc()) {
 
 // echo '<pre> User start '; print_r($whotimemin); echo '</pre>';
 // echo '<pre> User end '; print_r($whotimemax); echo '</pre>';	
-echo '<table><tr><td valign="top"><h4>Pages Most Used</h4><ul>';
+echo '<table border=1 class="table table-condensed"><tr><td valign="top"><h4>Pages Most Used</h4><ul>';
 arsort($whatarray);
 foreach ($whatarray as $k => $v) {
 	echo "$k: $v<br />";
@@ -119,6 +105,7 @@ foreach ($whatarray as $k => $v) {
 echo '</ul>';
 echo '</td><td valign="top"><h4>Page Users</h4><ul>';
 arsort($whoarray);
+
 foreach ($whoarray as $k => $v) {
 	echo "$k: $v<br />&nbsp;&nbsp;(first: $whotimemin[$k], last: $whotimemax[$k])<br />";
 	}
@@ -142,9 +129,9 @@ if (count($userarray) > 0) foreach ($userarray as $k => $v) {
 	}
 echo '</td></tr></table>';
 
-//echo '<pre> what '; print_r($whatarray); echo '</pre>';
-//echo '<pre> who '; print_r($whoarray); echo '</pre>';
-//echo '<pre> combo '; print_r($comboarray); echo '</pre>';
+// echo '<pre> what '; print_r($whatarray); echo '</pre>';
+// echo '<pre> who '; print_r($whoarray); echo '</pre>';
+// echo '<pre> combo '; print_r($comboarray); echo '</pre>';
 
 
 ?>

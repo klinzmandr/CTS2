@@ -1,3 +1,14 @@
+<?php
+session_start();
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$user = $_SESSION['CTS_SessionUser'];
+$notes = $_REQUEST['notes'];
+$r = $_REQUEST['flds'];
+$call = $r['CallNbr'];
+$_SESSION['4log'] = $call;
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,17 +23,10 @@
 <script type="text/javascript" src="js/nicEdit.js"></script>
 
 <?php
-session_start();
 // include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
-
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-$user = $_SESSION['CTS_SessionUser'];
-$notes = $_REQUEST['notes'];
-$r = $_REQUEST['flds'];
-$call = $r[CallNbr];
 
 // update the database with the info and close the call
 if ($action == 'close') {
@@ -33,7 +37,7 @@ if ($action == 'close') {
 	$updarray[DTClosed] = $closedate;
 	$updarray[LastUpdater] = $user;
 	$updarray[TimeToResolve] = isset($r['TimeToResolve']) ? $r['TimeToResolve'] : '15';
-	$updarray[Resolution] = isset($r['Resolution']) ? $r['Resolution'] : 'Closed with No Action';
+	$updarray[Resolution] = isset($r['Resolution']) ? $r['Resolution'] : 'ERROR in callsfastcloser';
 
 // update with final note(s)
   $note = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : '';
@@ -108,7 +112,12 @@ $("#CForm").submit(function(e) {
 </script>
 <div id="CF" class="container">
 <h3>Fast Closing Call <?=$call?></h3>
-
+<script>
+$(document).ready(function () { 
+  $('input[type=radio][value=' + "'<?=$r[TimeToResolve]?>'" + ']').attr('checked', true);
+  $("#AT").val("<?=$r[Resolution]?>");
+});
+</script>
 <!-- close form if no errors -->
 <form id="CForm" action="callsfastcloser.php" method="post" class="form">
 Approx. Time to Resolution:
@@ -132,7 +141,7 @@ Closing Note:<br>
 
 </div>   <!-- form -->
 <br><br>
-<a class="btn btn-danger" href="callupdatertabbed.php?callnbr=<?=$call?>">CANCEL</a><br>
+<a class="btn btn-danger" href="callupdatertabbed.php?callnbr=<?=$call?>">RETURN TO CALL</a><br>
 </div>
 
 </body>

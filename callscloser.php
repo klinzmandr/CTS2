@@ -1,3 +1,13 @@
+<?php
+session_start();
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$call = isset($_REQUEST['call']) ? $_REQUEST['call'] : ''; 
+$closingnote = isset($_REQUEST['closingnote']) ? $_REQUEST['closingnote'] : '';
+$user = $_SESSION['CTS_SessionUser'];
+$_SESSION['4log'] = $call;
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,16 +21,10 @@
 <script src="js/bootstrap.min.js"></script>
 
 <?php
-session_start();
-//include 'Incls/vardump.inc.php';
+// include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
-
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-$call = isset($_REQUEST['call']) ? $_REQUEST['call'] : ''; 
-$closingnote = isset($_REQUEST['closingnote']) ? $_REQUEST['closingnote'] : '';
-$user = $_SESSION['CTS_SessionUser'];
 
 // update the database with the info and close the call
 if ($action == 'close') {
@@ -29,7 +33,7 @@ if ($action == 'close') {
 	$updarray[DTClosed] = $closedate;
 	$updarray[LastUpdater] = $user;
 	$updarray[TimeToResolve] = isset($_REQUEST['TimeToResolve']) ? $_REQUEST['TimeToResolve'] : '15';
-	$updarray[Resolution] = isset($_REQUEST['TimeToResolve']) ? $_REQUEST['TimeToResolve'] : 'Closed with No Action';
+	$updarray[Resolution] = isset($_REQUEST['Resolution']) ? $_REQUEST['Resolution'] : 'ERROR';
 	if (isset($_REQUEST['AnimalLocation'])) $updarray[AnimalLocation] = $_REQUEST['AnimalLocation'];
 	if (isset($_REQUEST['CallLocation'])) $updarray[CallLocation] = $_REQUEST['CallLocation'];
 	if (isset($_REQUEST['Property'])) $updarray[Property] = $_REQUEST['Property'];
@@ -67,7 +71,8 @@ if ($action == '') {
 		
 		echo "<tr onclick=\"window.location='callscloser.php?action=form&call=$cn';\" style='cursor: pointer;'><td>$cn</td><td>$r[DTOpened]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
 		}
-	echo '</table></div></body></html>';
+	echo '</table>';
+	echo '<br>==== END OF LIST ====<br><br></div></body></html>';
 	exit;
 	}
 
@@ -160,7 +165,7 @@ pagePart2;
 		}
 
 	echo '</select><br />Action Taken:
-	<select name="resolution" size="1">
+	<select name="Resolution" size="1">
 	<option value=""></option>';
 	loaddbselect("Actions");
 	echo "</select><br />

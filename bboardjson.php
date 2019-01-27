@@ -33,5 +33,5 @@ if (($_SESSION['CTS_SessionUser'] == $r[UserID]) || ($_SESSION['CTS_SecLevel'] =
 		echo "<a onclick=\"return confirmContinue()\" href=\"bboard.php?seqnbr=$r[SeqNbr]&action=delete\"<i title=\"Delete Note\" class=\"glyphicon glyphicon-trash\" style=\"color: blue; font-size: 20px\"></i></a>&nbsp;&nbsp;&nbsp;";	}
 	echo "<a href=\"bboardprint.php?seqnbr=$r[SeqNbr]&action=print\"<i title=\"Print Note\" class=\"glyphicon glyphicon-print\" style=\"color: blue; font-size: 20px\"></i></a></td></tr>";
 echo '</table>';
-
+addlogentry("Show BBoard item: $bbid");
 ?>

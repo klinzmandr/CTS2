@@ -1,3 +1,9 @@
+<?php
+session_start();
+$action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
+$seqnbr = isset($_REQUEST['seqnbr'])? $_REQUEST['seqnbr'] : ""; 
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +15,7 @@
 </head>
 <body>
 <script src="jquery.js"></script>
+<script src="js/jsutils.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
 <style>
@@ -19,17 +26,21 @@
     }
 </style>
 
-<?php
-session_start();
-// include 'Incls/vardump.inc.php';
-include 'Incls/datautils.inc.php';
-include 'Incls/seccheck.inc.php';
-include 'Incls/mainmenu.inc.php';
-?>
-
 <div class="container">
-<h2 class="hidden-print">Bulletin Board&nbsp;&nbsp;<a href="bboardupdate.php?action=addnew"><i title="Add New Note" class="glyphicon glyphicon-plus" style="color: blue; font-size: 20px"></i></a></h2>
-Filter:<input id="inp" type="text" value="" autofocus>&nbsp;&nbsp;&nbsp;&nbsp;
+<h2 class="hidden-print">Bulletin Board
+<span id="helpbtn" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
+&nbsp;&nbsp;<a href="bboardupdate.php?action=addnew"><i title="Add New Note" class="glyphicon glyphicon-plus" style="color: blue; font-size: 20px"></i></a></h2>
+<div id="help">
+<p>The Bulletin Board is intended to allow communications between users of the CTS2 system. Information about cases as well as other information pertaining to the day to day challenges of working with the public in encouraged to be added tot the Bulletin Board on an ongoing basis.</p>
+<p>New notes are added into the database and listed in newest to oldest order so all the latest info is at the top of the Bulletin Board If needed, the administrator can edit an existing note or change its priority to list it at the top of the list if and/or when it becomes necessary.</p>
+<p>A couple of guidelines:
+<ol>
+<li>The CTS2 system is not a public system intended for anyone other than the volunteers supporting PWC. However, the system is hosted on a publicly available service available via the Internet. This means that caution should be used in leaving personal information on the bulletin board itself. It should be noted that caller info including addresses, phone numbers, etc. are in the data base and are not available to anyone other than the approved users</li>
+<li>Information on the Bulletin Board is visible to anyone who chooses to view it, but not forwarded to any specific person(s). Please feel free to add any Information of a general nature regarding PWC related situations which you feel would benefit other volunteers.</li>
+</ol></p>
+<p>Bulletin Board notes are very easy to create and will always carry the name of the person creating them for their entire life the the board. "Old" notes can be edited, bumped (changed in the listing priority) or deleted by the administrator.</p>
+</div>
+Filter:<input placeholder="Enter search string" id="inp" type="text" value="" autofocus>&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- <button id="btnFILTER">Apply Filter</button>&nbsp;&nbsp; -->
 <button id="btnALL">Show All</button>&nbsp;&nbsp;
 <script>
@@ -84,8 +95,10 @@ function confirmContinue() {
 </script>
 
 <?php
-$action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
-$seqnbr = isset($_REQUEST['seqnbr'])? $_REQUEST['seqnbr'] : ""; 
+// include 'Incls/vardump.inc.php';
+include 'Incls/datautils.inc.php';
+include 'Incls/seccheck.inc.php';
+include 'Incls/mainmenu.inc.php';
 
 if ($action == 'delete') {
 	// echo "delete $seqnbr requested<br>";
@@ -105,11 +118,11 @@ if ($action == 'update') {
 $sql = "SELECT * FROM `bboard` WHERE '1' ORDER BY `DateTime` DESC;";
 $res = doSQLsubmitted($sql);
 echo '<table class="table table-condensed" border=1>
-<tr><th>Title/Topic</th><th>Author</th><th width="20%">Last Update</th></tr>';
+<tr><th>Title/Topic</th><th>Author</th><th>Note#</th><th width="20%">Last Update</th></tr>';
 while ($r = $res->fetch_assoc()) {
   if (preg_match("/newrec/i", $r[UserID])) continue;
   //echo '<pre> bboard '; print_r($r); echo '</pre>';
-	echo "<tr id=\"$r[SeqNbr]\" style='cursor: pointer;'><td>$r[Subject]</td><td>$r[UserID]</td><td>$r[DateTime]</td></tr>
+	echo "<tr id=\"$r[SeqNbr]\" style='cursor: pointer;'><td>$r[Subject]</td><td>$r[UserID]</td><td>$r[SeqNbr]</tf><td>$r[DateTime]</td></tr>
 	";	
 	}
 	echo '</table>';
