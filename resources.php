@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +13,8 @@
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jsutils.js"></script>
+
 <?php
-session_start();
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 

@@ -44,7 +44,7 @@ include 'Incls/seccheck.inc.php';
 ?>
 <script>
 $("document").ready( function() {
-  $("#ROLE").val("<?=$flds[Role]?>");
+  $("#ROLE").val("<?=$flds['Role']?>");
   $("#X").fadeOut(5000);
 });
 function checkflds(form) {
@@ -73,8 +73,8 @@ function trim(s)
 <h3>Edit User</h3>
 
 <form class="form" name="editform" action="adminedituser.php" onsubmit="return checkflds(this)">
-User ID: <input type="text" name="flds[UserID]" placeholder="User Id" value="<?=$flds[UserID]?>">
-Password: <input type="text" name="flds[Password]" value="<?=$flds[Password]?>">
+User ID: <input type="text" name="flds[UserID]" placeholder="User Id" value="<?=$flds['UserID']?>">
+Password: <input type="text" name="flds[Password]" value="<?=$flds['Password']?>">
 Role: <select id="ROLE" name="flds[Role]">
 <option value="">Select a role for the User</option>
 <option value="admin">Admin</option>
@@ -82,12 +82,12 @@ Role: <select id="ROLE" name="flds[Role]">
 <option value="guest">Guest</option>
 <option value="demo">DemoMode</option>
 </select><br />
-Full Name: <input type="text" name="flds[FullName]" placeholder="First/Last Name" value="<?=$flds[FullName]?>">
-Email: <input type="text" name="flds[Email]" placeholder="Email Address" value="<?=$flds[Email]?>"> 
-Phone: <input type="text" name="flds[Phone]" placeholder="Primary Phone" value="<?=$flds[Phone]?>"><br> 
-MCID: <input type="text" name="flds[MCID]" placeholder="MCID" value="<?=$flds[MCID]?>">
-Date Joined: <input type="text" name="flds[DateJoined]" placeholder="MM/DD/YYYY" value="<?=$flds[DateJoined]?>"><br>
-Notes:<br /><textarea name="flds[Notes]" rows="3" cols="50"><?=$flds[Notes]?></textarea><br />
+Full Name: <input type="text" name="flds[FullName]" placeholder="First/Last Name" value="<?=$flds['FullName']?>">
+Email: <input type="text" name="flds[Email]" placeholder="Email Address" value="<?=$flds['Email']?>"> 
+Phone: <input type="text" name="flds[Phone]" placeholder="Primary Phone" value="<?=$flds['Phone']?>"><br> 
+MCID: <input type="text" name="flds[MCID]" placeholder="MCID" value="<?=$flds['MCID']?>">
+Date Joined: <input type="text" name="flds[DateJoined]" placeholder="MM/DD/YYYY" value="<?=$flds['DateJoined']?>"><br>
+Notes:<br /><textarea name="flds[Notes]" rows="3" cols="50"><?=$flds['Notes']?></textarea><br />
 <input type="hidden" name="SeqNo" value="<?=$recno?>">
 <input type="hidden" name="action" value="update">
 <input type="submit" name="submit" value="Apply Changes">

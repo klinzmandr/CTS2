@@ -15,7 +15,7 @@ if (!isset($_SESSION['CTS_SessionUser'])) {
   exit;
   }
 ?>
-
+<link href="./css/bs3dropdownsubmenus.css" rel="stylesheet">
 <script>
 <!-- Form change variable must be global -->
 var chgFlag = 0;
@@ -200,7 +200,7 @@ if ($seclevel != 'guest') {
 	<li><a href="rptlistcallsindaterange.php" target="_blank">Calls in Date Range</a></li>
 	<li><a href="rptcallsbyhlvindaterange.php" target="_blank"> HLV Calls in Date Range</a></li>
 	<li><a href="rptcallcharts.php" target="_blank">Call Charts in Date Range</a></li>
-	<li><a href="rptcallsarchive.php" target="_blank">Call Archival Report</a></li>
+	<li><a href="rptcallsarchive.php" target="_blank">Call Archival Extract</a></li>
 	<li><a href="rptusersbydaterange.php" target="_blank">Users by Date Range</a></li>
 	<li><a href="rptmonthlyreport.php" target="_blank">CTS Monthly Report</a></li>
 	<li><a href="../charts" target="_blank">PWC Business Charts</a></li>

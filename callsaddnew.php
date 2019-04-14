@@ -15,9 +15,6 @@ $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-<div class="container">
-<h3>Add New Call</h3>
-
 <?php 
 //include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
@@ -25,7 +22,9 @@ include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 
 if ($action == '') { ?>
-<p>A new call will be added for <?=$_SESSION[CTS_SessionUser]?></p>
+<div class="container">
+<h3>Add New Call</h3>
+<p>A new call will be added for <?=$_SESSION['CTS_SessionUser']?></p>
 <p>Choose one of the following:</p>
 <ul>
 <a class="btn btn-success" href="callsaddnew.php?action=new">BLANK</a>&nbsp;
@@ -111,52 +110,52 @@ $addarray = array();
 // action contains the type of new record to be added
 // add in here the logic for the various call type presets
 if ($action == 'new') {
-	$addarray[AnimalLocation] = '';
-	$addarray[CallLocation] = '';
-	$addarray[Property] = '';
-	$addarray[Species] = '';
-	$addarray[Reason] = '';
-	$addarray[Organization] = '';
+	$addarray['AnimalLocation'] = '';
+	$addarray['CallLocation'] = '';
+	$addarray['Property'] = '';
+	$addarray['Species'] = '';
+	$addarray['Reason'] = '';
+	$addarray['Organization'] = '';
 	}
 if ($action == 'odsrva') {
-	$addarray[AnimalLocation] = 'Oceano';
-	$addarray[CallLocation] = 'Oceano';
-	$addarray[Property] = 'State';
-	$addarray[Species] = 'Seabird';
-	$addarray[Reason] = 'AppearsSick';
-	$addarray[Organization] = 'ODSRVA Ranger Station';
+	$addarray['AnimalLocation'] = 'Oceano';
+	$addarray['CallLocation'] = 'Oceano';
+	$addarray['Property'] = 'State';
+	$addarray['Species'] = 'Seabird';
+	$addarray['Reason'] = 'AppearsSick';
+	$addarray['Organization'] = 'ODSRVA Ranger Station';
 	}
 if ($action == 'cmc') {
-	$addarray[AnimalLocation] = 'SanLuisObispo';
-	$addarray[CallLocation] = 'SanLuisObispo';
-	$addarray[Property] = 'State';
-	$addarray[Species] = 'Seabird';
-	$addarray[Reason] = 'AppearsInjured';
-	$addarray[Organization] = 'CA Mens Colony';
+	$addarray['AnimalLocation'] = 'SanLuisObispo93409';
+	$addarray['CallLocation'] = 'SanLuisObispo93409';
+	$addarray['Property'] = 'State';
+	$addarray['Species'] = 'Seabird';
+	$addarray['Reason'] = 'AppearsInjured';
+	$addarray['Organization'] = 'CA Mens Colony';
 	}
 if ($action == 'ed') {
-	$addarray[AnimalLocation] = 'NA';
-	$addarray[CallLocation] = 'NA';
-	$addarray[Property] = 'NA';
-	$addarray[Species] = 'NA';
-	$addarray[Reason] = 'EdRequest';
-	$addarray[Organization] = '';
+	$addarray['AnimalLocation'] = 'NA';
+	$addarray['CallLocation'] = 'NA';
+	$addarray['Property'] = 'NA';
+	$addarray['Species'] = 'NA';
+	$addarray['Reason'] = 'EdRequest';
+	$addarray['Organization'] = '';
 	}
 if ($action == 'info') {
-	$addarray[AnimalLocation] = 'NA';
-	$addarray[CallLocation] = 'NA';
-	$addarray[Property] = 'NA';
-	$addarray[Species] = 'NA';
-	$addarray[Reason] = 'Info';
-	$addarray[Organization] = '';
+	$addarray['AnimalLocation'] = 'NA';
+	$addarray['CallLocation'] = 'NA';
+	$addarray['Property'] = 'NA';
+	$addarray['Species'] = 'NA';
+	$addarray['Reason'] = 'Info';
+	$addarray['Organization'] = '';
 	}
 if ($action == 'na') {
-	$addarray[AnimalLocation] = 'NA';
-	$addarray[CallLocation] = 'NA';
-	$addarray[Property] = 'NA';
-	$addarray[Species] = 'NA';
-	$addarray[Reason] = 'Other';
-	$addarray[Organization] = '';
+	$addarray['AnimalLocation'] = 'NA';
+	$addarray['CallLocation'] = 'NA';
+	$addarray['Property'] = 'NA';
+	$addarray['Species'] = 'NA';
+	$addarray['Reason'] = 'Other';
+	$addarray['Organization'] = '';
 	}
 
 // check to determine if a new records has been added but not used
@@ -169,10 +168,16 @@ $sql = "SELECT * FROM `calls`
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 
-$addarray[OpenedBy] = $_SESSION['CTS_SessionUser'];
-$addarray[DTOpened] = date('Y-m-d H:i', strtotime(now));
-$addarray[DTPlaced] = date('Y-m-d H:i', strtotime(now));
-$addarray[Status] = 'New';
+$user = $_SESSION['CTS_SessionUser'];
+$nowdt = date('Y-m-d H:i', strtotime('now'));
+
+$addarray['OpenedBy'] = $user;
+$addarray['DTOpened'] = $nowdt;
+$addarray['DTPlaced'] = $nowdt;
+$notesdiary = '<ul>New call added</ul>';
+$addarray['NotesDiary'] = "DateTime: $nowdt&nbsp;&nbsp;By: $user $notesdiary";
+$addarray['Status'] = 'New';
+
 //echo '<pre> addarray '; print_r($addarray); echo '</pre>';
 if ($rc == 0) {							// nope - add a new record
 //	echo 'inserting new record<br>';
@@ -187,15 +192,15 @@ else {											// one exists, update it instead
 	addlogentry("New call existed");
 	}
 ?>
-
-<div class="container">
-<h3>New Call Added</h3>
-<p>A new <?=$action?> call has been added for <?=$currentuser?></p>
-
-<p>Click the continue button to complete the details of the call.</p>
-
-<a class="btn btn-success" href="callupdatertabbed.php?action=new">CONTINUE</a>&nbsp;
-<br><br>
-</div>
+<script>
+$(function() {
+  // alert("form load");
+  $("#adder").submit();
+});
+</script>
+<form id=adder action=callupdatertabbed.php>
+<input type=hidden name=action value=new>
+</form>
+<!-- <a class="btn btn-success" href="callupdatertabbed.php?action=new">CONTINUE</a> -->
 </body>
 </html>

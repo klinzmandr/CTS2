@@ -1,3 +1,7 @@
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,9 +15,6 @@
 <script src="js/bootstrap.min.js"></script>
 
 <?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-session_start();
-
 $userid = isset($_REQUEST['userid']) ? $_REQUEST['userid'] : '';
 
 // NOTE:
@@ -63,7 +64,7 @@ if (!empty($_SESSION['CTS_SessionUser'])) {
   $sql = "SELECT * FROM `bboard` WHERE '1' ORDER BY `DateTime` DESC;";
   $res = doSQLsubmitted($sql);
   while ($r = $res->fetch_assoc()) {
-    if (preg_match("/newrec/i", $r[UserID])) continue;  // ignore newly added
+    if (preg_match("/newrec/i", $r['UserID'])) continue;  // ignore newly added
     echo "<tr><td>$r[DateTime]</td><td>$r[Subject]</td><td>By: $r[UserID]</td>";
     $count++; if ($count > 4) break;                    // only list 5
     }

@@ -30,21 +30,21 @@ if ($action == 'update') {
 	$uri = $_SERVER['QUERY_STRING'];
 	parse_str($uri, $vararray);
 	//echo '<pre> var '; print_r($vararray); echo '</pre>';
-	unset($vararray[action]);
-	unset($vararray[submit]);
-	if (strlen($vararray[notes]) <= 4) { $vararray[notes] = 'Call updated'; }
-	$notearray[CallNbr] = $callnbr;
-	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
-	$notearray[Notes] = $vararray[notes];
+	unset($vararray['action']);
+	unset($vararray['submit']);
+	if (strlen($vararray['notes']) <= 4) { $vararray['notes'] = 'Call updated'; }
+	$notearray['CallNbr'] = $callnbr;
+	$notearray['UserID'] = $_SESSION['CTS_SessionUser'];
+	$notearray['Notes'] = $vararray['notes'];
 //	echo '<pre> note '; print_r($notearray); echo '</pre>';
 	sqlinsert("callslog", $notearray);
 	unset($notearray);
 	
-	unset($vararray[notes]);
-	$vararray[LastUpdater] = $_SESSION['CTS_SessionUser'];
-	$cszarray = explode(',',$r[City]);
+	unset($vararray['notes']);
+	$vararray['LastUpdater'] = $_SESSION['CTS_SessionUser'];
+	$cszarray = explode(',',$r['City']);
 	if (count($cszarray) == 3) {
-		$r[City] = $cszarray[0]; $r[State] = $cszarray[1]; $r[Zip] = $cszarray[2];
+		$r['City'] = $cszarray[0]; $r['State'] = $cszarray[1]; $r['Zip'] = $cszarray[2];
 	}
 	$where = "`CallNbr`='" . $callnbr . "'";
 	//echo '<pre> sql '; print_r($where); echo '<br> vararray ';print_r($vararray); echo '</pre>';
@@ -63,27 +63,27 @@ if ($action == 'new') {
 $res = doSQLsubmitted($sql);
 $r = $res->fetch_assoc();
 //echo '<pre>DB record '; print_r($r); echo'</pre>';
-$callnbr = $r[CallNbr];
-$status = $r[Status]; 
+$callnbr = $r['CallNbr'];
+$status = $r['Status']; 
 if ($status == 'New') $status = 'Open';
-$dtplaced = $r[DTPlaced]; $dtopened = $r[DTOpened]; $dtclosed = $r[DTClosed]; 
-$animallocation = $r[AnimalLocation]; $calllocation = $r[CallLocation]; 
-$property = $r[Property]; $species = $r[Species]; 
-$reason = $r[Reason]; $resolution = $r[Resolution];
-$timetoresolve = $r[TimeToResolve]; $postcard  = $r[Postcard]; $openedby = $r[OpenedBy];
-$reason = $r[Reason]; $lastlupdater = $r[LastUpdater]; 
-$org = $r[Organization]; $name = $r[Name]; $address=$r[Address];
-$city = $r[City]; $state = $r[State]; $zip = $r[Zip]; 
-$primaryphone = $r[PrimaryPhone]; 
-$email = $r[EMail];
-$description = $r[Description];
-$pcsent = $r[PostcardSent]; $emsent = $r[EmailSent];
+$dtplaced = $r['DTPlaced']; $dtopened = $r['DTOpened']; $dtclosed = $r['DTClosed']; 
+$animallocation = $r['AnimalLocation']; $calllocation = $r['CallLocation']; 
+$property = $r['Property']; $species = $r['Species']; 
+$reason = $r['Reason']; $resolution = $r['Resolution'];
+$timetoresolve = $r['TimeToResolve']; $postcard  = $r['Postcard']; $openedby = $r['OpenedBy'];
+$reason = $r['Reason']; $lastlupdater = $r['LastUpdater']; 
+$org = $r['Organization']; $name = $r['Name']; $address=$r['Address'];
+$city = $r['City']; $state = $r['State']; $zip = $r['Zip']; 
+$primaryphone = $r['PrimaryPhone']; 
+$email = $r['EMail'];
+$description = $r['Description'];
+$pcsent = $r['PostcardSent']; $emsent = $r['EmailSent'];
 
 if ($action == 'new') {
 //	echo 'add initial log history record';
-	$notearray[CallNbr] = $callnbr;
-	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
-	$notearray[Notes] = 'Call Opened';
+	$notearray['CallNbr'] = $callnbr;
+	$notearray['UserID'] = $_SESSION['CTS_SessionUser'];
+	$notearray['Notes'] = 'Call Opened';
 //	echo '<pre> note '; print_r($notearray); echo '</pre>';
 	sqlinsert("callslog", $notearray);
 }

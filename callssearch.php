@@ -85,6 +85,7 @@ $sql = "SELECT * FROM `calls`
 		OR  `City` LIKE '%$search%'
 		OR  `EMail` LIKE '%$search%'
 		OR  `Description` LIKE '%$search%'
+		OR  `NotesDiary` LIKE '%$search%'
 		OR  `OpenedBy` LIKE '%$search%')
 ORDER BY `CallNbr` ASC;";
 //	 AND 	`Status` = '$status';";
@@ -96,10 +97,10 @@ echo "<div class=\"container\"><h4>Rows matched: $rc</h4>";
 if ($rc > 0) {
   echo '<table border="0" class="table table-condensed table-hover">'.$rpthdg;
   while ($r = $res->fetch_assoc()) {
-    $status = $r[Status];
+    $status = $r['Status'];
   //	echo '<pre>'; print_r($r); echo '</pre>';
-  	$callnbr = $r[CallNbr]; $dtopened = $r[DTOpened]; $openedby = $r[OpenedBy];
-  	$lastupdater = $r[LastUpdater]; $desc = $r[Description];
+  	$callnbr = $r['CallNbr']; $dtopened = $r['DTOpened']; $openedby = $r['OpenedBy'];
+  	$lastupdater = $r['LastUpdater']; $desc = $r['Description'];
   	if ($status == 'Closed') 
   		echo "<tr onclick=\"window.location='callroview.php?call=$callnbr'\" style='cursor: pointer;'>";
   	else

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,14 +17,13 @@
 <script src="js/fileinput.min.js"></script>
 
 <?php
-session_start();
 // include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
-$form =isset($_REQUEST['form'])? $_REQUEST['form'] : ""; 
+$form =isset($_REQUEST['form'])? $_REQUEST['form'] : "";
 
 $updmsg = "";
 
@@ -51,9 +53,11 @@ if ($action == 'copy') {
  
 // rename action
 if ($action == 'rename') {
-	$old = 'Forms/' . $_REQUEST['oldname'];
-	$new = 'Forms/' . $_REQUEST['newname'];
-	// echo "old: $old, new: $new<br>";
+  // include 'Incls/vardump.inc.php';
+  // test and reference: https://www.the-art-of-web.com/javascript/escape/
+	$old = 'Forms/' . urldecode($_REQUEST['oldname']);
+	$new = 'Forms/' . rawurldecode($_REQUEST['newname']);
+	// echo "old: $old,<br> new: $new<br>";
 	if ($stat = rename($old, $new)) {
 	  touch($new);   // update file time
 	  $updmsg = "File $old renamed to $new";
@@ -61,7 +65,7 @@ if ($action == 'rename') {
 		}
 	else {
 	  addlogentry("Rename of $old failed");
-		$errmsg = "Rename request FAILED!<br>
+		$errmsg = "Rename request FAILED! Stat: $stat<br>
 		New name provided already exists OR path name invalid";
 		}
 	}
@@ -162,21 +166,22 @@ $forms = scandir('Forms');
 echo '<table class="table" border="0">';
 foreach ($forms as $formname) {
 if (($formname == '.') || ($formname == '..')) { continue; }
+$urlformname = urlencode($formname);
 
-print <<<listPart1
+?>
 <tr><td width="15%" align="center">
 
-<a onclick="return chkdel()" href="adminformsmaint.php?action=delete&form=$formname"><span title="DELETE" class="glyphicon glyphicon-trash" style="color: blue; font-size: 15px"></span></a>
+<a onclick="return chkdel()" href="adminformsmaint.php?action=delete&form=<?=$urlformname?>"><span title="DELETE" class="glyphicon glyphicon-trash" style="color: blue; font-size: 15px"></span></a>
 &nbsp;
-<a href="#" onclick="return getfld('$formname')"><span title="RENAME (name starting with period will hide the file without deletion)" class="glyphicon glyphicon-star" style="color: blue; font-size: 15px"></span></a>
+<a href="#" onclick="return getfld('<?=$urlformname?>')"><span title="RENAME (name starting with period will hide the file without deletion)" class="glyphicon glyphicon-star" style="color: blue; font-size: 15px"></span></a>
 &nbsp;
-<a href="adminformsmaint.php?action=copy&file=$formname"><span title="COPY" class="glyphicon glyphicon-tags" style="color: blue; font-size: 15px"></span></a>
+<a href="adminformsmaint.php?action=copy&file=<?=$urlformname?>"><span title="COPY" class="glyphicon glyphicon-tags" style="color: blue; font-size: 15px"></span></a>
 </td>
 <td>
-<a target=_blank href="Forms/$formname">$formname</a></td>
+<a target=_blank href="Forms/<?=$formname?>"><?=$formname?></a></td>
 </tr>
 
-listPart1;
+<?php
 }
 ?>
 </table>
@@ -193,14 +198,23 @@ function chkdel() {
 
 <script>
 function getfld(OName) {
-var inval = OName;
+var urienc = OName;
+// var uridec = decodeURIComponent(OName);
+var uridec = decodeURIComponent((OName+'').replace(/\+/g, '%20'));
 //	if prompt dialog is canceled it exits the script
-var val = prompt("Please enter a NEW name (including the file extension if needed):",inval);
-if (val.length > 0) {
+var newval = prompt("Please enter a NEW name (including the file extension if needed):", uridec);
+// new name can not contain /, >, <, |, :, &
+if (newval.length > 0) {
+  var regex = /[\/><|:&]/gm;
+  if (regex.test(newval)) {
+    alert("ERROR: New name contains invalid special character(s)\nfor use in a file name.");
+    return true;
+    }
 // if confirm dialog is canceled it returns false
-	document.getElementById("HF1").value = inval;
-	document.getElementById("HF2").value = val;
-	document.forms["NameForm"].submit();
+  invalenc = encodeURIComponent(newval);
+	$("#HF1").val(urienc);     // old name
+	$("#HF2").val(invalenc);   // new name
+	$("#NameForm").submit();
 	return true;
 	}
 alert("Rename action cancelled");
@@ -209,7 +223,7 @@ return false;
 </script>
 
 <!-- define form to submit rename info WITHOUT a submit field defined -->
-<form method="post" name="NameForm">
+<form method="post" name="NameForm" id=NameForm>
 <input type="hidden" id="HF1" name="oldname" value="">
 <input type="hidden" id="HF2" name="newname" value="">
 <input type="hidden" name="action" value="rename">

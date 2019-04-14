@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,11 +14,10 @@
 <script src="js/bootstrap.min.js"></script>
 
 <?php
-session_start();
+include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 //include 'Incls/vardump.inc.php';
 //include 'Incls/mainmenu.inc.php';
-include 'Incls/datautils.inc.php';
 include 'Incls/mbrdbdatautils.inc.php';
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
@@ -50,7 +52,7 @@ if (strlen($action) > 0) {
 	$emarray = array();
 	while($r = $res->fetch_assoc()) {
 		//echo '<pre>List members '; print_r($r); echo '</pre>';
-		$emarray[] = $r[EmailAddress];
+		$emarray[] = $r['EmailAddress'];
 		echo "<tr><td>$r[MCID]</td>
 		<td>$r[LName]</td><td>$r[FName]</td><td>$r[City]</td><td>$r[EmailAddress]</td><td>$r[PrimaryPhone]</td></tr>";	
 		}

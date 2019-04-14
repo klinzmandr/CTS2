@@ -1,6 +1,7 @@
 <?php
 // turn off error reporting
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
+date_default_timezone_set('America/Los_Angeles');
 
 // connect to the database for all pages
 global $mysqli;
@@ -141,7 +142,7 @@ errMsg;
   return(FALSE);
 	}	
 
-// ------------------------- add new log entry ----------------------------
+// ------------ add new log entry ----------
 function addlogentry($text) {
 	global $mysqli;
 	if (isset($_SESSION['CTS_DB_ERROR'])) return(FALSE);
@@ -168,7 +169,7 @@ function addlogentry($text) {
 	return($err);
 	}
 
-// ---------------------------- text file utils ---------------------------------------------
+// --------------- text file utils --------------------
 function loadlist($listname) {
 	$listitems = file("$listname");
 	foreach ($listitems as $p) {
@@ -201,13 +202,13 @@ function readdblist($listname) {
 	$sqldb = "SELECT * FROM `configtable` WHERE `CfgName` = '$listname'";
 	$res = doSQLsubmitted($sqldb);
 	$r = $res->fetch_assoc();
-	return($r[CfgText]);
+	return($r['CfgText']);
 	}
 
 // update db table item
 function updatedblist($listname,$text) {
 	$flds = array();
-	$flds[CfgText] = $text;
+	$flds['CfgText'] = $text;
 	$rows = sqlupdate('configtable', $flds, "`CfgName` = '$listname'");
 	return($rows);
 	}
@@ -215,8 +216,8 @@ function updatedblist($listname,$text) {
 // insert db configtable item
 function insertdblist($listname, $text) {
 	$flds = array();
-	$flds[CfgName] = $listname;
-	$flds[CfgText] = $text;
+	$flds['CfgName'] = $listname;
+	$flds['CfgText'] = $text;
 	$rows = sqlinsert('configtable',$flds);
 	return($rows);
 	}
@@ -270,12 +271,12 @@ function checkcredentials($userid, $password) {
 		$r = $res->fetch_assoc();
 		}
 	
-	if (($r[UserID] == $userid) && ($r[Password] == $password)) {
+	if (($r['UserID'] == $userid) && ($r['Password'] == $password)) {
 		//echo "found match - user: $uid, pw: $pw<br>";
-		$_SESSION['CTS_SecLevel'] = $r[Role]; 
+		$_SESSION['CTS_SecLevel'] = $r['Role']; 
 		$_SESSION['CTS_SessionUser'] = $userid;
-		$_SESSION['CTS_ActiveCTSMCID'] = $r[MCID];
-		$_SESSION['CTS_VolEmail'] = $r[Email];
+		$_SESSION['CTS_ActiveCTSMCID'] = $r['MCID'];
+		$_SESSION['CTS_VolEmail'] = $r['Email'];
 		return(true);
 		}
 	echo '<h3 style="color: red; ">ERROR: Password not valid.</h3>';

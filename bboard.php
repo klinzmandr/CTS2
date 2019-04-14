@@ -3,6 +3,7 @@ session_start();
 $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $seqnbr = isset($_REQUEST['seqnbr'])? $_REQUEST['seqnbr'] : ""; 
 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -96,8 +97,8 @@ function confirmContinue() {
 
 <?php
 // include 'Incls/vardump.inc.php';
-include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
+include 'Incls/datautils.inc.php';
 include 'Incls/mainmenu.inc.php';
 
 if ($action == 'delete') {
@@ -120,7 +121,7 @@ $res = doSQLsubmitted($sql);
 echo '<table class="table table-condensed" border=1>
 <tr><th>Title/Topic</th><th>Author</th><th>Note#</th><th width="20%">Last Update</th></tr>';
 while ($r = $res->fetch_assoc()) {
-  if (preg_match("/newrec/i", $r[UserID])) continue;
+  if (preg_match("/newrec/i", $r['UserID'])) continue;
   //echo '<pre> bboard '; print_r($r); echo '</pre>';
 	echo "<tr id=\"$r[SeqNbr]\" style='cursor: pointer;'><td>$r[Subject]</td><td>$r[UserID]</td><td>$r[SeqNbr]</tf><td>$r[DateTime]</td></tr>
 	";	

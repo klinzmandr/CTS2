@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION['CTS_SessionUser'])) {
+  echo '<h1>SESSION HAS TIMED OUT.</h1>';
+  echo '<h3 style="color: red; "><a href="indexsto.php">Log in again</a></h3>';
+  exit;
+  }
 
 $sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-01', strtotime("now"));
 $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("now"));
@@ -62,12 +67,12 @@ $reasonarray = array(); $ttrarray = array();
 echo "Total calls for date range from $sd to $ed: $rc<br>";
 while ($r = $res->fetch_assoc()) {
   // echo '<pre> r '; print_r($r); echo '</pre>'; 
-	$resarray[$r[CallNbr]] = $r;
-	$hlvarray[$r[OpenedBy]] += 1;
-	$cityarray[$r[AnimalLocation]] += 1;
-	$reasonarray[$r[Reason]] += 1;
-	$resolutionarray[$r[Resolution]] += 1;
-	$ttrarray[$r[TimeToResolve]] += 1;
+	$resarray[$r['CallNbr']] = $r;
+	$hlvarray[$r['OpenedBy']] += 1;
+	$cityarray[$r['AnimalLocation']] += 1;
+	$reasonarray[$r['Reason']] += 1;
+	$resolutionarray[$r['Resolution']] += 1;
+	$ttrarray[$r['TimeToResolve']] += 1;
   }
 echo '<h3 style="color: #FF0000; ">Under Development</h3>';
 // echo '<pre> result '; print_r($resarray); echo '</pre>';  

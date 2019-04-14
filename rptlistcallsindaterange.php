@@ -1,12 +1,14 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['CTS_SessionUser'])) {
   echo '<h1>SESSION HAS TIMED OUT.</h1>';
+  echo '<h3 style="color: red; "><a href="indexsto.php">Log in again</a></h3>';
   exit;
   }
 
-$sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-d', strtotime("now"));
-$ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("now"));
+$sd = isset($_REQUEST['sd']) ? $_REQUEST['sd'] : date('Y-m-d', strtotime('now'));
+$ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime('now'));
 
 ?>
 <!DOCTYPE html>
@@ -58,26 +60,26 @@ $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 // echo "rc: $rc<br>";
 $resarray = array(); $countarray = array();
-$countarray[Total] = 0;$countarray[Open] = 0; $countarray[Closed] = 0; $countarray[Center] = 0;  
+$countarray['Total'] = 0;$countarray['Open'] = 0; $countarray['Closed'] = 0; $countarray['Center'] = 0;  
 while ($r = $res->fetch_assoc()) {
-	$resarray[$r[CallNbr]] = $r;
-	$countarray[Total] += 1;
-	if ($r[Status] == 'Open') $countarray[Open] += 1;
-	if ($r[Status] == 'Closed') $countarray[Closed] += 1;
-	if (strpos($r[Resolution],'Center') > 0) $countarray[Center] += 1;
+	$resarray[$r['CallNbr']] = $r;
+	$countarray['Total'] += 1;
+	if ($r['Status'] == 'Open') $countarray['Open'] += 1;
+	if ($r['Status'] == 'Closed') $countarray['Closed'] += 1;
+	if (strpos($r['Resolution'],'Center') > 0) $countarray['Center'] += 1;
 	}
 $cc = 'Call Counts for Period (Total/Open/Closed/ToCtr): ';
-$cc .= $countarray[Total] . '/';
-$cc .= $countarray[Open] . '/';
-$cc .= $countarray[Closed] . '/';
-$cc .= $countarray[Center] . '<br>';
+$cc .= $countarray['Total'] . '/';
+$cc .= $countarray['Open'] . '/';
+$cc .= $countarray['Closed'] . '/';
+$cc .= $countarray['Center'] . '<br>';
 echo $cc; 
 //echo '<pre> year '; print_r($countarray); echo '</pre>';
 echo '<table class="table table-condensed">
 <tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th><th>Resolution</th></tr>';
 foreach ($resarray as $r) {
 	// echo '<pre> year '; print_r($r); echo '</pre>';
-	$callnbr = $r[CallNbr];
+	$callnbr = $r['CallNbr'];
 	echo 
 "<tr onclick=\"window.location='callroview.php?action=button&call=$callnbr'\" style='cursor: pointer;'>
 <td align=\"center\">$callnbr</td>";

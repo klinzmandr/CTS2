@@ -4,6 +4,7 @@ $callnbr = isset($_REQUEST['callnbr']) ? $_REQUEST['callnbr'] : '';
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $flds = isset($_REQUEST['flds']) ? $_REQUEST['flds'] : '';
 $notes = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : '';
+$errs = isset($_REQUEST['errs']) ? $_REQUEST['errs'] : '';
 $_SESSION['4log'] = $callnbr;
 
 ?>
@@ -32,7 +33,17 @@ $_SESSION['4log'] = $callnbr;
 </style>
 <script>
 // block use of enter key on input form, shift focus to next field
-$(function() {  
+$(function() {
+  var er = "<?=$errs?>";
+  var errs = "<h3 style='color: #FF0000; '>Errors in call record needing attention:</h3><ul>" + er + '</ul>';
+  // var errs = "<?=$errs?>";
+  if (er.length) {
+    // alert("errs: "+errs);
+    $("#mm-modalBody").html(errs);
+    $("#myModal").modal("show");
+    errs = '';
+    }
+  
   $('form input').keydown(function (e) {
       if (e.keyCode == 13) {
           var inputs = $(this).parents("form").eq(0).find(":input");
@@ -73,52 +84,33 @@ include 'Incls/mainmenu.inc.php';
 
 // block attempt to update call with no session user
 // caused when user does a 'back' button on browser after logout or timeout
-if ($_SESSION[CTS_SessionUser] == '') {
+if ($_SESSION['CTS_SessionUser'] == '') {
   addlogentry("callupdater is trying to update a call with no userid");
   echo '<h2>Session has timed out</h2>
   <h3 style="color: #FF0000; "><a href="indexsto.php">Log in again</a></h3>';
   exit;
   }
 
+$user = $_SESSION['CTS_SessionUser'];
+$nowdt = date('Y-m-d H:i', strtotime('now')); 
 // apply any fields updated to call record
 if ($action == 'update') {
 // read call record
-  $sessionuser = $_SESSION['CTS_SessionUser'];
   $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
   $res = doSQLsubmitted($sql);
   $r = $res->fetch_assoc();
-  // echo '<pre>existing DB record '; print_r($r); echo'</pre>';  
-	$notearray = array();  $vararray = array();
-
+  // echo '<pre>existing DB record '; print_r($r); echo'</pre>';
 	if (strlen($notes) <= 4) { $notes = 'Call updated'; }
-	$notearray[CallNbr] = $callnbr;
-	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
-	$notearray[Notes] = '';
-// add any changes to name, phone number of email address to call log record 
-  if ($r[Name] != $flds[Name]) $notearray[Notes] .= '<br>old Name: '.$r[Name];
-  if ($r[EMail] != $flds[EMail]) $notearray[Notes] .= '<br>old Email: '.$r[EMail];
-  if ($r[PrimaryPhone] != $flds[PrimaryPhone])
-      $notearray[Notes] .= '<br>old Phone: '.$r[PrimaryPhone].'<br>';
-  if ($r['CaseRefNbr'] != $flds['CaseRefNbr']) 
-      $notearray[Notes] .= '<br>old WRMD Ref. Nbr: '.$r['CaseRefNbr'].'<br>';
-  $notearray[Notes] .= '<br>'.$notes.'<br>';
-//	echo '<pre> new note '; print_r($notearray); echo '</pre>';
-// add new call log records
-	sqlinsert("callslog", $notearray);
-	
-// now write updates to the call itself	
-	$vararray[LastUpdater] = $_SESSION['CTS_SessionUser'];
-	$cszarray = explode(',',$r[City]);
-	if (count($cszarray) == 3) {
-    $r[City] = $cszarray[0]; $r[State] = $cszarray[1]; $r[Zip] = $cszarray[2];
-    }
+	$notes = str_replace("\n", "<br>", $notes);
+  $notesdiary = '<ul>'.$notes.'</ul>'.$flds['NotesDiary']; 
+  $flds['NotesDiary'] = "DateTime: $nowdt&nbsp;&nbsp;By: $user $notesdiary";  
+	$flds['LastUpdater'] = $user;
+  
 	$where = "`CallNbr`='" . $callnbr . "'";
-// echo '<pre> sql '; print_r($where); echo '<br> flds ';print_r($flds); echo '</pre>';
+//  echo '<pre>sql '; print_r($where); echo '<br>flds ';print_r($flds); echo '</pre>';
 	sqlupdate('calls',$flds, $where);
-	
-  echo '  
-<h3 style="color: red; " id="X">Update Completed.</h3>';
 
+  $xmsg = '<h3 style="color: red; " id="X">Update Completed.</h3>';
 	$action = 'view';
 	}
 //echo '<pre>Notes  '; print_r($notearray); echo'</pre>';
@@ -135,32 +127,25 @@ $r = $res->fetch_assoc();
 
 // parse record fields into page
 // echo '<pre>DB record '; print_r($r); echo'</pre>';
-$callnbr = $r[CallNbr];
+$callnbr = $r['CallNbr'];
 $_SESSION['4log'] = $callnbr;
 
-$status = $r[Status]; 
+$status = $r['Status']; 
 if ($status == 'New') $status = 'Open';
-$dtplaced = $r[DTPlaced]; $dtopened = $r[DTOpened]; $dtclosed = $r[DTClosed]; 
-$animallocation = $r[AnimalLocation]; $calllocation = $r[CallLocation]; 
-$property = $r[Property]; $species = $r[Species]; 
-$reason = $r[Reason]; $resolution = $r[Resolution];
-$timetoresolve = $r[TimeToResolve]; $postcard  = $r[Postcard]; $openedby = $r[OpenedBy];
-$reason = $r[Reason]; $lastlupdater = $r[LastUpdater]; 
-$org = $r[Organization]; $name = $r[Name]; $address=$r[Address];
-$city = $r[City]; $state = $r[State]; $zip = $r[Zip]; 
-$primaryphone = $r[PrimaryPhone]; 
-$email = $r[EMail]; $crn = $r['CaseRefNbr'];
-$description = htmlentities($r[Description]);
-$pcsent = $r[PostcardSent]; $emsent = $r[EmailSent];
+$dtplaced = $r['DTPlaced']; $dtopened = $r['DTOpened']; $dtclosed = $r['DTClosed']; 
+$animallocation = $r['AnimalLocation']; $calllocation = $r['CallLocation']; 
+$property = $r['Property']; $species = $r['Species']; 
+$reason = $r['Reason']; $resolution = $r['Resolution'];
+$timetoresolve = $r['TimeToResolve']; $postcard  = $r['Postcard']; $openedby = $r['OpenedBy'];
+$reason = $r['Reason']; $lastlupdater = $r['LastUpdater']; 
+$org = $r['Organization']; $name = $r['Name']; $address=$r['Address'];
+$city = $r['City']; $state = $r['State']; $zip = $r['Zip']; 
+$primaryphone = $r['PrimaryPhone']; 
+$email = $r['EMail']; $crn = $r['CaseRefNbr'];
+$description = htmlentities($r['Description']);
+$pcsent = $r['PostcardSent']; $emsent = $r['EmailSent'];
+$notesdiary = $r['NotesDiary'];
 
-if ($action == 'new') {
-//	echo 'add initial log history record';
-	$notearray[CallNbr] = $callnbr;
-	$notearray[UserID] = $_SESSION['CTS_SessionUser'];
-	$notearray[Notes] = 'Call Opened';
-//	echo '<pre> note '; print_r($notearray); echo '</pre>';
-	sqlinsert("callslog", $notearray);
-}
 ?>
 <script type="text/javascript">
 // set up select lists
@@ -172,7 +157,6 @@ $(document).ready(function () {
 	$("#SP").val("<?=$species?>");
 	$("#RE").val("<?=$reason?>");
 	$("#AT").val("<?=$resolution?>");
-	// var ttr = "'<?=$timetoresolve?>'";
 	$('input[type=radio][value=' + "'<?=$timetoresolve?>'" + ']').attr('checked', true);
   
 $("#cinfo").click(function() {
@@ -217,6 +201,7 @@ function chkdtp() {
 </script>
 
 <?php
+echo $xmsg;     // show completion msg if any
 echo '
 <div class="container">
 <h3>Call '.$callnbr.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="updb btn btn-success" form="tf" /><b>Update Call</b></button>&nbsp;&nbsp;&nbsp;<a href="callroview.php?call='.$callnbr.'">
@@ -229,7 +214,7 @@ echo '
 <input type="hidden" name="callnbr" value="<?=$callnbr?>">
 <input type="hidden" name="flds[CallNbr]" value="<?=$callnbr?>">
 
-Date/Time Call Entered:&nbsp;&nbsp;<?=$dtopened?>&nbsp;&nbsp;&nbsp;
+Date/Time Call Opened:&nbsp;&nbsp;<?=$dtopened?>&nbsp;&nbsp;&nbsp;
 Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="flds[DTPlaced]" value="<?=$dtplaced?>" style="width: 150px; height: 25px;"><br>
 
 Caller Name:<input autofocus id="CN" type="text" name="flds[Name]" placeholder="Caller Name" value="<?=$name?>" />
@@ -317,6 +302,7 @@ Call Description:<input id="CD" name="flds[Description]" value="<?=$description?
 <br />
 Additional Notes: (check History for prior note entries)<br />
 <textarea name="notes" rows="5" cols="90"></textarea><br>
+<input type="hidden" name="flds[NotesDiary]" value="<?=$notesdiary?>">
 <input type="hidden" name="flds[Status]" value="<?=$status?>">
 <input type="hidden" name="flds[OpenedBy]" value="<?=$openedby?>">
 
@@ -364,8 +350,8 @@ Action Taken:</td><td>
 </td></tr>
 <!-- <tr><td>Delivered to Center by: </td>
 <td>Caller: <input type="radio" name="flds[DeliveredBy]">
-RTV:<input type="radio" name="flds[DeliveredBy]">
-RTV Name: <input type="text" name="flds[DeliveredByName]" value="<?=$r[DeliveredByName]?>">
+RTV:<input type="radio" name="flds['DeliveredBy']">
+RTV Name: <input type="text" name="flds['DeliveredByName']" value="<?=$r['DeliveredByName']?>">
 </td></tr> -->
 </table>
 </td>
@@ -483,20 +469,7 @@ $('#CI').typeahead({source: citylist})
 <!-- output the history log -->
 <div class="page-break"></div> <!-- insert page break for print of page -->
 <h4>Call Notes History (latest first)</h4>
-<table class=\"table-condensed\">
-<?php
-$sql = "SELECT * FROM `callslog` 
-WHERE `CallNbr` =  '$callnbr' 
-ORDER BY `SeqNbr` DESC;";
-$res = doSQLsubmitted($sql);
-
-while ($r = $res->fetch_assoc()) {
-	//echo '<pre> notes '; print_r($r); echo '</pre>';
-	$dt = date('Y-m-d \a\t H:i',strtotime($r[DateTime]));
-	echo "<tr><td>DateTime: $dt&nbsp;&nbsp;By: $r[UserID]<br><ul>$r[Notes]</ul></td></tr>";
-	}
-?>
-</table>
+<?=$notesdiary?>
 </div>  <!-- container -->';
 
 <?php

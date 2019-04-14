@@ -1,3 +1,7 @@
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,9 +15,6 @@
 <script src="js/bootstrap.min.js"></script>
 
 <?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-session_start();
-
 //include 'Incls/vardump.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mbrdbdatautils.inc.php';

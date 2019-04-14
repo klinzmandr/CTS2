@@ -134,10 +134,10 @@ foreach ($g as $k => $v) {
   $moddt = filectime("Forms/$formname");
   $cd  = date("m-d-y \a\\t H:i.", $moddt) . "<br>";
   $fs = number_format(filesize("Forms/$formname")/1000,1);
-
+  $urlformname = urlencode($formname);
   echo "<tr class=\"$k\">";
   // echo "<td><a target=_blank href=\"Forms/$formname\">$formname</a></td>";
-  echo "<td><a target=_blank href='formviewer.php?dsp=Forms/$formname'>$formname</a></td>";
+  echo "<td><a target=_blank href='formviewer.php?dsp=Forms/$urlformname'>$formname</a></td>";
   echo "
   <td align=right>$fs</td>
   <td>&nbsp;</td>

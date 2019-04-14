@@ -1,6 +1,6 @@
 <?php
 session_start();
-// include 'Incls/datautls.inc.php';
+// include 'Incls/datautils.inc.php';
 // include 'Incls/seccheck.inc.php';
 // include 'Incls/mainmenu.inc.php';
 

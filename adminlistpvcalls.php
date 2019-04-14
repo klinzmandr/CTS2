@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +14,6 @@
 <script src="js/bootstrap.min.js"></script>
 
 <?php
-session_start();
 //include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
@@ -36,7 +38,7 @@ echo '<form action="adminlistpvcalls.php" method="post"  class="form">
 Choose a user: <select onchange="this.form.submit()" name="userid">
 <option value=""></option>';
 while ($uid = $res->fetch_assoc()) {
-	$userid = $uid[UserID];
+	$userid = $uid['UserID'];
 	//echo '<pre> user '; print_r($uid); echo '</pre>';
 	echo "<option value=\"$userid\">$userid</option>";
 	}
@@ -60,9 +62,9 @@ echo '<table border="0" class="table table-condensed table-hover">
 </tr><th>Call#</th><th>Status</th><th><----DTOpened----></th><th>OpenedBy</th><th>Description</th></tr>';
 while ($r = $res->fetch_assoc()) {
 	//echo '<pre> user '; print_r($r); echo '</pre>';
-	$callnbr = $r[CallNbr]; $status = $r[Status]; 
-	$dtopened = $r[DTOpened]; $openedby = $r[OpenedBy];
-	$lastupdater = $r[LastUpdater]; $desc = $r[Description];
+	$callnbr = $r['CallNbr']; $status = $r['Status']; 
+	$dtopened = $r['DTOpened']; $openedby = $r['OpenedBy'];
+	$lastupdater = $r['LastUpdater']; $desc = $r['Description'];
 	if ($status == 'Open') {
 	echo "<tr onclick=\"window.location='callupdatertabbed.php?action=view&callnbr=$callnbr'\" style='cursor: pointer;'>"; }
 	else {

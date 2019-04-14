@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,8 +17,8 @@ $(document).ready(function() {
   $("#X").fadeOut(2000);
 });
 </script>
+
 <?php
-session_start();
 //include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
@@ -32,8 +35,8 @@ if ($action == 'upd') {
 	//echo 'Update action requested.';
 	$uri = $_SERVER['QUERY_STRING'];
 	parse_str($uri, $notearray);
-	unset($notearray[action]);
-	unset($notearray[submit]);
+	unset($notearray['action']);
+	unset($notearray['submit']);
 	//echo '<pre> note '; print_r($notearray); echo '</pre>';
 	$where = "`SeqNbr`='" . $seqnbr . "'";
 	//echo '<pre> sql '; print_r($where); echo '<br> notearray ';print_r($notearray); echo '</pre>';
@@ -51,7 +54,7 @@ if ($action == 'addnew') {
   $res = doSQLsubmitted($sql);
   if ($res->num_rows == 0) {
     //echo "add a new note<br>";
-    $newarray[UserID] = '**NewRec**';
+    $newarray['UserID'] = '**NewRec**';
     sqlinsert('bboard', $newarray);
     }
 	echo '
@@ -64,7 +67,7 @@ if ($action == 'addnew') {
 $sql = "SELECT * FROM `bboard` WHERE `SeqNbr` = '$seqnbr' OR `UserID`	= '**NewRec**';";
 $res = doSQLsubmitted($sql);
 $r = $res->fetch_assoc();
-$seqnbr = $r[SeqNbr];
+$seqnbr = $r['SeqNbr'];
 $userid = $_SESSION['CTS_SessionUser'];
 
 //echo '<pre> db '; print_r($r); echo '</pre>';

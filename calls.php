@@ -1,3 +1,7 @@
+<?php
+session_start();
+// include 'Incls/vardump.inc.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,16 +13,20 @@
 <body>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
+<script>
+$(function() {
+  $("#X").fadeOut(2000);
+});
+</script>
 <?php
-session_start();
-// include 'Incls/vardump.inc.php';
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 include 'Incls/mainmenu.inc.php';
 
 $userid = $_SESSION['CTS_SessionUser'];
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+if (isset($_REQUEST['del'])) 
+  $xmsg = '<h3 style="color: red;" id="X">Call close completed.</h3>';
 if ($action == 'MyClosed') {
 	$rpthdg = "<tr><th>Call#</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th></tr>";
 	$hdg = 'My Closed';
@@ -43,14 +51,14 @@ else {		// gotta be MyCalls then
 $res = doSQLsubmitted($sql);
 $rows = $res->num_rows;
 // if ($rows == 0) { echo "no rows found<br>"; };
-echo '<div class="container">
+echo '<div class="container">' . $xmsg . '
 <h3>'.$hdg.' Calls<img id="chgflg" hidden src="img/Cancel__Red.png" width="16" height="16" /></h3>
 ';
 echo '<table border="0" class="table table-condensed table-hover">'.$rpthdg;
 while ($r = $res->fetch_assoc()) {
 	// echo '<pre>'; print_r($r); echo '</pre>';
-	$callnbr = $r[CallNbr]; $dtopened = $r[DTOpened]; $dtplaced=$r[DTPlaced]; 
-	$openedby = $r[OpenedBy]; $lastupdater = $r[LastUpdater]; $desc = $r[Description];
+	$callnbr = $r['CallNbr']; $dtopened = $r['DTOpened']; $dtplaced=$r['DTPlaced']; 
+	$openedby = $r['OpenedBy']; $lastupdater = $r['LastUpdater']; $desc = $r['Description'];
 	if ($action == 'MyClosed') 
 		echo "<tr onclick=\"window.location='callroview.php?call=$callnbr'\" style='cursor: pointer;'>";
 	else

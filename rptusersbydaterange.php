@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION['CTS_SessionUser'])) {
+  echo '<h1>SESSION HAS TIMED OUT.</h1>';
+  echo '<h3 style="color: red; "><a href="indexsto.php">Log in again</a></h3>';
+  exit;
+  }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -77,9 +83,9 @@ $rc = $res->num_rows;
 // echo "rc: $rc<br>";
 $resarray = array(); $cntarray = array();
 while ($r = $res->fetch_assoc()) {
-  $dtarray[$r[User]] = $r[DateTime];
-	$resarray[$r[User]] = $r[SecLevel];
-	$cntarray[$r[User]] += 1;
+  $dtarray[$r['User']] = $r['DateTime'];
+	$resarray[$r['User']] = $r['SecLevel'];
+	$cntarray[$r['User']] += 1;
 	}
 // echo '<pre> year '; print_r($resarray); echo '</pre>';
 

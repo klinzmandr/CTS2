@@ -43,13 +43,13 @@ function readmbrdblist($listname) {
 	$sqldb = "SELECT * FROM `configtable` WHERE `CfgName` = '$listname'";
 	$res = dombrSQLsubmitted($sqldb);
 	$r = $res->fetch_assoc();
-	return($r[CfgText]);
+	return($r['CfgText']);
 	}
 
 // update db table item
 function updatembrdblist($listname,$text) {
 	$flds = array();
-	$flds[CfgText] = $text;
+	$flds['CfgText'] = $text;
 	$rows = sqlupdate('configtable', $flds, "`CfgName` = '$listname'");
 	return($rows);
 	}
@@ -57,8 +57,8 @@ function updatembrdblist($listname,$text) {
 // insert db configtable item
 function insertmbrdblist($listname, $text) {
 	$flds = array();
-	$flds[CfgName] = $listname;
-	$flds[CfgText] = $text;
+	$flds['CfgName'] = $listname;
+	$flds['CfgText'] = $text;
 	$rows = sqlinsert('configtable',$flds);
 	return($rows);
 	}

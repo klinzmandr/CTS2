@@ -144,54 +144,54 @@ ORDER BY `CallNbr` DESC;";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 $resarray = array(); $countarray = array();
-$countarray[Total] = 0;$countarray[Open] = 0; $countarray[Closed] = 0; $countarray[Center] = 0;
+$countarray['Total'] = 0;$countarray['Open'] = 0; $countarray['Closed'] = 0; $countarray['Center'] = 0;
 $hlvarray = array(); $animallocation = array(); $hlvs = array();
 $property = array(); $species = array(); $resolution = array();
 $ttr = array(); $reason = array(); $week = array();
  
 while ($r = $res->fetch_assoc()) {
-	$countarray[Total] += 1;
-	$wnbr = date("W", strtotime($r[DTOpened]));
+	$countarray['Total'] += 1;
+	$wnbr = date("W", strtotime($r['DTOpened']));
 	$week[$wnbr]++;
-	if ($r[AnimalLocation] == '') $animalloction['not entered']++;
-	  else $animallocation[$r[AnimalLocation]]++;
-	if ($r[Property] == '') $property['not entered']++;
-	  else $property[$r[Property]]++;
-	if ($r[Species] == '') $specie['not entered']++;
-	  else $species[$r[Species]]++;
-	if ($r[Resolution] == '') $resolution['not entered']++;
-	  else $resolution[$r[Resolution]]++;
-	if ($r[OpenedBy] == '') $hlvs['not entered']++;
-	  else $hlvs[$r[OpenedBy]]++;
-	if ($r[TimeToResolve] == '') $ttr['not entered']++;
-	  else $ttr[$r[TimeToResolve]]++;
-	if ($r[Reason] == '') $reason['not entered']++;
-	  else $reason[$r[Reason]]++;
+	if ($r['AnimalLocation'] == '') $animalloction['not entered']++;
+	  else $animallocation[$r['AnimalLocation']]++;
+	if ($r['Property'] == '') $property['not entered']++;
+	  else $property[$r['Property']]++;
+	if ($r['Species'] == '') $specie['not entered']++;
+	  else $species[$r['Species']]++;
+	if ($r['Resolution'] == '') $resolution['not entered']++;
+	  else $resolution[$r['Resolution']]++;
+	if ($r['OpenedBy'] == '') $hlvs['not entered']++;
+	  else $hlvs[$r['OpenedBy']]++;
+	if ($r['TimeToResolve'] == '') $ttr['not entered']++;
+	  else $ttr[$r['TimeToResolve']]++;
+	if ($r['Reason'] == '') $reason['not entered']++;
+	  else $reason[$r['Reason']]++;
 
-  if ($r[Status] == 'Open') {
-	  $countarray[Open] += 1;
-	  $hlvarray[$r[OpenedBy]][open] += 1;
+  if ($r['Status'] == 'Open') {
+	  $countarray['Open'] += 1;
+	  $hlvarray[$r['OpenedBy']]['open'] += 1;
 	  }
-	if ($r[Status] == 'Closed') {
-	  $countarray[Closed] += 1;
-	  $hlvarray[$r[OpenedBy]][closed] += 1;	  
+	if ($r['Status'] == 'Closed') {
+	  $countarray['Closed'] += 1;
+	  $hlvarray[$r['OpenedBy']]['closed'] += 1;	  
     }
-	if (strpos($r[Resolution],'Center') > 0) {
-	  $countarray[Center] += 1;
-	  $hlvarray[$r[OpenedBy]][center] += 1;
+	if (strpos($r['Resolution'],'Center') > 0) {
+	  $countarray['Center'] += 1;
+	  $hlvarray[$r['OpenedBy']]['center'] += 1;
   	}
-  $datems = strtotime($r[DTOpened]);
-  if ((!isset($hlvarray[$r[OpenedBy]][first])) OR ($hlvarray[$r[OpenedBy]][first] < $datems)) {
-    list($hlvarray[$r[OpenedBy]][first], $x) = explode(' ', $r[DTOpened]); 
+  $datems = strtotime($r['DTOpened']);
+  if (!isset($hlvarray[$r['OpenedBy']]['first]']) OR ($hlvarray[$r['OpenedBy']]['first'] < $datems)) {
+    list($hlvarray[$r['OpenedBy']]['first'], $x) = explode(' ', $r['DTOpened']); 
     //echo 'first DTOpened: '. $r[DTOpened] . " datems: $datems<br>"; 
     }
-  if ((!isset($hlvarray[$r[OpenedBy]][last])) OR ($hlvarray[$r[OpenedBy]][last] > $datems)) {
-    list($hlvarray[$r[OpenedBy]][last], $x) = explode(' ', $r[DTOpened]);
+  if ((!isset($hlvarray[$r['OpenedBy']]['last'])) OR ($hlvarray[$r['OpenedBy']]['last'] > $datems)) {
+    list($hlvarray[$r['OpenedBy']]['last'], $x) = explode(' ', $r['DTOpened']);
     //echo 'hlv: ' . $r[OpenedBy] . ' last DTOpened: '. $r[DTOpened] . " datems: $datems<br>"; 
     }
 	}
 $cc = 'Total Counts for Date Range (Total/Open/Closed/ToCtr): ';
-$cc .= $countarray[Total] . '/' . $countarray[Open] . '/' . $countarray[Closed] . '/' . $countarray[Center] . '<br>';
+$cc .= $countarray['Total'] . '/' . $countarray['Open'] . '/' . $countarray['Closed'] . '/' . $countarray['Center'] . '<br>';
 echo $cc; 
 
 // echo '<pre>hlv '; print_r($hlvarray); echo '</pre>';

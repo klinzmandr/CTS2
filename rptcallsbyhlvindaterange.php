@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['CTS_SessionUser'])) {
+  echo '<h1>SESSION HAS TIMED OUT.</h1>';
+  echo '<h3 style="color: red; "><a href="indexsto.php">Log in again</a></h3>';
+  exit;
+  }
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +24,6 @@
 <script src="js/bootstrap-datepicker-range.js"></script>
 
 <?php
-session_start();
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
 //include 'Incls/mainmenu.inc.php';
@@ -46,35 +54,35 @@ ORDER BY `CallNbr` DESC;";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 $resarray = array(); $countarray = array();
-$countarray[Total] = 0;$countarray[Open] = 0; $countarray[Closed] = 0; $countarray[Center] = 0;
+$countarray['Total'] = 0;$countarray['Open'] = 0; $countarray['Closed'] = 0; $countarray['Center'] = 0;
 $hlvarray = array();
   
 while ($r = $res->fetch_assoc()) {
-	$countarray[Total] += 1;
-	if ($r[Status] == 'Open') {
-	  $countarray[Open] += 1;
-	  $hlvarray[$r[OpenedBy]][open] += 1;
+	$countarray['Total'] += 1;
+	if ($r['Status'] == 'Open') {
+	  $countarray['Open'] += 1;
+	  $hlvarray[$r['OpenedBy']]['open'] += 1;
 	  }
-	if ($r[Status] == 'Closed') {
-	  $countarray[Closed] += 1;
-	  $hlvarray[$r[OpenedBy]][closed] += 1;	  
+	if ($r['Status'] == 'Closed') {
+	  $countarray['Closed'] += 1;
+	  $hlvarray[$r['OpenedBy']]['closed'] += 1;	  
     }
-	if (strpos($r[Resolution],'Center') > 0) {
-	  $countarray[Center] += 1;
-	  $hlvarray[$r[OpenedBy]][center] += 1;
+	if (strpos($r['Resolution'],'Center') > 0) {
+	  $countarray['Center'] += 1;
+	  $hlvarray[$r['OpenedBy']]['center'] += 1;
   	}
-  $datems = strtotime($r[DTOpened]);
-  if ((!isset($hlvarray[$r[OpenedBy]][first])) OR ($hlvarray[$r[OpenedBy]][first] < $datems)) {
-    list($hlvarray[$r[OpenedBy]][first], $x) = explode(' ', $r[DTOpened]); 
+  $datems = strtotime($r['DTOpened']);
+  if ((!isset($hlvarray[$r['OpenedBy']]['first'])) OR ($hlvarray[$r['OpenedBy']]['first'] < $datems)) {
+    list($hlvarray[$r['OpenedBy']]['first'], $x) = explode(' ', $r['DTOpened']); 
     //echo 'first DTOpened: '. $r[DTOpened] . " datems: $datems<br>"; 
     }
-  if ((!isset($hlvarray[$r[OpenedBy]][last])) OR ($hlvarray[$r[OpenedBy]][last] > $datems)) {
-    list($hlvarray[$r[OpenedBy]][last], $x) = explode(' ', $r[DTOpened]);
+  if ((!isset($hlvarray[$r['OpenedBy']]['last'])) OR ($hlvarray[$r['OpenedBy']]['last'] > $datems)) {
+    list($hlvarray[$r['OpenedBy']]['last'], $x) = explode(' ', $r['DTOpened']);
     //echo 'hlv: ' . $r[OpenedBy] . ' last DTOpened: '. $r[DTOpened] . " datems: $datems<br>"; 
     }
 	}
 $cc = 'Total Counts for Date Range (Total/Open/Closed/ToCtr): ';
-$cc .= $countarray[Total] . '/' . $countarray[Open] . '/' . $countarray[Closed] . '/' . $countarray[Center] . '<br>';
+$cc .= $countarray['Total'] . '/' . $countarray['Open'] . '/' . $countarray['Closed'] . '/' . $countarray['Center'] . '<br>';
 echo $cc; 
 $piechartdata = "['Open',$countarray[Open]], ['Closed', $countarray[Closed]]";
 //echo '<pre> hlv '; print_r($hlvarray); echo '</pre>';
@@ -121,9 +129,9 @@ function drawChart() {
 echo '<table class="table table-condensed">
 <tr><th>HLV Id</th><th>Total</th><th>Open</th><th>Closed</th><th>To Ctr</th><th>Earliest Opened</th><th>Last Opened</th></tr>';
 foreach ($hlvarray as $k => $r) {
-  $count = $r[open] + $r[closed];
+  $count = $r['open'] + $r['closed'];
   $tot[$k] = $count;
-	echo '<td>'.$k.'</td><td>'.$count.'</td><td>'.$r[open].'</td><td>'.$r[closed].'</td><td>'.$r[center].'</td><td>'.$r[first].'</td><td>'.$r[last].'</td></tr>';
+	echo '<td>'.$k.'</td><td>'.$count.'</td><td>'.$r['open'].'</td><td>'.$r['closed'].'</td><td>'.$r['center'].'</td><td>'.$r['first'].'</td><td>'.$r['last'].'</td></tr>';
 	}
 echo '</table>';
 $str = '';

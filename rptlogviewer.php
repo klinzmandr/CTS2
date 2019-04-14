@@ -1,3 +1,9 @@
+<?php
+session_start();
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+date_default_timezone_set('America/Los_Angeles');
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +47,6 @@ $(document).ready(function () {
 <body>
 
 <?php
-session_start();
 // include 'Incls/vardump.inc.php';
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';

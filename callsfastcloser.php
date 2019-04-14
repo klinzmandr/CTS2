@@ -31,31 +31,34 @@ include 'Incls/mainmenu.inc.php';
 // update the database with the info and close the call
 if ($action == 'close') {
   $updarray = $_SESSION['FLDS'];
-  $call = $updarray[CallNbr];
-	$closedate = date('Y-m-d H:i', strtotime(now));
-	$updarray[Status] = 'Closed';
-	$updarray[DTClosed] = $closedate;
-	$updarray[LastUpdater] = $user;
-	$updarray[TimeToResolve] = isset($r['TimeToResolve']) ? $r['TimeToResolve'] : '15';
-	$updarray[Resolution] = isset($r['Resolution']) ? $r['Resolution'] : 'ERROR in callsfastcloser';
+  // echo '<pre>ORIGINAL updarray '; print_r($updarray); echo '</pre>';
+  $call = $updarray['CallNbr'];
+	$closedate = date('Y-m-d H:i', strtotime('now'));
+	$updarray['Status'] = 'Closed';
+	$updarray['DTClosed'] = $closedate;
+	$updarray['LastUpdater'] = $user;
+	$updarray['TimeToResolve'] = isset($r['TimeToResolve']) ? $r['TimeToResolve'] : '15';
+	$updarray['Resolution'] = isset($r['Resolution']) ? $r['Resolution'] : 'ERROR in callsfastcloser';
+  $note = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : 'Call closed';
+  $note = str_replace("\n", "<br>", $note);
+  $diarynote = '<ul>Call closed: ' . $note . '</ul>' . $updarray['NotesDiary'];
+	$updarray['NotesDiary'] = "DateTime: $closedate&nbsp;&nbsp;By: $user<br> $diarynote";
 
-// update with final note(s)
-  $note = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : '';
-	$notearray[CallNbr] = $call;
-	$notearray[UserID] = $user;
-	$notearray[Notes] = 'Call Fast Closed.';
-	if ($note <> '') 
-    $notearray[Notes] .= '<br>Closing Comment: ' . $note;
-
-//	echo '<pre> notearray '; print_r($notearray); echo '</pre>';
-	sqlinsert("callslog", $notearray);
-
-//	echo "callnbr: $call"; 
-//	echo '<pre> updarray'; print_r($updarray); echo '</pre>';
+//	echo "<h3>callnbr: $call</h3>"; 
+//	echo '<pre>updarray '; print_r($updarray); echo '</pre>';
 	sqlupdate('calls', $updarray, "`CallNbr` = '$call'");
 
-	echo '<ul><h3 style="color: red; ">Call '.$updarray[CallNbr].' Now Closed</h3>
-	<a class="btn btn-primary" href="calls.php?action=MyOpen">My Open Calls</a></ul>';
+	echo "
+<script>
+$(function() {
+  $('#deler').submit();
+});
+</script>
+<form id=deler action=calls.php>
+<input type=hidden name=action value='MyOpen'>
+<input type=hidden name=del value=done>
+</form>
+	<ul><a class='btn btn-primary' href='calls.php?action=MyOpen&del=done'>My Open Calls</a></ul>";
 	exit;
 	}
 // save all call fields to session var for later
@@ -64,22 +67,38 @@ $_SESSION['FLDS'] = $_REQUEST['flds'];
 
 // now checking for error before allowing close
 $errs = '';
-if ($r[AnimalLocation] == '') $errs .= 'Missing Animal Location<br>';
-if ($r[CallLocation] == '') $errs .= 'Missing Call Location<br>';
-if ($r[Property] == '') $errs .= 'Missing Property designation<br>';
-if ($r[Species] == '') $errs .= 'Missing Species identification<br>';
-if ($r[Name] == '') $errs .= 'No Caller Name has been entered<br>';	
-if ($r[Reason] == '') $errs .= 'No Reason provided for the call<br>';	
-if ($r[Description] == '') $errs .= 'No Call Description has been provided<br>';
+if ($r['AnimalLocation'] == '') $errs .= 'Missing Animal Location<br>';
+if ($r['CallLocation'] == '') $errs .= 'Missing Call Location<br>';
+if ($r['Property'] == '') $errs .= 'Missing Property designation<br>';
+if ($r['Species'] == '') $errs .= 'Missing Species identification<br>';
+if ($r['Name'] == '') $errs .= 'No Caller Name has been entered<br>';	
+if ($r['Reason'] == '') $errs .= 'No Reason provided for the call<br>';	
+if ($r['Description'] == '') $errs .= 'No Call Description has been provided<br>';
 if ($errs != '') {
-  $errors = "<h3 style='color: #FF0000; '>Errors in call record needing attention:</h3><ul>$errs</ul>";
-  echo '<h3 style="color: #FF0000; ">Return and correct errors.</h3>';
+  echo "
+<script>
+$(function() {
+  var errs = '$errs';
+  // alert('errs: ' + errs);
+  $('#errs').val(errs);
+  $('#adder').submit();
+});
+</script>
+<form id=adder action=callupdatertabbed.php>
+<input type=hidden name=action value=view>
+<input type=hidden name=callnbr value=$call>
+<input type=hidden id=errs name=errs value=''>
+</form>
+";
+  // $errors = "<h3 style='color: #FF0000; '>Errors in call record needing attention:</h3><ul>$errs</ul>";
+  // echo '<h3 style="color: #FF0000; ">Return and correct errors.</h3>';
+  exit;
 }
 	
 ?>
 <script>
 $("document").ready(function() {
-  var errs = "<?=$errors?>";
+  var errs = "<?=$errs?>";
   var l = errs.length;
   if (errs.length) {
     $("#CF").hide();
@@ -114,8 +133,8 @@ $("#CForm").submit(function(e) {
 <h3>Fast Closing Call <?=$call?></h3>
 <script>
 $(document).ready(function () { 
-  $('input[type=radio][value=' + "'<?=$r[TimeToResolve]?>'" + ']').attr('checked', true);
-  $("#AT").val("<?=$r[Resolution]?>");
+  $('input[type=radio][value=' + "'<?=$r['TimeToResolve']?>'" + ']').attr('checked', true);
+  $("#AT").val("<?=$r['Resolution']?>");
 });
 </script>
 <!-- close form if no errors -->
