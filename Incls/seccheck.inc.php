@@ -12,8 +12,8 @@ $(document).ready(function() {
       keepAlive: false,
       logoutUrl: 'indexsto.php',
       redirUrl: 'indexsto.php',
-      warnAfter:  15*60*1000,
-      redirAfter: 20*60*1000,
+      warnAfter:  45*60*1000,
+      redirAfter: 60*60*1000,
       countdownMessage: 'Time remaining:',
       countdownBar: true,
       showButtons: false
