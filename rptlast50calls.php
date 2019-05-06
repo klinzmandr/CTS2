@@ -41,7 +41,7 @@ ORDER BY `DTOpened` DESC LIMIT 0,50;";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 echo '<table class="table table-condensed table-hover sortable"><thead>
-<tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th>
+<tr><th>CallNbr</th><th>Status</th><th title="Date and time that the call was placed on the answering service.">Date/TimePlaced</th><th title="Date and time call was entered into CTS">Date/TimeOpened</th><th>OpenedBy</th>
 <th data-defaultsort=disabled>Description</th>
 <th>Resolution</th></tr></thead><tbody>';
 while ($r = $res->fetch_assoc()) {

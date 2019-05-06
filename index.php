@@ -57,15 +57,34 @@ if (!empty($_SESSION['CTS_SessionUser'])) {
   <h3>Home Page&nbsp  
   <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>
   </h3></form>
-  <h4 style="color: red; ">Check out the last 5 bulletins (<a href="bboard.php">or view all of them</a>)</h4>
+  <h4 style="color: red; ">Check out the last 5 bulletins&nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="bboard.php">Click this button to review all of them</a></h4>
   <ul><table class="table table-condensed">
   <tr><th>Posted</th><th>Title</th><th>Author</th></tr>
-  ';
+<script>
+$("document").ready( function() {
+// ajax call to display bb note
+$("tr").click (function() {
+  var id = $(this).attr(\'id\');
+  // alert ("row clicked " + id);
+  $.post("bboardjson.php",
+    {
+      bbid: id
+    },
+  function(data, status){
+      // alert("Data: " + data + "\nStatus: " + status);
+      $("#mm-modalBody").html(data);
+      $("#myModal").modal("show");
+      
+    });  // end $.post logic 
+  });
+});
+</script>
+';
   $sql = "SELECT * FROM `bboard` WHERE '1' ORDER BY `DateTime` DESC;";
   $res = doSQLsubmitted($sql);
   while ($r = $res->fetch_assoc()) {
     if (preg_match("/newrec/i", $r['UserID'])) continue;  // ignore newly added
-    echo "<tr><td>$r[DateTime]</td><td>$r[Subject]</td><td>By: $r[UserID]</td>";
+    echo "<tr id='$r[SeqNbr]' style='cursor: pointer;'><td>$r[DateTime]</td><td>$r[Subject]</td><td>By: $r[UserID]</td>";
     $count++; if ($count > 4) break;                    // only list 5
     }
   echo '

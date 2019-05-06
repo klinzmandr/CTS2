@@ -6,7 +6,8 @@ $flds = isset($_REQUEST['flds']) ? $_REQUEST['flds'] : '';
 $notes = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : '';
 $errs = isset($_REQUEST['errs']) ? $_REQUEST['errs'] : '';
 $_SESSION['4log'] = $callnbr;
-
+$user = $_SESSION['CTS_SessionUser'];
+$seclevel = $_SESSION['CTS_SecLevel'];
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +33,7 @@ $_SESSION['4log'] = $callnbr;
     }
 </style>
 <script>
+
 // block use of enter key on input form, shift focus to next field
 $(function() {
   var er = "<?=$errs?>";
@@ -56,7 +58,18 @@ $(function() {
   });
 });
 // document ready function ============
+var SecLevel = '<?=$seclevel?>';  // global var for sec level
 $(document).ready(function() {
+  var dp1 = $("#DP1").val();
+  if (dp1.length <= 0) {      // demand date/time placed if empty
+    $("#DP1").focus(); 
+    }
+  else {
+    if (SecLevel != 'admin') 
+      $("#DP1").prop("disabled", true); // lock field if present
+                                        // unless an admin user
+    }
+  
   $("#X").fadeOut(2000);
 $("#RE").change(function() {
   const regex = /\*/g;    // check selection for an astrix
@@ -91,8 +104,9 @@ if ($_SESSION['CTS_SessionUser'] == '') {
   exit;
   }
 
-$user = $_SESSION['CTS_SessionUser'];
 $nowdt = date('Y-m-d H:i', strtotime('now')); 
+$restod = date("H:i", strtotime('now'));
+
 // apply any fields updated to call record
 if ($action == 'update') {
 // read call record
@@ -105,7 +119,7 @@ if ($action == 'update') {
   $notesdiary = '<ul>'.$notes.'</ul>'.$flds['NotesDiary']; 
   $flds['NotesDiary'] = "DateTime: $nowdt&nbsp;&nbsp;By: $user $notesdiary";  
 	$flds['LastUpdater'] = $user;
-  
+    
 	$where = "`CallNbr`='" . $callnbr . "'";
 //  echo '<pre>sql '; print_r($where); echo '<br>flds ';print_r($flds); echo '</pre>';
 	sqlupdate('calls',$flds, $where);
@@ -120,6 +134,7 @@ $sessionuser = $_SESSION['CTS_SessionUser'];
 $sql = "SELECT * FROM `calls` WHERE `CallNbr` = '$callnbr';";
 if ($action == 'new') {
 	$sql = "SELECT * FROM `calls` WHERE `Status` = 'New' AND `OpenedBy` = '$sessionuser';";
+	// echo "new call by $sessionuser<br>";
 	}
 // echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
@@ -186,10 +201,23 @@ $("#cinfo").click(function() {
 <script>
 function chkdtp() {
 	var dtp = $("#DP1").val();
+	// if field is diabled ignore date validity check
+  if ($("#DP1").is(":disabled")) return true;
 	if (dtp.length == 0) {
 		alert("Entry for Date/Time Placed is required.");
+		$("#DP1").focus();
 		return false;
 		}
+	var dtpcurr = new Date(dtp).getTime() / 1000;
+	// var dtprev = new Date('2018-12-31 23:59').getTime()/1000;
+	var now = new Date();
+	var dtprev = (now.getTime()/1000) - (24 * 60 * 60); // within 24 hours
+	if (dtpcurr <= dtprev) {
+	  if (SecLevel == 'admin') return true;  // accept any date entered
+    $("#DP1").val('').focus();
+    alert("Invalid date entered for Date/Time Call Placed.\n\nDate and time must be within the last 24 hours.");
+    return false;
+    }
 	if (chkEMAddr() == false) {
     return false;
     }
@@ -214,8 +242,8 @@ echo '
 <input type="hidden" name="callnbr" value="<?=$callnbr?>">
 <input type="hidden" name="flds[CallNbr]" value="<?=$callnbr?>">
 
-Date/Time Call Opened:&nbsp;&nbsp;<?=$dtopened?>&nbsp;&nbsp;&nbsp;
-Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="flds[DTPlaced]" value="<?=$dtplaced?>" style="width: 150px; height: 25px;"><br>
+<span title="Date and time call was entered into CTS">Date/Time Call Opened:&nbsp;&nbsp;<?=$dtopened?></span> &nbsp;&nbsp;&nbsp;
+<span title="Date and time that the call was placed on the answering service.">Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="flds[DTPlaced]" value="<?=$dtplaced?>" style="width: 150px; height: 25px;"></span><br>
 
 Caller Name:<input autofocus id="CN" type="text" name="flds[Name]" placeholder="Caller Name" value="<?=$name?>" />
 Phone: <input id="PN" onblur="return checkPhone()" type="text" name="flds[PrimaryPhone]" value="<?=$primaryphone?>" size="12" maxlength="12" placeholder="Phone Number" />
@@ -224,7 +252,7 @@ Phone: <input id="PN" onblur="return checkPhone()" type="text" name="flds[Primar
 $('#DP1').datetimepicker({
     format: 'yyyy-mm-dd hh:ii',
     todayHighlight: true,
-    // todayBtn: true,
+    todayBtn: true,
     showMeridian: true,
     autoclose: true
 });
@@ -294,7 +322,7 @@ E-mail: <input type="text" name="flds[EMail]" value="<?=$email?>" id="EM" onblur
 </span></a>
 <br />
 
-Call Description:<input id="CD" name="flds[Description]" value="<?=$description?>" size="60"  description="" />
+Call Description:<input id="CD" name="flds[Description]" value="<?=$description?>" size="60" maxlength="60"/>
 
 <span id="cinfo" title="Copy Contact Info" class="glyphicon glyphicon-briefcase" style="color: blue; font-size: 20px">
 </span>
@@ -339,14 +367,18 @@ Est.TimeToResolve:</td><td>
 <input class="RB" type="radio" name="flds[TimeToResolve]" value="<30"><30&nbsp;
 <input class="RB" type="radio" name="flds[TimeToResolve]" value="<45"><45&nbsp;
 <input class="RB" type="radio" name="flds[TimeToResolve]" value="<60"><60&nbsp;
-<input class="RB" type="radio" name="flds[TimeToResolve]" value="60+">60+
+<input class="RB" type="radio" name="flds[TimeToResolve]" value=">60">60+
 </td></tr>
 <tr><td>
 Action Taken:</td><td>
 <select id="AT" name="flds[Resolution]" size="1">
 <option value=""></option>
 <?php loaddbselect("Actions"); ?>
-</select><br />
+</select>
+<input type="hidden" id="restod" name="flds[ResTOD]" value="<?=$r['ResTOD']?>">
+<input type="hidden" id="resby" name="flds[ResBy]" value="<?=$r['ResBy']?>">
+<input type="hidden" id="restel" name="flds[ResTelephone]" value="<?=$r['ResTelephone']?>">
+<br />
 </td></tr>
 <!-- <tr><td>Delivered to Center by: </td>
 <td>Caller: <input type="radio" name="flds[DeliveredBy]">
@@ -370,7 +402,22 @@ Zip:<input id="ZI" type="text" name="flds[Zip]" size="5" maxlength="10" value="<
 <button id="ZM" href="#myZipModal" data-toggle="modal" data-keyboard="true" type="button" class="btn btn-xs btn-default" data-placement="top" title="Zip Code List"><span class="glyphicon glyphicon-list" style="color: blue; font-size: 20px"></span></button>
 <br>
 
-<?php $citieslist = createddown(); ?>
+<?php 
+$citieslist = createddown();
+?>
+
+<script>
+$("#AT").change(function() {
+  var restod = '<?=$restod?>';
+  var resby = '<?=$_SESSION['CTS_SessionUser']?>';
+  var restel = '<?=$_SESSION['CTS_VolTelephone']?>';
+  var v = $("#AT").val();
+  // alert("restod: "+restod+", resby: "+resby+", value: "+v);
+  $("#restod").val(restod);
+  $("#resby").val(resby);
+  $("#restel").val(restel);
+});
+</script>
 
 <script>
 $("document").ready (function() {

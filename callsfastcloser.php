@@ -37,7 +37,7 @@ if ($action == 'close') {
 	$updarray['Status'] = 'Closed';
 	$updarray['DTClosed'] = $closedate;
 	$updarray['LastUpdater'] = $user;
-	$updarray['TimeToResolve'] = isset($r['TimeToResolve']) ? $r['TimeToResolve'] : '15';
+	$updarray['TimeToResolve'] = isset($r['TimeToResolve']) ? $r['TimeToResolve'] : '<15';
 	$updarray['Resolution'] = isset($r['Resolution']) ? $r['Resolution'] : 'ERROR in callsfastcloser';
   $note = isset($_REQUEST['notes']) ? $_REQUEST['notes'] : 'Call closed';
   $note = str_replace("\n", "<br>", $note);
@@ -144,7 +144,7 @@ Approx. Time to Resolution:
 <input class="RB" type="radio" name="flds[TimeToResolve]" value="<30"><30&nbsp;&nbsp;&nbsp;
 <input class="RB" type="radio" name="flds[TimeToResolve]" value="<45"><45&nbsp;&nbsp;&nbsp;
 <input class="RB" type="radio" name="flds[TimeToResolve]" value="<60"><60&nbsp;&nbsp;&nbsp;
-<input class="RB" type="radio" name="flds[TimeToResolve]" value="60+">60+
+<input class="RB" type="radio" name="flds[TimeToResolve]" value=">60">60+
 
 <br />Action Taken:
 	<select id="AT" name="flds[Resolution]" size="1">

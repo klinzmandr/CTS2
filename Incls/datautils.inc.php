@@ -277,6 +277,7 @@ function checkcredentials($userid, $password) {
 		$_SESSION['CTS_SessionUser'] = $userid;
 		$_SESSION['CTS_ActiveCTSMCID'] = $r['MCID'];
 		$_SESSION['CTS_VolEmail'] = $r['Email'];
+		$_SESSION['CTS_VolTelephone'] = $r['Phone'];
 		return(true);
 		}
 	echo '<h3 style="color: red; ">ERROR: Password not valid.</h3>';

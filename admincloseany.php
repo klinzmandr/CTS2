@@ -28,7 +28,7 @@ if ($action == 'close') {
 	$closedate = date('Y-m-d H:i', strtotime(now));
 	$updarray['Status'] = 'Closed';
 	$updarray['DTClosed'] = $closedate;
-	$updarray['TimeToResolve'] = isset($_REQUEST['ttaken']) ? $_REQUEST['ttaken'] : '15';
+	$updarray['TimeToResolve'] = isset($_REQUEST['ttaken']) ? $_REQUEST['ttaken'] : '<15';
 	if (strlen($updarray['Resolution'] == 0)) 
     $updarray['Resolution'] =  'Admin forced close without resolution';
 	if (isset($_REQUEST['AnimalLocation'])) $updarray['AnimalLocation'] = $_REQUEST['AnimalLocation'];

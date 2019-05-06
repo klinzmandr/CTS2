@@ -24,7 +24,7 @@ echo '<div class="container">
 <table class="table"><tr><td>';
 
 if ($action != '') {
-	echo "<br><h1>Call $call&nbsp;&nbsp;<a href=\"$referer\" class=\"btn btn-primary\"><b>Return</b></a></h1> ";
+	echo "<br><h1>Call $call&nbsp;&nbsp;<a href=\"$referer\" class=\"btn btn-primary hidden-print\"><b>Return</b></a></h1> ";
 	}
 else {
   if ($_SESSION['CTS_SecLevel'] == 'admin') {
@@ -58,19 +58,22 @@ if ($action == '')
 <span style="font-size: larger; color: #FF0000; "><b><font size="+1">Call Detail</font></b></span>
 <table class="table table-condensed" border=0 class="table-condensed">
 <tr><td width="35%"><b>Call Status: </b><?=$r['Status']?></td></tr>
-<tr><td><b>Call Opened By:</b> <?=$r['OpenedBy']?></td>
+<td><b>Call Opened By:</b> <?=$r['OpenedBy']?></td>
 <td><b>Last Updated By:</b> <?=$r['LastUpdater']?></td></tr>
-<tr><td colspan="4"><b>Description:</b> <?=$r['Description']?><td></tr>
-<tr><td><b>Date & Time Entered:</b><br>&nbsp;&nbsp;<?=$r['DTOpened']?></td>
-<td><b>Date & Time Closed:</b><br>&nbsp;&nbsp;<?=$r['DTClosed']?></td>
-<td><b>Duration:</b><br>&nbsp;&nbsp;<?=$duration?> day(s)</td></tr>
+<tr><td colspan="3"><b>Description:</b> <?=$r['Description']?><td></tr>
+<tr>
+<td title="Date and time call was placed on voice mail."><b>Call Placed: </b><br>&nbsp;&nbsp;<?=$r['DTPlaced']?></td>
+<td title="Date and time call was entered into CTS"><b>Date & Time Opened:</b><br>&nbsp;&nbsp;<?=$r['DTOpened']?></td>
+<td title="Date and time call was closed in CTS"><b>Date & Time Closed:</b><br>&nbsp;&nbsp;<?=$r['DTClosed']?></td>
+<td><b>Duration:</b><br>&nbsp;&nbsp;<?=$duration?> day(s)</td>
+</tr>
 <tr><td><b>Animal Location:</b><br>&nbsp;&nbsp;<?=$r['AnimalLocation']?></td>
 <td><b>Call Location:</b><br>&nbsp;&nbsp;<?=$r['CallLocation']?></td>
 <td><b>Property:</b><br>&nbsp;&nbsp;<?=$r['Property']?></td>
 <td><b>Species:</b><br>&nbsp;&nbsp;<?=$r['Species']?></td></tr>
 <tr><td><b>Reason:</b>&nbsp;&nbsp;<?=$r['Reason']?></td></tr>
 <tr><td><b>WRMD Ref. Number:</b>&nbsp;&nbsp;<?=$r['CaseRefNbr']?></td></tr>
-<tr><td valign="top"><b>Resolution:</b> </td><td colspan="3"><?=$r['Resolution']?><br></td></tr>
+<tr><td valign="top"><b>Resolution:</b> </td><td colspan="3"><?=$r['Resolution']?> updated at <?=$r['ResTOD']?> by <?=$r['ResBy']?><br></td></tr>
 <tr><td><b>Time to Resolve:</b></td><td><?=$r['TimeToResolve']?> minutes</td></tr></table>
 
 <span style="font-size: larger; color: #FF0000; "><b><font size="+1">Caller Detail</font></b></span>

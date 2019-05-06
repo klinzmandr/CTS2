@@ -226,8 +226,9 @@ if (count($tot) > 0) {
 ?>
 <!--Load the AJAX API-->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
 
+<!-- Create the chart -->
+<script type="text/javascript">
 // Load the Visualization API and the corechart package.
 google.charts.load('current', {'packages':['corechart']});
 
@@ -263,8 +264,8 @@ function drawChart() {
 
 <!--Load the AJAX API-->
 <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
-<script type="text/javascript">
 
+<script type="text/javascript">
 // Load the Visualization API and the corechart package.
 google.charts.load('current', {'packages':['corechart']});
 

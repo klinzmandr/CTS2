@@ -159,24 +159,27 @@ if ($action == 'na') {
 	}
 
 // check to determine if a new records has been added but not used
-
-$currentuser = $_SESSION['CTS_SessionUser'];
-
+$user = $_SESSION['CTS_SessionUser'];
 $sql = "SELECT * FROM `calls` 
-	WHERE `Status` = 'New' 
-	AND `OpenedBy` = '$currentuser';";
+	WHERE `Status` = 'New'
+	AND `OpenedBy` = '$user';";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
 
-$user = $_SESSION['CTS_SessionUser'];
 $nowdt = date('Y-m-d H:i', strtotime('now'));
 
 $addarray['OpenedBy'] = $user;
 $addarray['DTOpened'] = $nowdt;
-$addarray['DTPlaced'] = $nowdt;
+$addarray['DTPlaced'] = '';
 $notesdiary = '<ul>New call added</ul>';
 $addarray['NotesDiary'] = "DateTime: $nowdt&nbsp;&nbsp;By: $user $notesdiary";
 $addarray['Status'] = 'New';
+
+$addarray['LastUpdater'] = $user;
+$addarray['ResTOD'] = date("H:i", strtotime('now'));
+$addarray['ResBy'] = $user;
+$addarray['ResTelephone'] = $_SESSION['CTS_VolTelephone'];
+
 
 //echo '<pre> addarray '; print_r($addarray); echo '</pre>';
 if ($rc == 0) {							// nope - add a new record
@@ -201,6 +204,6 @@ $(function() {
 <form id=adder action=callupdatertabbed.php>
 <input type=hidden name=action value=new>
 </form>
-<!-- <a class="btn btn-success" href="callupdatertabbed.php?action=new">CONTINUE</a> -->
+
 </body>
 </html>
