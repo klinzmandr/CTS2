@@ -61,7 +61,7 @@ if ($action == '') {
 <tr><th>CallNbr</th><th>Date</th><th>OpenedBy</th><th>Description</th></tr>';
 	while ($r = $res->fetch_assoc()) {
 		$cn = $r['CallNbr'];
-		echo "<tr onclick=\"window.location='admincloseany.php?action=form&call=$cn';\" style='cursor: pointer;'><td>$cn</td><td>$r['DTOpened']</td><td>$r['OpenedBy']</td><td>$r['Description']</td></tr>";
+		echo "<tr onclick=\"window.location='admincloseany.php?action=form&call=$cn';\" style='cursor: pointer;'><td>$cn</td><td>$r[DTOpened]</td><td>$r[OpenedBy]</td><td>$r[Description]</td></tr>";
 		}
 	echo '</table>===== END LIST =====</div></body></html>';
 	exit;

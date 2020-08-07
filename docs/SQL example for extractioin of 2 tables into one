@@ -1,0 +1,51 @@
+
+===== SQL to query both tables and merge results into one ========
+===== the query returns all rows beteen the given dates   ========
+===== regardless of which table the row originates from   ========
+
+SELECT `CallNbr`,`Status`, `DTPlaced`, `DTOpened`, `DTClosed`, `AnimalLocation`, `CallLocation`, `Property`, `Species`, `CaseRefNbr`, `Resolution`, `TimeToResolve`, `PostcardSent`, `EmailSent`, `OpenedBy`, `Reason`, `LastUpdater`  
+FROM  `calls` 
+WHERE `DTPlaced` BETWEEN '2018-12-01' AND '2019-01-29'
+UNION ALL
+SELECT `CallNbr`,`Status`, `DTPlaced`, `DTOpened`, `DTClosed`, `AnimalLocation`, `CallLocation`, `Property`, `Species`, `CaseRefNbr`, `Resolution`, `TimeToResolve`, `PostcardSent`, `EmailSent`, `OpenedBy`, `Reason`, `LastUpdater`
+FROM `callsarchive` 
+WHERE `DTPlaced` BETWEEN '2018-12-01' AND '2019-01-29'
+ORDER BY `CallNbr` ASC;
+
+=========== Original Export format from phpMyAdmin ================
+
+DELIMITER $$
+CREATE DEFINER=`pacwilica`@`%` PROCEDURE `AllVolsFinalCSZ`()
+    NO SQL
+BEGIN  
+DECLARE EXIT HANDLER FOR SQLEXCEPTION SHOW ERRORS;
+
+DROP TEMPORARY TABLE IF EXISTS tmp1;
+DROP TEMPORARY TABLE IF EXISTS tmp2;
+DROP TABLE IF EXISTS zVolTimeInfoCSZ;
+
+CREATE TEMPORARY TABLE tmp1 engine=memory
+SELECT `TMCID` as 'MCID', SUM(`VolHrs`) AS 'VTime' FROM  `voltimeprev` GROUP BY `TMCID`
+UNION ALL
+SELECT `MCID`, SUM(`VolTime`) AS 'VTime' FROM `voltime` GROUP BY `MCID`
+ORDER BY `MCID` ASC;
+
+CREATE TEMPORARY TABLE tmp2 engine=memory
+SELECT `tmp1`.`MCID`, SUM(`VTime`) as 'VTime'
+FROM `tmp1` 
+GROUP BY `MCID`;
+
+CREATE TABLE zVolTimeInfoCSZ AS
+SELECT `tmp2`.`MCID`, `tmp2`.`VTime`, `members`.`LName`, `members`.`FName`,`members`.`AddressLine`,`members`.`City`,`members`.`State`,`members`.`ZipCode`
+FROM `tmp2`, `members`
+WHERE `tmp2`.`MCID` = `members`.`MCID`
+AND `members`.`EmailAddress` IS NULL
+ORDER BY `tmp2`.`MCID` ASC;
+
+SELECT COUNT(*) FROM `zVolTimeInfoCSZ`;
+
+END$$
+DELIMITER ;
+
+
+

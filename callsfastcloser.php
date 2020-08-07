@@ -34,6 +34,10 @@ if ($action == 'close') {
   // echo '<pre>ORIGINAL updarray '; print_r($updarray); echo '</pre>';
   $call = $updarray['CallNbr'];
 	$closedate = date('Y-m-d H:i', strtotime('now'));
+	$updarray['ResTOD'] = date("H:i", strtotime('now'));
+	$updarray['ResBy'] = $_SESSION['CTS_SessionUser'];
+  $updarray['ResTelephone'] = $_SESSION['CTS_VolTelephone'];
+
 	$updarray['Status'] = 'Closed';
 	$updarray['DTClosed'] = $closedate;
 	$updarray['LastUpdater'] = $user;

@@ -15,14 +15,14 @@ if (!isset($_SESSION['CTS_SessionUser'])) {
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 <link href="css/datepicker3.css" rel="stylesheet">
-
+<link href="css/bootstrap-sortable.css" rel="stylesheet" media="all">
 </head>
 <body>
 <script src="jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-datepicker-range.js"></script>
-
+<script src="js/bootstrap-sortable.js"></script>
 <?php
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
@@ -87,53 +87,14 @@ echo $cc;
 $piechartdata = "['Open',$countarray[Open]], ['Closed', $countarray[Closed]]";
 //echo '<pre> hlv '; print_r($hlvarray); echo '</pre>';
 //exit;
-?>
-<!--Load the AJAX API-->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-
-// Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart']});
-
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawChart);
-
-// Callback that creates and populates a data table,
-// instantiates the pie chart, passes in the data and
-// draws it.
-function drawChart() {
-
-  // Create the data table.
-  var data = new google.visualization.DataTable();
-  data.addColumn('string', 'Calls');
-  data.addColumn('number', 'Count');
-  data.addRows(
-  [<?=$piechartdata?>]);
-  // [['one',1],['two',2],['three',3]]);
-
-  // Set chart options
-  var options = {'title':'Call Distribution',
-                 'width':400,
-                 'height':300};
-
-  // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.PieChart(document.getElementById('chart1'));
-  chart.draw(data, options);
-}
-</script>
-
-<!--Div that will hold the pie chart-->
-<div id="chart1"></div>
-
-<?php
-echo '<table class="table table-condensed">
-<tr><th>HLV Id</th><th>Total</th><th>Open</th><th>Closed</th><th>To Ctr</th><th>Earliest Opened</th><th>Last Opened</th></tr>';
+echo '<table class="table table-condensed sortable"><thead>
+<tr><th>HLV Id</th><th>Total</th><th>Open</th><th>Closed</th><th>To Ctr</th><th>Earliest Opened</th><th>Last Opened</th></tr></thead><tbody>';
 foreach ($hlvarray as $k => $r) {
   $count = $r['open'] + $r['closed'];
   $tot[$k] = $count;
 	echo '<td>'.$k.'</td><td>'.$count.'</td><td>'.$r['open'].'</td><td>'.$r['closed'].'</td><td>'.$r['center'].'</td><td>'.$r['first'].'</td><td>'.$r['last'].'</td></tr>';
 	}
-echo '</table>';
+echo '</tbody></table>';
 $str = '';
 if (count($tot) > 0) {
   ksort($tot);

@@ -27,6 +27,13 @@ $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime("now"))
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-datepicker-range.js"></script>
 <script src="js/bootstrap-sortable.js"></script>
+<style>
+  .page-break  {
+    clear: left;
+    display:block;
+    page-break-after:always;
+    }
+</style>
 
 <script>
 // initial setup of jquery function(s) for page
@@ -117,11 +124,13 @@ $hlvlines .= '</tbody></table>';
 $hlvchart = rtrim($str1, ',');
 
 $str2 = '';
-if (count($cityarray) > 0) ksort($cityarray);
+if (count($cityarray) > 0) arsort($cityarray);
 $citylines = '
 <table class="table sortable"><thead><tr><th>Call from City</th><th>Calls opened</th></thead><tbody>';
 
 foreach ($cityarray as $k => $v) {
+  if ($k == 'NA') continue;
+  if ($k == 'OTHER') continue;
   $citylines .= "<tr><td>$k</td><td>$v</td></tr>";
   $str2 .= "['$k', $v, '$v'],";
   }
@@ -187,12 +196,14 @@ function drawChart1() {
   data.addColumn({type:'string', role:'annotation'}); // annotation role col.
   data.addRows(
   [<?=$hlvchart?>]);
-
+  
+  // set chart height
+  var ch = data.getNumberOfRows() * 25;
   // Set chart options
   var options = {
                   'title':'Hot Line Volunteers Calls Entered',
                   // 'width':600,
-                  // 'height':600,
+                  'height':ch,
                   'annotations': { alwaysOutside: true } ,
                   'legend': { 'position': "none" },
                   'vAxis': { 'title': 'Hot Line Vols'}
@@ -203,9 +214,9 @@ function drawChart1() {
   chart.draw(data, options);
 }
 </script>
-
+<div class="page-break"></div>
 <h2>Calls by Hot Line Volunteer <button class="btn btn-xs" id=HLVBtn>Data Table</button></h2>
-<div id="chart1" style = "width: 550px; height: 600px; margin: 0 auto">NO DATA</div>
+<div id="chart1" style = "width: 550px; height: auto; margin: 0 auto">NO DATA</div>
 <div id="HLV" style="width: 200px; height: auto; margin: 0 auto"><?=$hlvlines?></div>
 
 <!-- City chart 2-->
@@ -229,23 +240,26 @@ function drawChart2() {
   [<?=$citychart?>]);
 
   // Set chart options
+  // set chart height
+  var ch = data.getNumberOfRows() * 45;
+
   var options = {
                   'title':'Cities',
-                  'annotations': { alwaysOutside: true } ,
+                  // 'annotations': { alwaysOutside: true } ,
                   'legend': { 'position': "none" },
-                  'width':600,
-                  'height':700 
+                  'width':ch,
+                  'height':350 
                 };
 
   // Instantiate and draw our chart, passing in some options.
-  var chart = new  google.visualization.BarChart(document.getElementById('chart2'));
+  var chart = new  google.visualization.ColumnChart(document.getElementById('chart2'));
   chart.draw(data, options);
 }
 </script>
-
+<div class="page-break"></div>
 <h2>Calls by City <button class="btn btn-xs" id="CityBtn">Data Table</button></h2>
-<div id="chart2" style="width: 550px; height: 800px; margin: 0 auto">NO DATA</div>
-<div id="CITY" style="width: 300px; height: auto; margin: 0 auto"><?=$citylines?></div>
+<div id="chart2" style="width: auto; height: auto; margin: 0 auto">NO DATA</div>
+<div id="CITY" style="width: auto; height: auto; margin: 0 auto"><?=$citylines?></div>
 
 <!-- REASON chart 3-->
 <script type="text/javascript">
@@ -281,12 +295,12 @@ function drawChart3() {
   chart.draw(data, options);
 }
 </script>
-
-<h2>Calls by Reason Code  <button class="btn btn-xs" id="ReasonBtn">Data Table</button></h2>
+<div class="page-break"></div>
+<h2>Calls by Reason Code  <button class="btn btn-xs" id="ReasonBtn">Hide Data Table</button></h2>
 <table><tr><td>
 <div id="REASON" style="width: 300px; height: auto; margin: 0 auto"><?=$reasonlines?></div>
 </td><td>
-<div id="chart3" style="width: 550px; height: 500px; margin: 0 auto">NO DATA</div>
+<div id="chart3" style="width: 550px; height: auto; margin: 0 auto">NO DATA</div>
 </td></tr></table>
 
 <!-- Resolution chart 4 -->
@@ -322,12 +336,12 @@ function drawChart4() {
   chart.draw(data, options);
 }
 </script>
-
-<h2>Calls by Resolution Code  <button class="btn btn-xs" id="ResolutionBtn">Data Table</button></h2>
+<div class="page-break"></div>
+<h2>Calls by Resolution Code  <button class="btn btn-xs" id="ResolutionBtn">Hide Data Table</button></h2>
 <table><tr><td>
 <div id="RESOLUTION" style="width: 300px; height: auto; margin: 0 auto"><?=$resolutionlines?></div>
 </td><td>
-<div id="chart4" style="width: 550px; height: 500px; margin: 0 auto">NO DATA</div>
+<div id="chart4" style="width: 550px; height: auto; margin: 0 auto">NO DATA</div>
 </td></tr></table>
 
 <!-- TimeToResolve chart 5 -->
@@ -363,12 +377,12 @@ function drawChart5() {
   chart.draw(data, options);
 }
 </script>
-
-<h2>Calls by Time to Resolve  <button class="btn btn-xs" id="TTRBtn">Data Table</button></span></h2>
+<div class="page-break"></div>
+<h2>Calls by Time to Resolve  <button class="btn btn-xs" id="TTRBtn">Hide Data Table</button></span></h2>
 <table><tr><td>
 <div id="TTR" style="width: 300px; height: auto; margin: 0 auto"><?=$ttrlines?></div>
 </td><td>
-<div id="chart5" style="width: 550px; height: 350px; margin: 0 auto">NO DATA</div>
+<div id="chart5" style="width: 550px; height: auto; margin: 0 auto">NO DATA</div>
 </td></tr></table>
 
 </div>  <!-- container -->

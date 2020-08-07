@@ -49,7 +49,7 @@ $(function() {
   $('form input').keydown(function (e) {
       if (e.keyCode == 13) {
           var inputs = $(this).parents("form").eq(0).find(":input");
-          if (inputs[inputs.index(this) + 1] != null) {                    
+          if (inputs[inputs.index(this) + 1] != null) {
               inputs[inputs.index(this) + 1].focus();
           }
           e.preventDefault();
@@ -60,6 +60,16 @@ $(function() {
 // document ready function ============
 var SecLevel = '<?=$seclevel?>';  // global var for sec level
 $(document).ready(function() {
+  $('#DP1').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii',
+      todayHighlight: true,
+      todayBtn: true,
+      showMeridian: true,
+      autoclose: true
+    });
+  $("#DP1").focus(function() {
+    $("#DP1").datetimepicker("show");
+    });
   var dp1 = $("#DP1").val();
   if (dp1.length <= 0) {      // demand date/time placed if empty
     $("#DP1").focus(); 
@@ -211,7 +221,7 @@ function chkdtp() {
 	var dtpcurr = new Date(dtp).getTime() / 1000;
 	// var dtprev = new Date('2018-12-31 23:59').getTime()/1000;
 	var now = new Date();
-	var dtprev = (now.getTime()/1000) - (24 * 60 * 60); // within 24 hours
+	var dtprev = (now.getTime()/1000) - (42 * 24 * 60 * 60); // within 6 weeks
 	if (dtpcurr <= dtprev) {
 	  if (SecLevel == 'admin') return true;  // accept any date entered
     $("#DP1").val('').focus();
@@ -248,15 +258,6 @@ echo '
 Caller Name:<input autofocus id="CN" type="text" name="flds[Name]" placeholder="Caller Name" value="<?=$name?>" />
 Phone: <input id="PN" onblur="return checkPhone()" type="text" name="flds[PrimaryPhone]" value="<?=$primaryphone?>" size="12" maxlength="12" placeholder="Phone Number" />
 
-<script type="text/javascript">
-$('#DP1').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii',
-    todayHighlight: true,
-    todayBtn: true,
-    showMeridian: true,
-    autoclose: true
-});
-</script>
 <script>
 function checkPhone() {
 //alert("validation entered");

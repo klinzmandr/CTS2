@@ -25,16 +25,14 @@ $msg =isset($_REQUEST['msg'])? $_REQUEST['msg'] : "";
 if ($action == 'update') {
 	// echo '<pre> update :'; print_r($_REQUEST['msg']); echo ':</pre>';
 	$msg = stripslashes($msg);
-	file_put_contents('Incls/links.inc.php', $msg);
+	updatedblist('Resources',$msg);
 	echo '<h3 style="color: red; " id="X">Update Completed.</h3>';
 	}
 
-$linksarray = array(); $links = '';
-$linksarray = file('Incls/links.inc.php', FILE_IGNORE_NEW_LINES);
-foreach ($linksarray as $l) {
-  if (strlen($l) == 0) continue;
-  $links .= "$l\n";
-  }
+$links = '';
+// $linksarray = file('Incls/links.inc.php', FILE_IGNORE_NEW_LINES);
+$links = readdblist('Resources');
+// echo '<pre>Resources '; print_r($links); echo '</pre>';
 ?>
 
 <script>

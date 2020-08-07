@@ -1,5 +1,5 @@
 <style>
-body { padding-top: 50px; }      <!-- add padding to top of each page for fixed navbar -->
+body { padding-top: 50px; }      <!-- add padding for fixed navbar -->
 </style>
 
 <?php

@@ -25,7 +25,7 @@ unset($_SESSION['4log']);
 // auto returns to code following the 'include' statement
 // echo "Initial Connection Info: ".$mysqli->host_info . "<br><br>";
 
-// ------------------ submit sql statement provided by calling script ----------
+// ---- submit sql statement provided by calling script -----
 // submit sql statement provided in call
 function doSQLsubmitted($sql) { 
 global $mysqli;

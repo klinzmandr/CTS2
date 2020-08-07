@@ -55,8 +55,8 @@ if (!empty($_SESSION['CTS_SessionUser'])) {
 	<h5>Security level: ' . $_SESSION['CTS_SecLevel'] . '</h5>
 	<form class="form-inline" action="indexsto.php?lo=lo" method="post"  id="xform">
   <h3>Home Page&nbsp  
-  <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform" class="btn">Logout</button>
-  </h3></form>
+  <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform">Logout</button>&nbsp;&nbsp;</form>
+  <a href="ctsquery.php" class="btn btn-primary" title="Display CTS dashboard.">CTS Dashboard</a></h3>
   <h4 style="color: red; ">Check out the last 5 bulletins&nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="bboard.php">Click this button to review all of them</a></h4>
   <ul><table class="table table-condensed">
   <tr><th>Posted</th><th>Title</th><th>Author</th></tr>
@@ -88,14 +88,17 @@ $("tr").click (function() {
     $count++; if ($count > 4) break;                    // only list 5
     }
   echo '
-  </table></ul>';
+  </table>
+  <a href="bboard.php"><h4>See all bulletins</h4></a>
+  </ul>';
 	}
 else {
 	echo '<form class="form-inline" action="index.php" method="post\"  id="yform">
 	<h2>Call Tracking System II (CTS2)</h2>
 	<h3>Home Page&nbsp  
-	<button class="btn btn-large btn-primary" name="action" value="login" type="submit" form="yform" class="btn">Login</button></form></h3>
-	</h3>';
+	<button class="btn btn-large btn-primary" name="action" value="login" type="submit" form="yform">Login?</button></form></h3>
+	</h3>
+	';
 	}
 ?>
 <!-- START OF PAGE -->
