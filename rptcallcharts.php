@@ -83,7 +83,18 @@ Start Date:
 </form>
 
 <?php
-
+$txt = readdblist('HLMonthlyCalls');
+$txtarray = explode("\n", $txt);
+// echo '<pre>txt'; print_r($txtarray); echo '</pre>';
+foreach ($txtarray as $l) {
+  $l = rtrim($l);
+  if (substr($l,0,2) == '//') continue;
+  if (strlen($l) == 0) continue;
+  list($da, $cnt) = preg_split("/:/", $l);
+  $history[$da] = $cnt;
+  $histcnt += $cnt;
+  }
+// echo '<pre>History '; print_r($history); echo '</pre>';
 $edhms = date("Y-m-d 23:59:59",strtotime($ed));
 $sql = "
 SELECT C.`CallNbr`, C.`Resolution`, C.`DTOpened`, C.`OpenedBy`
@@ -110,24 +121,24 @@ while ($r = $res->fetch_assoc()) {
     } 
 	$ymoarray[$dtomy] += 1;
 	}
-// echo '<pre>'; print_r($ymoarray); echo '</pre>';
-$cc = 'Total Counts for Date Range (Total/ToCtr): ';
-$cc .= $reccount . '/' . $countarray['ToCtr'] . '<br>';
+// echo '<pre>YrMo '; print_r($ymoarray); echo '</pre>';
+$cc = 'Total Counts for Date Range (Placed/Entered/ToCtr): ';
+$cc .= $histcnt . '/' . $reccount . '/' . $countarray['ToCtr'] . '<br>';
 echo $cc; 
 
-$tab = '<table border=1 class="sortable" align="center"><thead><tr><th>YrMo</th><th>Open</th><th>ToCtr</th></tr></thead><tbody>';
+$tab = '<table border=1 class="sortable" align="center"><thead><tr><th>YrMo</th><th>Calls</th><th>Entered</th><th>ToCtr</th></tr></thead><tbody>';
 // $chartdata = "['YrMo', 'Open', 'ToCtr'], ";
 $chartdata = "";
-
+ksort($ymoarray);
 foreach ($ymoarray as $k => $v) {
-  $chartdata .= "['$k', $v, $rescounter[$k]], "; 
-  $tab .= "<tr><td>$k</td><td>$v</td><td>$rescounter[$k]</td></tr>";
+  $chartdata .= "['$k', $history[$k], $v, $rescounter[$k]], "; 
+  $tab .= "<tr><td>$k</td><td>$history[$k]</td><td>$v</td><td>$rescounter[$k]</td></tr>";
   }
 $tab .= '</tbody></table>';
 $chartdata = rtrim($chartdata, ', ');
 // echo '<pre>'; print_r($chartdata); echo '</pre>';
 
-$charttitle = "Call History (Calls Opened vs. Calls Delivered to Center)";
+$charttitle = "Call History (Calls Placed vs. Calls Opened vs. Calls Delivered to Center)";
 // exit;
 
 ?>
@@ -150,7 +161,8 @@ function drawChart() {
   // Create the data table.
   var data = new google.visualization.DataTable();
   data.addColumn('string', 'YearMo');
-  data.addColumn('number', 'Opened');
+  data.addColumn('number', 'Placed');
+  data.addColumn('number', 'Entered');
   data.addColumn('number', 'ToCtr');
   data.addRows(
   [<?=$chartdata?>]);

@@ -33,8 +33,7 @@ $seclevel = $_SESSION['CTS_SecLevel'];
     }
 </style>
 <script>
-
-// block use of enter key on input form, shift focus to next field
+// report field
 $(function() {
   var er = "<?=$errs?>";
   var errs = "<h3 style='color: #FF0000; '>Errors in call record needing attention:</h3><ul>" + er + '</ul>';
@@ -46,15 +45,16 @@ $(function() {
     errs = '';
     }
   
-  $('form input').keydown(function (e) {
-      if (e.keyCode == 13) {
-          var inputs = $(this).parents("form").eq(0).find(":input");
-          if (inputs[inputs.index(this) + 1] != null) {
-              inputs[inputs.index(this) + 1].focus();
-          }
-          e.preventDefault();
-          return false;
-      }
+// block use of enter key on input form, shift focus to next field
+$('form input').keydown(function (e) {
+    if (e.keyCode == 13) {
+        var inputs = $(this).parents("form").eq(0).find(":input");
+        if (inputs[inputs.index(this) + 1] != null) {
+            inputs[inputs.index(this) + 1].focus();
+        }
+        e.preventDefault();
+        return false;
+    }
   });
 });
 // document ready function ============
@@ -80,7 +80,7 @@ $(document).ready(function() {
                                         // unless an admin user
     }
   
-  $("#X").fadeOut(2000);
+$("#X").fadeOut(2000);
 $("#RE").change(function() {
   const regex = /\*/g;    // check selection for an astrix
   var reason = $("#RE option:selected").text();
@@ -112,6 +112,11 @@ if ($_SESSION['CTS_SessionUser'] == '') {
   echo '<h2>Session has timed out</h2>
   <h3 style="color: #FF0000; "><a href="indexsto.php">Log in again</a></h3>';
   exit;
+  }
+
+if ($action == 'sfadd') {
+  $xmsg = '<h3 style="color: red; " id="X">Call '.$callnbr.' added</h3>';
+	$action = 'view';
   }
 
 $nowdt = date('Y-m-d H:i', strtotime('now')); 
@@ -256,7 +261,7 @@ echo '
 <span title="Date and time that the call was placed on the answering service.">Date/Time Call Placed:&nbsp;&nbsp;<input type="text" id="DP1" name="flds[DTPlaced]" value="<?=$dtplaced?>" style="width: 150px; height: 25px;"></span><br>
 
 Caller Name:<input autofocus id="CN" type="text" name="flds[Name]" placeholder="Caller Name" value="<?=$name?>" />
-Phone: <input id="PN" onblur="return checkPhone()" type="text" name="flds[PrimaryPhone]" value="<?=$primaryphone?>" size="12" maxlength="12" placeholder="Phone Number" />
+Phone: <input id="PN" onblur="return checkPhone()" type="tel" name="flds[PrimaryPhone]" value="<?=$primaryphone?>" size="12" maxlength="12" placeholder="Phone Number" />
 
 <script>
 function checkPhone() {

@@ -25,7 +25,7 @@ include 'Incls/mainmenu.inc.php';
 
 // update the database with the info and close the call
 if ($action == 'close') {
-	$closedate = date('Y-m-d H:i', strtotime(now));
+	$closedate = date('Y-m-d H:i', strtotime('now)');
 	$updarray['Status'] = 'Closed';
 	$updarray['DTClosed'] = $closedate;
 	$updarray['TimeToResolve'] = isset($_REQUEST['ttaken']) ? $_REQUEST['ttaken'] : '<15';

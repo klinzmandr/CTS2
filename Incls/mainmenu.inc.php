@@ -1,5 +1,5 @@
 <style>
-body { padding-top: 50px; }      <!-- add padding for fixed navbar -->
+body { padding-top: 60px; }      <!-- add padding for fixed navbar -->
 </style>
 
 <?php
@@ -20,6 +20,8 @@ if (!isset($_SESSION['CTS_SessionUser'])) {
 <!-- Form change variable must be global -->
 var chgFlag = 0;
 $(document).ready(function() {
+  // alert("main menu loaded");
+  // console.log("main menu loaded");
   if ("<?=$sl?>" == 'demo') {
     // alert("session security is in demo mode");
     $("a.demo").removeAttr('href');     // disable links for demo mode
@@ -33,19 +35,29 @@ $(document).ready(function() {
     
   $("#aboutInfo").hide();
   $("#aboutBtn").click(function() {
+    $("#myModalLabel").html("<h3>About CTS3</h3>");
     $("#mm-modalBody").html($("#aboutInfo").html());
     $("#myModal").modal("show");
     return;
     });
+
+// initialize modal label and body
+  $("#myModalLabel").html("");
+  $("#mm-modalBody").html("");
     
 // to detect and change on form
+// only form fields defined with names are serialized
 var $form = $('form');
-var origForm = $form.serialize();   // save all fields values on initial load
+var origForm = $form.serialize();
+// console.log($form);
+// console.log("origForm: "+origForm);
  
 $('form :input').on('keyup input', function(e) {
+  // console.log("keyup input detected");
   if (e.keyCode == 9) { return; } // ignore tabs
   if ($form.serialize() !== origForm) {         // check for any changes
     chgFlag++;
+    // console.log("chgFlag updated: "+chgFlag);
     $('.updb').prop('disabled', false);    
     $(".updb").css({"background-color": "red", "color":"white"});
     if ("#FC".length) { 
@@ -56,9 +68,10 @@ $('form :input').on('keyup input', function(e) {
     }
   });
 
-$("form").change(function(){
+$("form").change(function() {
   if (this.id == "filter") return;  // ignore filter input
   chgFlag += 1; 
+  // console.log("form change detected"+chgFlag);
   $(".updb").css({"background-color": "red", "color":"black"});
   $('.updb').prop('disabled', false);    
   // setInterval(blink_text, 1000);
@@ -66,6 +79,7 @@ $("form").change(function(){
 
 // for buttons of dropdown classes check for form changes
 $(".dropdown, .lvr").click(function(event) {
+  // console.log("form change check performed");
 	if (chgFlag <= 0) { return true; }
 	var r=confirm("All changes made will be lost.\n\nConfirm abandoning changes and leaving page by clicking OK.");	
 	if (r == true) { 
@@ -109,7 +123,6 @@ function blink_text() {
 $seclevel = isset($_SESSION['CTS_SecLevel']) ? $_SESSION['CTS_SecLevel'] : '';
 if ($seclevel == 'admin') {
 ?> 
-
 <!-- ======== define Admin dropdown ===================== -->
 <!-- Menu dropdown for Extended Donor Info pages -->	
   <li class="dropdown">
@@ -125,7 +138,10 @@ if ($seclevel == 'admin') {
   		<li><a href="adminlistmaint.php?file=Properties">Maintain Properties</a></li>
   		<li><a href="adminlistmaint.php?file=Species">Maintain Species</a></li>
   		<li><a href="adminlistmaint.php?file=Reasons">Maintain Reasons</a></li>
-  		<li><a href="adminlistmaint.php?file=Actions">Maintain Actions</a></li>
+  		<!-- <li><a href="adminlistmaint.php?file=CallReasons">Maintain Call Reasons</a></li>
+  		<li><a href="adminlistmaint.php?file=CallResolutions">Maintain Call Resolutions</a></li>
+  		<li><a href="adminlistmaint.php?file=Actions">Maintain Actions</a></li> -->
+  		<li><a href="adminhlmonthlycalls.php">HL Monthly Calls</a></li>
   		<li><a href="admineditemailreplys.php">Edit Email Replys</a></li>
   		<li><a href="admdeletejdoerecs.php">Delete jdoe records</a></li>
   		<li><a href="rptmaillogviewer.php" target="_blank">Mail Log Viewer</a></li>
@@ -135,22 +151,9 @@ if ($seclevel == 'admin') {
 
 <?php
 }
-
-if ($seclevel != 'guest') {
 ?>
-<!-- ========= define External Systems dropdown ============ -->
-<li class="dropdown">
-<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" ><b>External</b><b class="caret"></b></a>
-<ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
-	<!-- <li><a href="vmsintro.php" target="_blank">Voice Messages</a></li> -->
-	<li><a href="emailintro.php" target="_blank" >Hotline Email</a></li>
-	<li><a href="wrmdintro.php" target="_blank" >WRMD Case Mgmnt</a></li>
-</ul>
-</li>
-
-<?php
-}
-?>
+<!-- ========= define External Systems ============ -->
+<li class="dropdown"><a href="wrmdintro.php" target="_blank" >WRMD</a></li>
 
 <!-- ========= define Calls dropdown ============= -->
 <!-- <li class="dropdown open">  example: to have open on load -->
@@ -175,7 +178,7 @@ if ($seclevel != 'guest') {
 	}
 ?>
 
-	<li><a href="callssearch.php">Search All</a></li>
+<li><a href="callssearch.php">Search All</a></li>
 	<!-- <li><a href="#">????</a></li> -->
 	<!-- <li><a href="#">?</a></li> -->
 </ul>
@@ -222,22 +225,21 @@ if ($seclevel != 'guest') {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"  style="font-size: 25px">&times;</button>
         <h4 class="modal-title" id="myModalLabel"></h4>
       </div>
-    <div id="mm-modalBody" class="modal-body">
-    </div>
+      <div id="mm-modalBody" class="modal-body">
+      </div>
       <div class="modal-footer">
+        <button id="modalPrtBtn" type="button" class="btn btn-default" onclick="js:window.print()">Print</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-    
-</div><!-- /.modal-dialog -->
+    </div><!-- /.modal-content --> 
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- end of modal -->
-<div id="aboutInfo">
-    <h3>About CTS2</h3>
-<p>Call Tracking System V2.0 (CTS2) is intended for the use by the Hot Line Volunteers of Pacific Wildlife Care.</p>
+<div hidden id="aboutInfo">
+<p>Call Tracking System V3 (CTS) is intended for the use by the Hot Line Volunteers of Pacific Wildlife Care.</p>
 <p>CTS2 is offered under the General Public License (GPL) Version 3.  There is no license fee assoicated with the use of this system or any of the components used to develop it.  All improvements or updates made must be made available to the MbrDB community.</p>
 </div>
 

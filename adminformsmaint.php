@@ -26,19 +26,21 @@ $action = isset($_REQUEST['action'])? $_REQUEST['action'] : "";
 $form =isset($_REQUEST['form'])? $_REQUEST['form'] : "";
 
 $updmsg = "";
+$ctslib = "../CTSLibrary/"; // path to forms and doc library
 
 // copy action
 if ($action == 'copy') {
   if (isset($_REQUEST['file'])) {
     $file = $_REQUEST['file'];
-    $new = 'Forms/' . $file . ' (copy)';
-    $old = 'Forms/' . $file;
+    $new = $ctslib . $file . ' (copy)';
+    $old = $ctslib . $file;
+    // echo "new: $new<br>old: $old<br>";
     if (file_exists($new)) {
       addlogentry("File $old already exists");
       $errmsg = "Copy of $old FAILED - new file name already exists.";
       }
     else {
-      echo "old: $old, new: $new<br>";
+      // echo "old: $old, new: $new<br>";
       if (copy($old, $new)) {
         addlogentry("Copied $old to $new");
         $updmsg = "Copy of $old successful!";
@@ -55,8 +57,8 @@ if ($action == 'copy') {
 if ($action == 'rename') {
   // include 'Incls/vardump.inc.php';
   // test and reference: https://www.the-art-of-web.com/javascript/escape/
-	$old = 'Forms/' . urldecode($_REQUEST['oldname']);
-	$new = 'Forms/' . rawurldecode($_REQUEST['newname']);
+	$old = $ctslib . urldecode($_REQUEST['oldname']);
+	$new = $ctslib . rawurldecode($_REQUEST['newname']);
 	// echo "old: $old,<br> new: $new<br>";
 	if ($stat = rename($old, $new)) {
 	  touch($new);   // update file time
@@ -73,7 +75,7 @@ if ($action == 'rename') {
 // delete action
 if ($action == 'delete') {
   //echo '<h4>Delete action requested.</h4>';	
-	$deltarget = 'Forms/' . $form;
+	$deltarget = $ctslib . $form;
 	unlink($deltarget);
 	addlogentry("Delete of $form successful");
 	$updmsg = "Delete of $form successful";
@@ -84,7 +86,7 @@ if (count($_FILES)) {
   $errmsg = "";     //initiate the progress message
   // echo '<pre> file '; print_r($_FILES); echo '</pre>';
   for ($i = 0; $i<count($_FILES["files"]["name"]); $i++) {
-    $filen = 'Forms/'.$_FILES["files"]["name"][$i];
+    $filen = $ctslib.$_FILES["files"]["name"][$i];
     if (file_exists($filen)) {
       $errmsg .= "<b>ERROR:</b> File $filen already exists.  Upload ignored!<br>";
       continue;
@@ -160,7 +162,7 @@ $(document).ready(function() {
 
 <?php
 
-$forms = scandir('Forms');
+$forms = scandir($ctslib);
 
 // list contents of forms dir
 echo '<table class="table" border="0">';
@@ -178,7 +180,7 @@ $urlformname = urlencode($formname);
 <a href="adminformsmaint.php?action=copy&file=<?=$urlformname?>"><span title="COPY" class="glyphicon glyphicon-tags" style="color: blue; font-size: 15px"></span></a>
 </td>
 <td>
-<a target=_blank href="Forms/<?=$formname?>"><?=$formname?></a></td>
+<a target=_blank href="<?=$ctslib?><?=$formname?>"><?=$formname?></a></td>
 </tr>
 
 <?php

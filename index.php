@@ -56,7 +56,7 @@ if (!empty($_SESSION['CTS_SessionUser'])) {
 	<form class="form-inline" action="indexsto.php?lo=lo" method="post"  id="xform">
   <h3>Home Page&nbsp  
   <button  class="btn btn-large btn-primary" name="action" value="logout" type="submit" form="xform">Logout</button>&nbsp;&nbsp;</form>
-  <a href="ctsquery.php" class="btn btn-primary" title="Display CTS dashboard.">CTS Dashboard</a></h3>
+  <a href="ctsquery.php" class="btn btn-primary" title="Display CTS dashboard.">CTS Dashboard</a>&nbsp;&nbsp;<a href="calladdshortform.php" class="btn btn-primary" title="Add New Call">Add New Call</a></h3>
   <h4 style="color: red; ">Check out the last 5 bulletins&nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="bboard.php">Click this button to review all of them</a></h4>
   <ul><table class="table table-condensed">
   <tr><th>Posted</th><th>Title</th><th>Author</th></tr>

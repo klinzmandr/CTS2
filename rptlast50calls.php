@@ -21,6 +21,12 @@ if (!isset($_SESSION['CTS_SessionUser'])) {
 <script src="js/jsutils.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-sortable.js"></script>
+<script>
+$(function() {
+// adds sign in sorted col header
+$.bootstrapSortable({ sign: 'AZ' })
+});
+</script>
 
 <h3>Last 50 Calls Report  
 <span id="helpbtn" title="Help" class="glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>&nbsp;&nbsp;&nbsp;

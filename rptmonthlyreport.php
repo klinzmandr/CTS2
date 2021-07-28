@@ -84,12 +84,15 @@ Start date: <input type="text" name="sd" id="sd" value="<?=$sd?>"> and End Date:
 //include 'Incls/mainmenu.inc.php';
 include 'Incls/datautils.inc.php';
 
+$sd = date("Y-m-d 00:01", strtotime($sd));
+$ed = date("Y-m-d 23:59", strtotime($ed));
 $sql = "SELECT * FROM `calls` WHERE `DTOpened` BETWEEN '$sd' AND '$ed' ORDER BY `CallNbr` ASC;";
+// echo "sql: $sql<br>";
 $res = doSQLsubmitted($sql);
 $rc = $res->num_rows;
+echo "rowcount: $rc<br>";
 $resarray = array(); $hlvarray = array(); $cityarray = array();
 $reasonarray = array(); $ttrarray = array();
-// echo "sql: $sql<br>";
 $casestoctr = 0;
 while ($r = $res->fetch_assoc()) {
   // echo '<pre> r '; print_r($r); echo '</pre>';

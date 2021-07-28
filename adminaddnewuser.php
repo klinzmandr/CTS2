@@ -84,20 +84,25 @@ if ($action == "addnew") {
 function checkflds(form) {
 	//alert("validation entered");
 	var errcnt = 0;
-	if (form.userid.value == "") errcnt +=1;
-	if (form.password.value == "") errcnt += 1;
-	if (form.role.value == "") errcnt += 1;
+	if ($("[name='flds[UserID]']").val().length == 0) errcnt +=1;
+	if ($("[name='flds[Password]']").val().length == 0) errcnt +=1;
+	if ($("[name='flds[Role]']").val().length == 0) errcnt +=1;
 	if (errcnt > 0) {
 		alert ("A required field is missing.");
 		return false;
 		}
-	var tfld = trim(form.userid.value);  // value of field with whitespace trimmed off
+	var tfld = trim($("[name='flds[UserID]']").val().toLowerCase()); 
+	$("[name='flds[UserID]']").val(tfld);
+	var tfld = trim($("[name='flds[Password]']").val().toLowerCase()); 
+	$("[name='flds[Password]']").val(tfld);
+	
 	return true;
 	}
 	
 function trim(s)
 	{
-  return s.replace(/^\s+|\s+$/, '');
+	  var x = s.replace(/\s+/, "");
+  return (x);
 	}
 
 </script>

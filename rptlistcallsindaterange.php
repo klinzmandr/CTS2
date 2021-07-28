@@ -19,6 +19,7 @@ $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime('now'))
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
 <link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/bootstrap-sortable.css" rel="stylesheet" media="all">
 
 </head>
 <body>
@@ -27,6 +28,14 @@ $ed = isset($_REQUEST['ed']) ? $_REQUEST['ed'] : date('Y-m-t', strtotime('now'))
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-datepicker-range.js"></script>
+<script src="js/bootstrap-sortable.js"></script>
+
+<script>
+$(function() {
+// adds sign in sorted col header
+$.bootstrapSortable({ sign: 'AZ' })
+});
+</script>
 
 <h3>List Calls In Date Range
 <span id="helpbtn" title="Help" class="hidden-print glyphicon glyphicon-question-sign" style="color: blue; font-size: 20px"></span>
@@ -75,8 +84,8 @@ $cc .= $countarray['Closed'] . '/';
 $cc .= $countarray['Center'] . '<br>';
 echo $cc; 
 //echo '<pre> year '; print_r($countarray); echo '</pre>';
-echo '<table class="table table-condensed">
-<tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th><th>Resolution</th></tr>';
+echo '<table class="sortable table table-condensed"><thead>
+<tr><th>CallNbr</th><th>Status</th><th>Date/TimeOpened</th><th>Date/TimePlaced</th><th>OpenedBy</th><th>Description</th><th>Resolution</th></tr></thead><tbody>';
 foreach ($resarray as $r) {
 	// echo '<pre> year '; print_r($r); echo '</pre>';
 	$callnbr = $r['CallNbr'];
@@ -86,7 +95,7 @@ foreach ($resarray as $r) {
 	//echo "<tr><td>$callnbr</td>";
 	echo "<td>$r[Status]</td><td>$r[DTOpened]</td><td>$r[DTPlaced]</td><td>$r[OpenedBy]</td><td>$r[Description]</td><td>$r[Resolution]</td></tr>";
 	}
-echo '</table>';
+echo '</tbody></table>';
 echo "=== END OF REPORT===<br>";
 
 ?>

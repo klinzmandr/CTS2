@@ -23,6 +23,13 @@ if (!isset($_SESSION['CTS_SessionUser'])) {
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-datepicker-range.js"></script>
 <script src="js/bootstrap-sortable.js"></script>
+<script>
+$(function() {
+// adds sign in sorted col header
+$.bootstrapSortable({ sign: 'AZ' })
+});
+</script>
+
 <?php
 include 'Incls/datautils.inc.php';
 include 'Incls/seccheck.inc.php';
